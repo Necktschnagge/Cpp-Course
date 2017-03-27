@@ -1,0 +1,141 @@
+\documentclass[a4paper]{report}
+\usepackage[textwidth=17cm, textheight=25cm]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{enumerate}
+\usepackage{multicol} % multiple collums in enumerate
+
+\title{C++ Kurs Informatik TU Dresden}
+\author{Maximilian Starke}
+\date{\today}
+
+\usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem} 
+  % erlaubt es, Sätze, Definitionen etc. einfach durchzunummerieren.
+\newtheorem{satz}{Satz}[section] % Nummerierung nach Abschnitten
+\newtheorem{proposition}[satz]{Proposition}
+\newtheorem{kor}[satz]{Korollar}
+
+% --------------------------------------math
+\theorembodyfont{\upshape}
+\newtheorem{beispiel}[satz]{Beispiel}
+\newtheorem{bemerkung}[satz]{Bemerkung}
+\newtheorem{definition}[satz]{Definition} %[section]
+
+\theoremstyle{nonumberplain}
+\theoremheaderfont{\itshape}
+\theorembodyfont{\normalfont}
+\theoremseparator{.}
+\theoremsymbol{\ensuremath{_\blacksquare}}
+\newtheorem{beweis}{Beweis}
+\qedsymbol{\ensuremath{_\blacksquare}}
+
+%------------------------------------------------------
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
+    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
+    minimum height=3em]
+    
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Einrichtung}
+
+\section{ISO C++}
+
+\subsection{Allgemeines}
+Bitte das hier mal noch schonfinkel
+\begin{itemize}
+\item entwickelt ab 1979 von Bjarne Stroustrup bei AT\&T als Erweiterung der Programmiersprache C
+\item von ISO genormt
+\item effizient und schnell - Schnelligkeits eines der wichtigsten Designprinzipien von C++
+\item hohes Abstraktionsniveau durch unterstützung von OOP
+\item ISO Standard beshreibt auch eine Standardbibliothek
+
+\item Paradigmen:
+\subitem generisch (Templates)
+\item imperativ (Folge von Anweisungen, Gegenteil von Deklarativ siehe Haskell und Logikprogrammierung)
+\item objektorientiert (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an Realität)
+\item prozedural (Begriff mit verschiedenen Bedeutiungsauffassungen, Unterteilung des Programms in Teilstücke / Sinneinheiten)
+\item strukturiert (prozedural und Teilung in Sequenz, Verzweigung, wiederholung,.. )
+\item funktional (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter Funktionsaufruf organisierbar)
+\end{itemize}
+
+\subsection{Versionen}
+C++03
+C++11
+C++14
+C++17
+
+\section{Dateien in einem C++ Projekt}
+
+\begin{center}
+\begin{tabular}{|c|c|p{10cm}|}
+	\hline
+	Dateiendung & Bezeichnung & Inhalt \\
+	\hline
+	(*.cpp) (*.cc) & Quelldatei & Funktionsimplementation, Klassenimplementation, \newline Berechnungen bzw. eigentliche Arbeit erledigen \\ \hline
+	(*.h) & Headerdatei & Funktionsdeklaration, Klassendefinition, \newline Bezeichner öffentlich bekannt machen \\
+	\hline
+	
+\end{tabular}
+\end{center}
+
+\begin{tikzpicture}[node distance = 3cm, auto]
+    % Place nodes
+    \node [cloud] (precompiler) {Precompiler};
+    \node [block, left of=precompiler] (source) {*cpp, *.c};
+    \node [block, right of=precompiler] (header) {*.h};
+    \node [block, below of=precompiler] (precompiled) {cpp without \#precompiler instruction};
+%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
+%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
+%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
+%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
+    % Draw edges
+%    \path [line] (init) -- (identify);
+%    \path [line] (identify) -- (evaluate);
+%    \path [line] (evaluate) -- (decide);
+%    \path [line] (decide) -| node [near start] {yes} (update);
+%    \path [line] (update) |- (identify);
+%    \path [line] (decide) -- node {no}(stop);
+%	\path [line] (source) -- (precompiler);
+%    \node [cloud] (init) {Precompiler};
+%    \node [block, left of=init] (expert) {expert};
+%    \node [cloud, right of=init] (system) {system};
+%    \node [block, below of=init] (identify) {identify candidate models};
+%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
+%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
+%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
+%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
+%    % Draw edges
+%    \path [line] (init) -- (identify);
+%    \path [line] (identify) -- (evaluate);
+%    \path [line] (evaluate) -- (decide);
+%    \path [line] (decide) -| node [near start] {yes} (update);
+%    \path [line,dashed] (system) -- (init);
+%    \path [line,dashed] (system) |- (evaluate);
+\end{tikzpicture}
+
+\section{Compiler}
+\section{IDEs}
+\section{Referenzen}
+Buch, websites
+\section{The Hello World}
+
+\chapter{Datentypen in C++}
+
+
+
+\end{document}
