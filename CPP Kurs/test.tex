@@ -6,9 +6,10 @@
 \usepackage{amsmath, amssymb}
 \usepackage{enumerate}
 \usepackage{multicol} % multiple collums in enumerate
+\usepackage{hyperref}
 
 \title{C++ Kurs Informatik TU Dresden}
-\author{Maximilian Starke}
+\author{Maximilian Starke \\ Student der TU Dresden}
 \date{\today}
 
 \usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem} 
@@ -35,15 +36,6 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 
-
-% Define block styles
-\tikzstyle{decision} = [diamond, draw, fill=blue!20, 
-    text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
-\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
-    text width=5em, text centered, rounded corners, minimum height=4em]
-\tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,
-    minimum height=3em]
     
 
 
@@ -74,10 +66,16 @@ Bitte das hier mal noch schonfinkel
 \end{itemize}
 
 \subsection{Versionen}
-C++03
-C++11
-C++14
-C++17
+\begin{itemize}
+	\item C++98
+	\item C++03
+	\item C++11
+	\subitem wesentliche Neuerungen. Einführung von constexpr, Elementinitialisierer, ... Neue Bedeutung des Schlüsselworts auto
+	\item C++14
+	\subitem aufweichung der constexpr Bedingungen.
+	\item C++17
+	\subitem soll 2017 vollendet werden.
+\end{itemize}
 
 \section{Dateien in einem C++ Projekt}
 
@@ -89,49 +87,84 @@ C++17
 	(*.cpp) (*.cc) & Quelldatei & Funktionsimplementation, Klassenimplementation, \newline Berechnungen bzw. eigentliche Arbeit erledigen \\ \hline
 	(*.h) & Headerdatei & Funktionsdeklaration, Klassendefinition, \newline Bezeichner öffentlich bekannt machen \\
 	\hline
-	
+	(*.o) & Objektdatei & Objektcode (Maschinencode) einer Übersetzungseinheit\\
+	\hline
 \end{tabular}
 \end{center}
 
+
+% Define block styles
+\tikzstyle{block} = [rectangle, draw, fill=blue!40, 
+text width=7em, text centered, rounded corners, minimum height=5em, node distance= 4.5cm, line width = 2pt]
+
+
+\tikzstyle{cblock} = [rectangle, draw, fill=blue!40, 
+text width=7em, text centered, rounded corners, minimum height=5em, node distance= 3.0cm, line width = 2pt]
+
+
+\tikzstyle{line} = [draw, -latex', line width = 4pt]
+
+
+\tikzstyle{cloud} = [draw, ellipse,fill=red!40, node distance=3cm, line width = 2pt,
+minimum height=3em]
+
+{\large
+\begin{center}
 \begin{tikzpicture}[node distance = 3cm, auto]
     % Place nodes
-    \node [cloud] (precompiler) {Precompiler};
-    \node [block, left of=precompiler] (source) {*cpp, *.c};
-    \node [block, right of=precompiler] (header) {*.h};
-    \node [block, below of=precompiler] (precompiled) {cpp without \#precompiler instruction};
-%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
-%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
-%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
-%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
-    % Draw edges
-%    \path [line] (init) -- (identify);
-%    \path [line] (identify) -- (evaluate);
-%    \path [line] (evaluate) -- (decide);
-%    \path [line] (decide) -| node [near start] {yes} (update);
-%    \path [line] (update) |- (identify);
-%    \path [line] (decide) -- node {no}(stop);
-%	\path [line] (source) -- (precompiler);
-%    \node [cloud] (init) {Precompiler};
-%    \node [block, left of=init] (expert) {expert};
-%    \node [cloud, right of=init] (system) {system};
-%    \node [block, below of=init] (identify) {identify candidate models};
-%    \node [block, below of=identify] (evaluate) {evaluate candidate models};
-%    \node [block, left of=evaluate, node distance=3cm] (update) {update model};
-%    \node [decision, below of=evaluate] (decide) {is best candidate better?};
-%    \node [block, below of=decide, node distance=3cm] (stop) {stop};
-%    % Draw edges
-%    \path [line] (init) -- (identify);
-%    \path [line] (identify) -- (evaluate);
-%    \path [line] (evaluate) -- (decide);
-%    \path [line] (decide) -| node [near start] {yes} (update);
-%    \path [line,dashed] (system) -- (init);
-%    \path [line,dashed] (system) |- (evaluate);
+    \node [cloud] (pc) {Precompiler};
+    
+    \node [block, left of=pc] (cpp) {*cpp, *.c};
+    \path [line] (cpp) --(pc);
+    
+    \node [block, right of=pc] (h) {*.h};
+    \path [line] (h) --(pc);
+    
+    \node [cblock, below of=pc] (cpp2) {cpp without \#precompiler instruction};
+    \path [line, below of = cpp2] (pc) -- (cpp2);
+    
+    \node [cloud, below of = cpp2] (c) {Compiler};
+    \path [line] (cpp2) -- (c);
+    
+    \node [cblock, below of = c] (o) {*.o};
+    \path [line] (c) -- (o);
+    
+    \node [cloud, below of = o] (l) {Linker};
+    \path [line] (o) -- (l);
+    
+    \node [block, left of =o] (lo) {another\\ *.o};
+    \path [line] (lo) -- (l);
+    
+    \node [block, right of = o] (ro) {another\\ *.o};
+    \path [line] (ro) -- (l);
+    
+    \node [cblock, below of = l] (exe) {*.exe, *.out};
+    \path [line] (l) -- (exe);
+     
+    \node [block, right of = exe] (lib) {*.lib, *.dll};
+    \path [line] (l) -- (lib); 
+
 \end{tikzpicture}
+\end{center}
+}
 
 \section{Compiler}
+
 \section{IDEs}
 \section{Referenzen}
-Buch, websites
+
+\begin{itemize}
+	\item Buch:
+	\begin{itemize}
+		\item Wolf, Jürgen: C++ - Das umfassende Handbuch. Rheinwerk Computing
+	\end{itemize}
+	\item Websites:
+	\begin{itemize}
+		\item \url{http://en.cppreference.com/w/}
+		\item \url{ttp://www.cplusplus.com/reference/}
+	\end{itemize}
+\end{itemize}
+\# Anmerkung ergänzen
 \section{The Hello World}
 
 \chapter{Datentypen in C++}
