@@ -12,7 +12,12 @@
 \author{Maximilian Starke \\ Student der TU Dresden}
 \date{\today}
 
-\usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem} 
+\usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem}
+\usepackage{listings}
+
+
+
+
   % erlaubt es, Sätze, Definitionen etc. einfach durchzunummerieren.
 \newtheorem{satz}{Satz}[section] % Nummerierung nach Abschnitten
 \newtheorem{proposition}[satz]{Proposition}
@@ -155,6 +160,13 @@ minimum height=3em]
 
 \section{Compiler}
 
+\begin{tabular}{c|l}
+	GCC & \\
+	\; gcc & \\
+	g++ & \\
+	%#####
+\end{tabular}
+
 \section{IDEs}
 \subsection{JA oder NEIN}
 \begin{center}
@@ -174,15 +186,28 @@ minimum height=3em]
 \end{center}
 
 \subsection{IDEs im Überblick}
-\begin{tabular}{|c|c|c|}
+\begin{center}
+\begin{tabular}{|c|c|p{10cm}|}
 	\hline
 	\textbf{IDE} & \textbf{Plattform} & \textbf{Anmerkungen}\\
 	\hline
 	Eclipse, Netbeans & Java (JVM) & in und für Java geschrieben, unterstützt auch C++ \\
-	Qt SDK & WIN, Linux, Mac & bringt umfangreiches Qt-Framework mit für GUIs uvnm. \\
+	Qt SDK & WIN, Linux, Mac & bringt umfangreiches Qt-Framework mit für GUIs u.v.m. \\
 	Code::Blocks & WIN, Linux, Mac & \\
 	\hline
+	Visual Studio & Windows & kostenfreie BVersion für den Hausgebrauch: VS Community 2016 /2017RC, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
+	Orwell DEV-C++ & Windows &\\
+	\hline
+	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Compile Buttons\\
+	KDevlop & Linux, WIN & \# \\
+	Anjuta & Linux & \# \\
+	\hline
+	XCode & MacOS & "`hauseigene"' IDE von Apple\\
+	\hline
+	
 \end{tabular}
+\end{center}
+
 \section{Referenzen}
 
 \begin{itemize}
@@ -198,6 +223,41 @@ minimum height=3em]
 \end{itemize}
 \# Anmerkung ergänzen
 \section{The Hello World}
+\begin{lstlisting}
+#include <iostream>
+
+int main(int argc, char* argv[])
+// main-Funktion: Einstiegspunkt der Anwendung
+// count: Anzahl der uebergebenen Parameter
+// arg: Pointer auf ein Array von Pointern auf C-Style-Strings (die Parameter)
+// Parameter der main-Funktion duerfen in der Signatur auch weggelassen werden.
+
+// Parameter der main-Funktion 
+{   // Beginn vom Anweisungsblock der main-Funktion
+	
+	std::cout << "Hello World" << std::endl;
+	/*
+	* implizite Klammerung:
+	* ((std::cout) << "Hello World") << (std::endl);
+	* std              ... ein Namensraum
+	* ::               ... scope-Operator (Bereichsoperator)
+	* cout:            ... gepufferter Standardausgabestream
+	* <<               ... Ausgabeoperator (auch bitshift-Operator)
+	* "Hello World"    ... C-Style-String Literal
+	* endl             ... Objekt aus dem std Namensraum,
+	                       das einen Zeilenumbruch ('\n') erzeugt.
+	* ;                ... Abschluss einer einzelnen Anweisung
+	*/
+	
+	for(int i = 0; i < argc; ++i ){
+		std::cout << i << ". Parameter:  " << argv[i] << '\n';
+	} // Beipiel fuer die (Verarbeitung &) Ausgabe der Komandozeilenargumente
+	
+	return 0; // Rueckgabewert 0 "erfolgreich (ohne Fehler) beendet"
+}
+
+\end{lstlisting}
+
 
 \chapter{Datentypen in C++}
 
