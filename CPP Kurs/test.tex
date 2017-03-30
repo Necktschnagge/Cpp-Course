@@ -48,21 +48,25 @@
 \section{ISO C++}
 
 \subsection{Allgemeines}
-Bitte das hier mal noch schonfinkel
 \begin{itemize}
-\item entwickelt ab 1979 von Bjarne Stroustrup bei AT\&T als Erweiterung der Programmiersprache C
-\item von ISO genormt
-\item effizient und schnell - Schnelligkeits eines der wichtigsten Designprinzipien von C++
-\item hohes Abstraktionsniveau durch unterstützung von OOP
-\item ISO Standard beshreibt auch eine Standardbibliothek
-
+\item ab 1979 von Bjarne Stroustrup bei AT\&T entwickelt als Erweiterung der Programmiersprache C
+\item später von ISO genormt
+\vspace{2ex}
+\item effizient und schnell - Schnelligkeit eines der wichtigsten Designprinzipien von C++
+\item hohes Abstraktionsniveau u.a. durch Unterstützung von OOP
+\item ISO Standard beschreibt auch eine Standardbibliothek
+\item C++ ist \textbf{kein} echtes Superset von C (siehe stackoverflow.com, \dots)%###
+\item C++ ist (wie C) \textbf{case sensitive}
+\vspace{2ex}
 \item Paradigmen:
-\subitem generisch (Templates)
-\item imperativ (Folge von Anweisungen, Gegenteil von Deklarativ siehe Haskell und Logikprogrammierung)
-\item objektorientiert (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an Realität)
-\item prozedural (Begriff mit verschiedenen Bedeutiungsauffassungen, Unterteilung des Programms in Teilstücke / Sinneinheiten)
-\item strukturiert (prozedural und Teilung in Sequenz, Verzweigung, wiederholung,.. )
-\item funktional (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter Funktionsaufruf organisierbar)
+	\begin{itemize}
+		\item \textbf{generisch} (durch Benutzung von Templates, automatische Erstellung multipler Funktionen für verschiedene Datentypen)
+		\item \textbf{imperativ} (Programm als Folge von Anweisungen, Gegenteil von deklarativ siehe Haskell und Logikprogrammierung)
+		\item \textbf{objektorientiert} (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an Realität)
+		\item \textbf{prozedural} (Begriff mit verschiedenen Bedeutungsauffassungen, Unterteilung des Programms in logische Teilstücke (Prozeduren), die bestimmte Aufgaben / Funktionen übernehmen)
+		\item \textbf{strukturiert} (prozedural und Teilung in Sequenz, Verzweigung, Wiederholung, \dots )
+		\item \textbf{funktional} (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter [...] Funktionsaufruf 	organisierbar)
+	\end{itemize}
 \end{itemize}
 
 \subsection{Versionen}
@@ -70,7 +74,7 @@ Bitte das hier mal noch schonfinkel
 	\item C++98
 	\item C++03
 	\item C++11
-	\subitem wesentliche Neuerungen. Einführung von constexpr, Elementinitialisierer, ... Neue Bedeutung des Schlüsselworts auto
+	\subitem wesentliche Neuerungen. Einführung von constexpr, Elementinitialisierer, ... Neue Bedeutung des Schlüsselworts auto \hspace{3cm} \# Referenzen ergänzen
 	\item C++14
 	\subitem aufweichung der constexpr Bedingungen.
 	\item C++17
@@ -90,8 +94,8 @@ Bitte das hier mal noch schonfinkel
 	(*.o) & Objektdatei & Objektcode (Maschinencode) einer Übersetzungseinheit\\
 	\hline
 \end{tabular}
-\end{center}
 
+\vspace{4ex}
 
 % Define block styles
 \tikzstyle{block} = [rectangle, draw, fill=blue!40, 
@@ -109,7 +113,7 @@ text width=7em, text centered, rounded corners, minimum height=5em, node distanc
 minimum height=3em]
 
 {\large
-\begin{center}
+
 \begin{tikzpicture}[node distance = 3cm, auto]
     % Place nodes
     \node [cloud] (pc) {Precompiler};
@@ -145,12 +149,25 @@ minimum height=3em]
     \path [line] (l) -- (lib); 
 
 \end{tikzpicture}
-\end{center}
 }
+\end{center}
+
 
 \section{Compiler}
 
 \section{IDEs}
+
+\begin{tabular}{|c||c|}
+	\hline
+	\textbf{ohne IDE} & \textbf{mit IDE} \\
+	\hline \hline
+	Compiler, Linker über Shell bedienen		&	\\
+	Texteditor				&		in IDE integriert\\
+	evtl. make + makefile	&	automatisch generiertes makefile \\
+	
+	\hline
+\end{tabular}
+
 \section{Referenzen}
 
 \begin{itemize}
