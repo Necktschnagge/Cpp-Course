@@ -1,41 +1,44 @@
 \documentclass[a4paper]{report}
 \usepackage[textwidth=17cm, textheight=25cm]{geometry}
+\usepackage{verbatim}
 
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
+\usepackage[pdftex]{hyperref}
+
 \usepackage{amsmath, amssymb}
 \usepackage{enumerate}
 \usepackage{multicol} % multiple collums in enumerate
-\usepackage{hyperref}
+\usepackage{graphicx}
 
 \title{C++ Kurs\\TU Dresden\\Fakultät für Informatik}
 \author{Maximilian Starke \\ Student der TU Dresden}
 \date{\today}
 
-\usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem}
+%\usepackage[thmmarks,amsmath,hyperref,noconfig]{ntheorem}
 \usepackage{listings}
 
 
 
 
   % erlaubt es, Sätze, Definitionen etc. einfach durchzunummerieren.
-\newtheorem{satz}{Satz}[section] % Nummerierung nach Abschnitten
-\newtheorem{proposition}[satz]{Proposition}
-\newtheorem{kor}[satz]{Korollar}
+%\newtheorem{satz}{Satz}[section] % Nummerierung nach Abschnitten
+%\newtheorem{proposition}[satz]{Proposition}
+%\newtheorem{kor}[satz]{Korollar}
 
 % --------------------------------------math
-\theorembodyfont{\upshape}
-\newtheorem{beispiel}[satz]{Beispiel}
-\newtheorem{bemerkung}[satz]{Bemerkung}
-\newtheorem{definition}[satz]{Definition} %[section]
+%\theorembodyfont{\upshape}
+%\newtheorem{beispiel}[satz]{Beispiel}
+%\newtheorem{bemerkung}[satz]{Bemerkung}
+%\newtheorem{definition}[satz]{Definition} %[section]
 
-\theoremstyle{nonumberplain}
-\theoremheaderfont{\itshape}
-\theorembodyfont{\normalfont}
-\theoremseparator{.}
-\theoremsymbol{\ensuremath{_\blacksquare}}
-\newtheorem{beweis}{Beweis}
-\qedsymbol{\ensuremath{_\blacksquare}}
+%\theoremstyle{nonumberplain}
+%\theoremheaderfont{\itshape}
+%\theorembodyfont{\normalfont}
+%\theoremseparator{.}
+%\theoremsymbol{\ensuremath{_\blacksquare}}
+%\newtheorem{beweis}{Beweis}
+%\qedsymbol{\ensuremath{_\blacksquare}}
 
 %------------------------------------------------------
 \usepackage{tikz}
@@ -45,6 +48,8 @@
 
 
 \begin{document}
+	
+
 \maketitle
 \tableofcontents
 
@@ -87,9 +92,8 @@
 \end{itemize}
 
 \section{Dateien in einem C++ Projekt}
-
 \begin{center}
-\begin{tabular}{|c|c|p{10cm}|}
+\begin{tabular}{|c|c|p{9cm}|}
 	\hline
 	Dateiendung & Bezeichnung & Inhalt \\
 	\hline
@@ -97,6 +101,12 @@
 	(*.h) & Headerdatei & Funktionsdeklaration, Klassendefinition, \newline Bezeichner öffentlich bekannt machen \\
 	\hline
 	(*.o) & Objektdatei & Objektcode (Maschinencode) einer Übersetzungseinheit\\
+	\hline
+	(*.exe) (*.out) & ausführbare Datei & fertiges Programm \\
+	\hline \hline
+	(*.sln) (*.pro) (*.vcxproj) & "Projektdatei" & IDE Einstellungen (oder ähnliches) \newline IDE-spezifische Namen und Verwendung\\
+	\hline \hline
+	(*.res) & Ressourcendatei & multimediale Inhalte\\
 	\hline
 \end{tabular}
 
@@ -179,7 +189,7 @@ minimum height=3em]
 	evtl. make + makefile	&	automatisch generiertes makefile \\
 	Dokumentationen & geordneter Menübaum \\
 	\hline \hline
-	Einarbeitungszeit(??) & Einarbeitungszeit (??) \\
+	Einarbeitungszeit (??) & Einarbeitungszeit (??) \\
 	für kleine und mittelgroße Projekte & kleine, mittlere und große Projekte \\
 	\hline
 \end{tabular}
@@ -198,7 +208,7 @@ minimum height=3em]
 	Visual Studio & Windows & kostenfreie BVersion für den Hausgebrauch: VS Community 2016 /2017RC, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
 	Orwell DEV-C++ & Windows &\\
 	\hline
-	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Compile Buttons\\
+	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Buttons für Compilerausführung, Logausgabe\\
 	KDevlop & Linux, WIN & \# \\
 	Anjuta & Linux & \# \\
 	\hline
@@ -206,6 +216,22 @@ minimum height=3em]
 	\hline
 	
 \end{tabular}
+
+\vspace{4ex}
+
+Auf den Seiten \pageref{pic:eclipse} bis \pageref{pic:netbeans} finden sich Screenshots der IDEs.
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/eclipse.jpg}
+	\caption{Eclipse mit einem C++ Projekt}
+	\url{https://www.eclipse.org/forums/index.php/fa/6135/0/}
+	\label{pic:eclipse}
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/netbeans.png}
+	\caption{NetBeans und die Verwendung von C++}
+	\url{https://netbeans.org/images_www/v7/screenshots/cnd.png}
+	\label{pic:netbeans}
+\end{figure}
 \end{center}
 
 \section{Referenzen}
@@ -228,7 +254,7 @@ minimum height=3em]
 
 int main(int argc, char* argv[])
 // main-Funktion: Einstiegspunkt der Anwendung
-// count: Anzahl der uebergebenen Parameter
+// count: Anzahl der uebergebenen Parameter 
 // arg: Pointer auf ein Array von Pointern auf C-Style-Strings (die Parameter)
 // Parameter der main-Funktion duerfen in der Signatur auch weggelassen werden.
 
@@ -251,7 +277,8 @@ int main(int argc, char* argv[])
 	
 	for(int i = 0; i < argc; ++i ){
 		std::cout << i << ". Parameter:  " << argv[i] << '\n';
-	} // Beipiel fuer die (Verarbeitung &) Ausgabe der Komandozeilenargumente
+	} // Beipiel fuer die Ausgabe der Komandozeilenargumente
+	// argv[0] ist der Name der executable Datei
 	
 	return 0; // Rueckgabewert 0 "erfolgreich (ohne Fehler) beendet"
 }
@@ -260,7 +287,7 @@ int main(int argc, char* argv[])
 
 
 \chapter{Datentypen in C++}
-
+\section{primitive Datentypen}
 
 
 \end{document}
