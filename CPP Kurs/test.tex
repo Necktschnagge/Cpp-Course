@@ -44,7 +44,16 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 
-    
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+%\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+%\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
 
 
 \begin{document}
@@ -65,9 +74,10 @@
 \item effizient und schnell - Schnelligkeit eines der wichtigsten Designprinzipien von C++
 \item hohes Abstraktionsniveau u.a. durch Unterstützung von OOP
 \item ISO Standard beschreibt auch eine Standardbibliothek
-\item C++ ist \textbf{kein} echtes Superset von C (siehe stackoverflow.com, \dots)%###
+\item C++ ist \textbf{kein} echtes Superset von C (siehe stackoverflow.com, \dots)
 \item C++ ist (wie C) \textbf{case sensitive}
 \vspace{2ex}
+
 \item Paradigmen:
 	\begin{itemize}
 		\item \textbf{generisch} (durch Benutzung von Templates, automatische Erstellung multipler Funktionen für verschiedene Datentypen)
@@ -75,7 +85,7 @@
 		\item \textbf{objektorientiert} (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an Realität)
 		\item \textbf{prozedural} (Begriff mit verschiedenen Bedeutungsauffassungen, Unterteilung des Programms in logische Teilstücke (Prozeduren), die bestimmte Aufgaben / Funktionen übernehmen)
 		\item \textbf{strukturiert} (prozedural und Teilung in Sequenz, Verzweigung, Wiederholung, \dots )
-		\item \textbf{funktional} (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter [...] Funktionsaufruf 	organisierbar)
+		\item \textbf{funktional} (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter [...] Funktionsaufruf 	organisierbar, eher typisch für Haskell o.ä.)
 	\end{itemize}
 \end{itemize}
 
@@ -169,13 +179,112 @@ minimum height=3em]
 
 
 \section{Compiler}
-
-\begin{tabular}{c|l}
-	GCC & \\
-	\; gcc & \\
-	g++ & \\
-	%#####
+\begin{center}
+\begin{tabular}{|c|l|}
+	\hline
+	\textbf{Compiler} & \textbf{Plattform} \\ \hline \hline
+	GCC/g++ & Windows, Linux, Mac, Unix-like \\ \hline
+	Clang & Unix-like, Mac, Windows, Linux \\ \hline
+	Intel-C++ & Linux, Windows, Mac \\ \hline
+	VC++ & Windows \\ \hline
 \end{tabular}
+\end{center}
+Das nun folgende Listing zeigt, wie ein C++ Quellcode, der als Datei vorliegt, "`per Hand"' mit Kommandozeile unter Nutzung des Compilers (hier g++) übersetzt werden kann.
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Nutzung von g++ mittels Powershell, fonttitle=\bfseries}
+PS A:\> cd .\example\
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+
+
+PS A:\example> type .\hello_world.cpp
+#include <iostream>
+
+int main(){
+	std::cout << "Hello World";
+	return 0;
+}
+
+PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -std=c++11
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+-a----       02.04.2017     09:12          48650 programm.exe
+
+
+PS A:\example> .\programm.exe
+Hello World
+PS A:\example>
+\end{tcblisting}
+
+\begin{comment}
+\lstdefinestyle{framed}
+{
+frame=lrb,        
+belowcaptionskip=-1pt,
+xleftmargin=8pt,
+framexleftmargin=7pt,
+framexrightmargin=6pt,
+framextopmargin=5pt,
+framexbottommargin=5pt,
+framesep=0pt,
+rulesep=0pt,
+}
+
+\begin{lstlisting}[style = framed, caption = Nutzung von g++ mittels Powershell]
+PS A:\> cd .\example\
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+
+
+PS A:\example> type .\hello_world.cpp
+#include <iostream>
+
+int main(){
+	std::cout << "Hello World";
+	return 0;
+}
+	
+PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -std=c++11
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+-a----       02.04.2017     09:12          48650 programm.exe
+
+
+PS A:\example> .\programm.exe
+Hello World
+PS A:\example>
+\end{lstlisting}
+\end{comment}
+
 
 \section{IDEs}
 \subsection{JA oder NEIN}
@@ -209,7 +318,7 @@ minimum height=3em]
 	Orwell DEV-C++ & Windows &\\
 	\hline
 	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Buttons für Compilerausführung, Logausgabe\\
-	KDevlop & Linux, WIN & \# \\
+	KDevelop & Linux, WIN & \# \\
 	Anjuta & Linux & \# \\
 	\hline
 	XCode & MacOS & "`hauseigene"' IDE von Apple\\
@@ -219,8 +328,10 @@ minimum height=3em]
 
 \vspace{4ex}
 
-Auf den Seiten \pageref{pic:eclipse} bis \pageref{pic:netbeans} finden sich Screenshots der IDEs.
+Auf den Seiten \pageref{begin:ide:picts} bis \pageref{end:ide:picts} finden sich Screenshots einiger IDEs.
+
 \begin{figure}
+	\label{begin:ide:picts}
 	\includegraphics[width = \textwidth]{01/eclipse.jpg}
 	\caption{Eclipse mit einem C++ Projekt}
 	\url{https://www.eclipse.org/forums/index.php/fa/6135/0/}
@@ -231,6 +342,40 @@ Auf den Seiten \pageref{pic:eclipse} bis \pageref{pic:netbeans} finden sich Scre
 	\caption{NetBeans und die Verwendung von C++}
 	\url{https://netbeans.org/images_www/v7/screenshots/cnd.png}
 	\label{pic:netbeans}
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/qt_code.png}
+	\caption{C++ Code in der QT Creator IDE}
+	\label{pic:qt_code}
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/qt_designer.png}
+	\caption{Fensterdesign mit QT Creator}
+	\label{pic:qt_designer}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width = 13cm]{01/codeblocks.png}
+	\caption{Code Blocks}
+	\label{pic:code::blocks}
+	\url{http://www.aftermoon.net/img/20070905_codeblocks_tremulous.png}
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/vs.png}
+	\caption{Visual Studio Community}
+	\label{pic:visualstudio}	
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/geany.png}
+	\caption{Geany}
+	\label{pic:geany}	
+\end{figure}
+\begin{figure}
+	\includegraphics[width = \textwidth]{01/kdevelop.png}
+	\caption{KDevelop}
+	\url{https://www.kdevelop.org/sites/www.kdevelop.org/files/inline-images/kdevelop5-breeze_2.png}
+	\label{pic:kdevelop}	
+	\label{end:ide:picts}
 \end{figure}
 \end{center}
 
@@ -249,6 +394,43 @@ Auf den Seiten \pageref{pic:eclipse} bis \pageref{pic:netbeans} finden sich Scre
 \end{itemize}
 \# Anmerkung ergänzen
 \section{The Hello World}
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Unser erstes C++ Programm, fonttitle=\bfseries}
+#include <iostream>
+
+int main(int argc, char* argv[])
+// main-Funktion: Einstiegspunkt der Anwendung
+// count: Anzahl der uebergebenen Parameter 
+// arg: Pointer auf ein Array von Pointern auf C-Style-Strings (die Parameter)
+// Parameter der main-Funktion duerfen in der Signatur auch weggelassen werden.
+
+// Parameter der main-Funktion 
+{   // Beginn vom Anweisungsblock der main-Funktion
+	
+	std::cout << "Hello World" << std::endl;
+	/*
+	* implizite Klammerung:
+	* ((std::cout) << "Hello World") << (std::endl);
+	* std              ... ein Namensraum
+	* ::               ... scope-Operator (Bereichsoperator)
+	* cout:            ... gepufferter Standardausgabestream
+	* <<               ... Ausgabeoperator (auch bitshift-Operator)
+	* "Hello World"    ... C-Style-String Literal
+	* endl             ... Objekt aus dem std Namensraum, das einen Zeilenumbruch ('\n') erzeugt.
+	* ;                ... Abschluss einer einzelnen Anweisung
+	*/
+	
+	for(int i = 0; i < argc; ++i ){
+		std::cout << i << ". Parameter:  " << argv[i] << '\n';
+	} // Beipiel fuer die Ausgabe der Komandozeilenargumente
+	// argv[0] ist der Name der executable Datei
+	
+	return 0; // Rueckgabewert 0 "erfolgreich (ohne Fehler) beendet"
+}
+\end{tcblisting}
+
+\begin{comment}
 \begin{lstlisting}
 #include <iostream>
 
@@ -284,6 +466,8 @@ int main(int argc, char* argv[])
 }
 
 \end{lstlisting}
+
+\end{comment}
 
 
 \chapter{Datentypen in C++}
