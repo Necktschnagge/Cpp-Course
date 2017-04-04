@@ -448,7 +448,14 @@ Bevor wir in Kapitel \ref{real_start} einsteigen und das gesamte (naja \textit{f
 \begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
 		title=... und ein paar Hilfsmittel ..., fonttitle=\bfseries}
 #include <iostream>
-	
+
+#define Umlaute
+// Benutzung bedingter Compilierung zum Debugging
+
+#ifdef Umlaute
+#include <locale>
+#endif //Umlaute
+
 int main(int argc, char* argv[]){
 	
 	int zahl;
@@ -460,7 +467,10 @@ int main(int argc, char* argv[]){
 	std::cout << "\nIn 7 Jahren bist du " << 7 + zahl << " Jahre alt. << '\n';
 	
 	std::cin.get(); // warted auf Enter zum fortfahren.
-	
+#ifdef Umlaute
+	std::locale::global(std::locale("German"));
+#ifend //Umlaute
+	std::cout << " ???"; // #### LaTeX und Umlaute ...
 	/*
 	Das ist
 	ein mehrzeiliger
@@ -486,9 +496,32 @@ int main(int argc, char* argv[]){
 \end{tabular}
 \end{center}
 
-\subsection{Programmierstil} 
+\subsection{Programmierstil}
+% snake case, camel c, sinnvolle namen. einheitlichkeit, konsitenz, einrückunjgen, anweisungen pro zeile, automatischer style durch ide.
 \chapter{Datentypen in C++} \label{real_start}
 \section{primitive Datentypen}
+Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
 
+\section{Einige Operatoren}
+\section{Casts}
+\section{Zusammengesetzte Datentypen}
+\subsection{Arrays}
+\subsection{Records und Klassen}
+\subsection{Containerklassen}
+\section{Klassen}
+\subsection{Konstruktoren}
+\subsection{Vererbung}
+\subsection{Polymorphie}
+
+\chapter{Strukturierte Programmierung}
+\section{Kontrollstrukturen}
+\section{Funktionen}
+\section{Operatoren}
+\section{Modularisierung}
+
+\chapter{Zusätzliche Features}
+\section{Templates}
+\section{Exceptions}
+\section{Multithreading}
 
 \end{document}
