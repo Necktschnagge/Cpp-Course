@@ -46,9 +46,6 @@
 
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
-%\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
-%\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
-
 
 \usepackage{xcolor}
 \usepackage{listings}
@@ -94,7 +91,7 @@
 	\item C++98
 	\item C++03
 	\item C++11
-	\subitem wesentliche Neuerungen. Einführung von constexpr, Elementinitialisierer, ... Neue Bedeutung des Schlüsselworts auto \hspace{3cm} \# Referenzen ergänzen
+	\subitem wesentliche Neuerungen. Einführung von constexpr, Elementinitialisierer, ... Neue Bedeutung des Schlüsselworts auto \hspace{3cm} \# Referenzen ergänzen %#####
 	\item C++14
 	\subitem aufweichung der constexpr Bedingungen.
 	\item C++17
@@ -322,12 +319,12 @@ PS A:\example>
 	Qt SDK & WIN, Linux, Mac & bringt umfangreiches Qt-Framework mit für GUIs u.v.m. \\
 	Code::Blocks & WIN, Linux, Mac & \\
 	\hline
-	Visual Studio & Windows & kostenfreie BVersion für den Hausgebrauch: VS Community 2016 /2017RC, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
+	Visual Studio & Windows & kostenfreie BVersion für den Hausgebrauch: VS Community 2017, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
 	Orwell DEV-C++ & Windows &\\
 	\hline
 	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Buttons für Compilerausführung, Logausgabe\\
-	KDevelop & Linux, WIN & \# \\
-	Anjuta & Linux & \# \\
+	KDevelop & Linux, WIN & \# \\ %#####
+	Anjuta & Linux & \# \\ %#####
 	\hline
 	XCode & MacOS & "`hauseigene"' IDE von Apple\\
 	\hline
@@ -400,7 +397,7 @@ Auf den Seiten \pageref{begin:ide:picts} bis \pageref{end:ide:picts} finden sich
 		\item \url{ttp://www.cplusplus.com/reference/}
 	\end{itemize}
 \end{itemize}
-\# Anmerkung ergänzen (Buch)
+%\###### Anmerkung ergänzen (Buch)
 \# Es gibt auch offline Versionen der Referenzen.
 \section{The Hello World}
 
@@ -449,28 +446,27 @@ Bevor wir in Kapitel \ref{real_start} einsteigen und das gesamte (naja \textit{f
 		title=... und ein paar Hilfsmittel ..., fonttitle=\bfseries}
 #include <iostream>
 
-#define Umlaute
-// Benutzung bedingter Compilierung zum Debugging
 
-#ifdef Umlaute
-#include <locale>
-#endif //Umlaute
+#define debug // Benutzung bedingter Compilierung zum Debugging
 
 int main(int argc, char* argv[]){
 	
-	int zahl;
-	
-	std::cout << "Wie alt bist du?\n" // eine simple Ausgabe
-	
+	int zahl = 0;
+	std::cout << "Wie alt bist du?\n"; // eine simple Ausgabe
 	std::cin >> zahl; // eine simple Eingabe
+	std::cout << "Okay!\n\n";
 	
-	std::cout << "\nIn 7 Jahren bist du " << 7 + zahl << " Jahre alt. << '\n';
+#ifndef debug 
+	//folgende Zeile compiliert nicht:
+	std::cout << << "In 7 Jahren bist du " << 7 + zahl << " Jahre alt." << '\n';
+#endif //debug
 	
+	std::cout << "Tsch" << static_cast<char>(0x81) << "ss\n";
+	//https://de.wikipedia.org/wiki/Codepage_850
+	
+	std::cin.sync();
 	std::cin.get(); // warted auf Enter zum fortfahren.
-#ifdef Umlaute
-	std::locale::global(std::locale("German"));
-#ifend //Umlaute
-	std::cout << " ???"; // #### LaTeX und Umlaute ...
+	
 	/*
 	Das ist
 	ein mehrzeiliger
@@ -478,8 +474,6 @@ int main(int argc, char* argv[]){
 	*/
 	
 	// Das ist ein einzeiliger Kommentar.
-	
-	return 0;
 }
 \end{tcblisting}
 \begin{center}
@@ -493,12 +487,25 @@ int main(int argc, char* argv[]){
 	\texttt{cerr}	& ungepufferte Standardfehlerausgabe \\
 	\texttt{clog}	& gepufferte Standardfehlerausgabe \\
 	\hline
+	\multicolumn{2}{|p{11cm}|}{\textbf{Achtung: Diese Streamobjekte liegen alle im Namensraum \texttt{std} und werden nach einem \texttt{\#include <iostream>} erst verfügbar}}\\
+	\hline
 \end{tabular}
 \end{center}
 
 \subsection{Programmierstil}
-% snake case, camel c, sinnvolle namen. einheitlichkeit, konsitenz, einrückunjgen, anweisungen pro zeile, automatischer style durch ide.
+Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmierstil loswerden. Im Grunde genommen dürfen Sie Ihren C++-Code schreiben, wie sie wollen, solange Sie die Spezifikationen von c++ einhalten. Es gibt auch nicht \textit{den einen} Programmierstil, der sich durchgesetzt hat. Sie schreiben aber einen viel leserlicheren, einfacher wartbaren und für das Auge schöneren Code, wenn Sie beim programmieren \textbf{konsistent bleiben}, was einige Aspekte betrifft:
+\begin{center}
+	\begin{tabular}{|c||c|}
+		\hline
+		Einrückungen	&	tabs or spaces \\ \hline
+		Anweisungen pro Zeile & eine, ... \\ \hline
+		Bezeichner		&	snake\_case, camelCase, PascalCase \\ \hline
+	\end{tabular}
+\end{center}
+Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie sich um die \textbf{Quelltextformatierung} kümmern. Dies ist gerade bei Projekten mit vielen Entwicklern hilfreich, da so ziemlich effizient für einheitliches Quelltextlayout gesorgt werden kann.
+
 \chapter{Datentypen in C++} \label{real_start}
+
 \section{primitive Datentypen}
 Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
 

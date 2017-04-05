@@ -1,29 +1,25 @@
 #include <iostream>
-#include <string>
-#define Umlaute
-// Benutzung bedingter Compilierung zum Debugging
 
-#ifdef Umlaute
-#include <locale>
-#endif //Umlaute
+
+#define debug // Benutzung bedingter Compilierung zum Debugging
 
 int main(int argc, char* argv[]){
 	
-	//std::locale::global(std::locale("German"));
-	
 	int zahl = 0;
-	std::string str {"Das ä geht nicht."};
 	std::cout << "Wie alt bist du?\n"; // eine simple Ausgabe
-	std::cout << str << '\n';
 	std::cin >> zahl; // eine simple Eingabe
+	std::cout << "Okay!\n\n";
 	
-	std::cout << "\nIn 7 Jahren bist du " << 7 + zahl << " Jahre alt." << '\n';
+#ifndef debug 
+	//folgende Zeile compiliert nicht:
+	std::cout << << "In 7 Jahren bist du " << 7 + zahl << " Jahre alt." << '\n';
+#endif //debug
 	
+	std::cout << "Tsch" << static_cast<char>(0x81) << "ss\n";
+	//https://de.wikipedia.org/wiki/Codepage_850
+	
+	std::cin.sync();
 	std::cin.get(); // warted auf Enter zum fortfahren.
-#ifdef Umlaute
-	
-#endif //Umlaute
-	std::cout << "Was ist mit Ä ä Ö ö Ü ü ß ???" << std::endl;
 	
 	/*
 	Das ist
@@ -32,6 +28,4 @@ int main(int argc, char* argv[]){
 	*/
 	
 	// Das ist ein einzeiliger Kommentar.
-	
-	return 0;
 }
