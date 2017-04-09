@@ -20,7 +20,7 @@
 \usepackage{fancybox}
 \input{syntax.tex}
 \usepackage{tikz}
-
+\usepackage{rail}
 
 
   % erlaubt es, Sätze, Definitionen etc. einfach durchzunummerieren.
@@ -531,124 +531,86 @@ Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie 
 \section{primitive Datentypen}
 Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
 
+\subsection{Die Datentypen}
 
-	
-	\tikzset{
-		nonterminal/.style={
-			% The shape:
-			rectangle,
-			% The size:
-			minimum size=6mm,
-			% The border:
-			very thick,
-			draw=red!50!black!50,         % 50% red and 50% black,
-			% and that mixed with 50% white
-			% The filling:
-			top color=white,              % a shading that is white at the top...
-			bottom color=red!50!black!20, % and something else at the bottom
-			% Font
-			font=\itshape
-		},
-		terminal/.style={
-			% The shape:
-			rounded rectangle,
-			minimum size=6mm,
-			% The rest
-			very thick,draw=black!50,
-			top color=white,bottom color=black!20,
-			font=\ttfamily},
-		skip loop/.style={to path={-- ++(0,#1) -| (\tikztotarget)}}
-	}
-	
-	{
-		\tikzset{terminal/.append style={text height=1.5ex,text depth=.25ex}}
-		\tikzset{nonterminal/.append style={text height=1.5ex,text depth=.25ex}}
-	}
-
-\newcommand{\MyUnderscore}[1]{\mathord{\begin{tikzpicture}[baseline=0.0ex, line width=0.55, scale=0.13]
-		\draw[] (0,0) -- (#1,0);
-		\end{tikzpicture}}}
-	
-	\begin{tikzpicture}[
-	>=latex,thick,
-	/pgf/every decoration/.style={/tikz/sharp corners},
-	fuzzy/.style={decorate,
-		decoration={random steps,segment length=0.5mm,amplitude=0.15pt}},
-	minimum size=6mm,line join=round,line cap=round,
-	terminal/.style={rectangle,draw,fill=white,fuzzy,rounded corners=3mm},
-	nonterminal/.style={rectangle,draw,fill=white,fuzzy},
-	node distance=4mm
-	]
-	
-	\ttfamily
-	\begin{scope}[start chain,
-	every node/.style={on chain},
-	terminal/.append style={join=by {->,shorten >=-1pt,
-			fuzzy,decoration={post length=4pt}}},
-	nonterminal/.append style={join=by {->,shorten >=-1pt,
-			fuzzy,decoration={post length=4pt}}},
-	support/.style={coordinate,join=by fuzzy}
-	]
-	\node [support]             (start)        {};
-	\node [terminal]                        { \normalfont a,b,c, \dots  A,B,C, \dots  $\_$};
-	\node [support]             (after ui)     {};
-	\node [terminal]                           {.};
-	\node [support]             (after dot)    {};
-	\node [terminal]                           {digit};
-	\node [support]             (after digit)  {};
-	\node [support]             (skip)         {};
-	\node [support]             (before E)     {};
-	\node [terminal]                           {E};
-	\node [support]             (after E)      {};
-	\node [support,xshift=5mm]  (between)      {};
-	\node [support,xshift=5mm]  (before last)  {};
-	\node [nonterminal]                        {unsigned integer};
-	\node [support]             (after last)   {};
-	\node [coordinate,join=by ->] (end)        {};
-	\end{scope}
-	\node (plus)  [terminal,above=of between] {+};
-	\node (minus) [terminal,below=of between] {-};
-	
-	\begin{scope}[->,decoration={post length=4pt},rounded corners=2mm,
-	every path/.style=fuzzy]
-	\draw (after ui)    -- +(0,.7)  -| (skip);
-	\draw (after digit) -- +(0,-.7) -| (after dot);
-	\draw (before E)    -- +(0,-1.2) -| (after last);
-	\draw (after E)     |- (plus);
-	\draw (plus)        -| (before last);
-	\draw (after E)     |- (minus);
-	\draw (minus)       -| (before last);
-	\end{scope}
-	\end{tikzpicture}
-
-
-\begin{Syntaxdiagramm}
-	\SynVar{NO-NUMBER} \Wiederholung{}{\SynVar{ANYTHING}}
-	
-\end{Syntaxdiagramm}
-
-\begin{tabu}{X[-1,c]|X[c]|X[c]|X[5,c]|}
-	\tabucline{2-}
-	& \textbf{Typ} & \textbf{Synonym} & \textbf{Größe} \\ \tabucline{2-}
-	& & & \textsl{Datenmodelle bzw. Programmiermodelle} \\ \
-	& & & \begin{tabu}{ccccc}
-		& & & WIN & unixoide, Mac  
-	\end{tabu} \\ \tabucline{4-}
-	& & & \begin{tabu}{X[c]|X[c]|X[c]|X[c]|X[c]|X[c]|X[c]}
-		IP16 & LP32 & ILP32 & LLP64 & LP64 & ILP64 & SILP64 
-	\end{tabu} \\ \tabucline{2-}
-	& \texttt{short int} & \texttt{short} & \begin{tabu}{c|c|c|c|c|c|c}
-		16 & 16 & 16 & 16 & 16 & 16 & 64 
-	\end{tabu} \\ \tabucline{2-}
-	
-\end{tabu}
-
-		\begin{tabular}{|cccc|}
-			\multicolumn{4}{c}{
-			das ist der text}\\
-		a & b & c & d
+\subsubsection{Kategorien}
+ \begin{center}
+\begin{tabular}{|l|c|r|}
+	\hline
+	\textbf{Kategorie} & \textbf{Typen} & \textbf{Werte}\\ \hline 
+	integrale Typen & \texttt{short int, int, long int, long long int} & Ganzzahlen \\ 
+	integrale char Typen & \texttt{char, wchar\_t, char16\_t, char32\_t} & Zeichen (enstpricht Ganzzahlen) \\
+	floating point Typen & \texttt{float, double, long double} & Gleitkommazahlen \\
+	boolsche Typen & \texttt{bool} & Wahrheitswerte \\ \hline
 \end{tabular}
+\end{center}
+
+\subsubsection{Größe}
+\begin{center}
+	\begin{tabu} {X[-2,c]|X[-3,c]|X[-2,c]|X[c]|X[c]|X[c]|X[c]|X[c]|X[c]|X[c]|}
+		\tabucline{2-}
+		& \textbf{Typ} & \textbf{Synonym} & \multicolumn{7}{c|}{\textbf{Größe}} \\ \tabucline{2-}
+		& & & \multicolumn{7}{c|}{\textsl{Datenmodelle bzw. Programmiermodelle}} \\ \tabucline{4-} 
+		%	&&&&&& WIN & Linux, Mac  \\ \tabucline{2-}
+		&&& IP16 & LP32 & ILP32 & LLP64 & LP64 & ILP64 & SILP64  \\ \tabucline{2-}
+		& \texttt{short int} & \texttt{short} & 16 & 16 & 16 & 16 & 16 & 16 & 64 \\ \tabucline{2-}
+		& \texttt{int} & & 16 & 16 & 32 & 32 & 32 & 64 & 64 \\ \tabucline{2-}
+		& \texttt{long int} & \texttt{long} & 32 & 32 & 32 & 32 & 64 & 64 & 64 \\ \tabucline{2-}
+		{\tiny C++11} & \texttt{long long int} & \texttt{long long} & 64 & 64 & 64 & 64 & 64 & 64 & 64 \\ \tabucline[1.5pt]{2-}
+		& \texttt{char} && \multicolumn{7}{l|}{$\geq 8$, (meist 8) } \\ \tabucline{2-}
+		& \texttt{wchar\_t} && \multicolumn{7}{l|}{implementierungsabhängig: 16 oder 32) } \\ \tabucline{2-}
+		& \texttt{char16\_t} && \multicolumn{7}{l|}{$\geq 16$ } \\ \tabucline{2-}
+		& \texttt{char32\_t} && \multicolumn{7}{l|}{$\geq 32$ } \\ \tabucline[1.5pt]{2-}
+		& \texttt{float} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
+		& \texttt{double} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
+		& \texttt{long double} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline[1.5pt]{2-}
+		& \texttt{bool} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
+				
+	\end{tabu}
+\end{center}
+
+\subsubsection{signed and unsigned}
+Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integrale Typen von Bedeutung. Integrale Typen sind standardmäßig \textbf{signed} und können daher sowohl \textbf{negative als auch positive Werte} annehmen. In diesem Fall erfolgt die Codierung mit dem 2er-Komplement. Man darf das Schlüsselwort \texttt{signed} auch explizit davorschreiben. Setzt man andererseits \textbf{unsigned} vor einen integralen Typ, so kann dieser nur \textbf{nichtnegative Werte} speichern, beziehungsweise seine Werte werden als solche interpretiert.
+
+\begin{center}
+\begin{tabular}{c|c}
+	\textbf{signed} & \textbf{unsigned} \\ \hline
+	vorzeichenbehaftete Ganzzahlen & vorzeichenlose Ganzzahlen
+\end{tabular}
+\end{center}
  
+Eine Ausnahme bilden die char Typen: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist.
+
+\subsubsection{Wertebereiche}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+	\hline
+	\textbf{Typen}	& \textbf{Wertebereich} \\ \hline
+	\texttt{signed} Integer der Breite n bit & $-2^{n-1}, \dots , -1,0,1, \dots ,2^{n-1}-1$ \\ 
+	\texttt{unsigned} Integer der Breite n bit & $0,1, \dots ,2^{n}-1$ \\\hline
+	\texttt{bool} & true (1), false (0) \\ \hline
+	\texttt{float} &\\%######
+	\texttt{double} &\\
+	\texttt{long double} & \\ \hline
+	
+\end{tabular}
+\end{center}
+
+Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Wenn die exakte Breite (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, sollten sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und vieles mehr) zur Verfügung stellt.
+
+
+\subsubsection{Literale}
+\begin{rail}
+%\railalias{dollar}{\$}
+%\railterm{dollar}
+	LiteralIntegerHex : (|'-') ('0x'|'[dollar]') ('0,1,...,9,A,B,C,D,E,F' +  );
+	LiteralIntegerDec : (|'-') ('0'| '1,2,...,9' (() + '0,1,...,9'));
+	LiteralIntegerOct : (|'-') '0' ('0,1,...,7' +  );
+	LiteralIntegerBin : (|'-') '0b' ('0,1' +  );
+	%make a real $ sign #######
+\end{rail}
+
 
 
 \begin{comment}
@@ -692,6 +654,102 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 			\bottomrule
 		\end{tabular}
 	\end{table}
+
+	
+\tikzset{
+nonterminal/.style={
+% The shape:
+rectangle,
+% The size:
+minimum size=6mm,
+% The border:
+very thick,
+draw=red!50!black!50,         % 50% red and 50% black,
+% and that mixed with 50% white
+% The filling:
+top color=white,              % a shading that is white at the top...
+bottom color=red!50!black!20, % and something else at the bottom
+% Font
+font=\itshape
+},
+terminal/.style={
+% The shape:
+rounded rectangle,
+minimum size=6mm,
+% The rest
+very thick,draw=black!50,
+top color=white,bottom color=black!20,
+font=\ttfamily},
+skip loop/.style={to path={-- ++(0,#1) -| (\tikztotarget)}}
+}
+
+{
+\tikzset{terminal/.append style={text height=1.5ex,text depth=.25ex}}
+\tikzset{nonterminal/.append style={text height=1.5ex,text depth=.25ex}}
+}
+
+\newcommand{\MyUnderscore}[1]{\mathord{\begin{tikzpicture}[baseline=0.0ex, line width=0.55, scale=0.13]
+\draw[] (0,0) -- (#1,0);
+\end{tikzpicture}}}
+
+\begin{tikzpicture}[
+>=latex,thick,
+/pgf/every decoration/.style={/tikz/sharp corners},
+fuzzy/.style={decorate,
+decoration={random steps,segment length=0.5mm,amplitude=0.15pt}},
+minimum size=6mm,line join=round,line cap=round,
+terminal/.style={rectangle,draw,fill=white,fuzzy,rounded corners=3mm},
+nonterminal/.style={rectangle,draw,fill=white,fuzzy},
+node distance=4mm
+]
+
+\ttfamily
+\begin{scope}[start chain,
+every node/.style={on chain},
+terminal/.append style={join=by {->,shorten >=-1pt,
+fuzzy,decoration={post length=4pt}}},
+nonterminal/.append style={join=by {->,shorten >=-1pt,
+fuzzy,decoration={post length=4pt}}},
+support/.style={coordinate,join=by fuzzy}
+]
+\node [support]             (start)        {};
+\node [terminal]                        { \normalfont a,b,c, \dots  A,B,C, \dots  $\_$};
+\node [support]             (after ui)     {};
+\node [terminal]                           {.};
+\node [support]             (after dot)    {};
+\node [terminal]                           {digit};
+\node [support]             (after digit)  {};
+\node [support]             (skip)         {};
+\node [support]             (before E)     {};
+\node [terminal]                           {E};
+\node [support]             (after E)      {};
+\node [support,xshift=5mm]  (between)      {};
+\node [support,xshift=5mm]  (before last)  {};
+\node [nonterminal]                        {unsigned integer};
+\node [support]             (after last)   {};
+\node [coordinate,join=by ->] (end)        {};
+\end{scope}
+\node (plus)  [terminal,above=of between] {+};
+\node (minus) [terminal,below=of between] {-};
+
+\begin{scope}[->,decoration={post length=4pt},rounded corners=2mm,
+every path/.style=fuzzy]
+\draw (after ui)    -- +(0,.7)  -| (skip);
+\draw (after digit) -- +(0,-.7) -| (after dot);
+\draw (before E)    -- +(0,-1.2) -| (after last);
+\draw (after E)     |- (plus);
+\draw (plus)        -| (before last);
+\draw (after E)     |- (minus);
+\draw (minus)       -| (before last);
+\end{scope}
+\end{tikzpicture}
+
+
+\begin{Syntaxdiagramm}
+\SynVar{NO-NUMBER} \Wiederholung{}{\SynVar{ANYTHING}}
+
+\end{Syntaxdiagramm}
+
 	
 \end{comment}
 
