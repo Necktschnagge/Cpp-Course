@@ -12,6 +12,10 @@
 *.cb2
 *.listing
 
+## rail package (for railroad / syntax diagrams) stuff
+*.rai
+*.rao
+
 ## Intermediate documents:
 *.dvi
 *-converted-to.*
