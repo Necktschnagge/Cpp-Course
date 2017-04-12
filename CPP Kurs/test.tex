@@ -5,6 +5,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman]{babel}
 \usepackage[pdftex]{hyperref}
+\usepackage{framed}
+\usepackage{mdframed}
 
 \usepackage{amsmath, amssymb}
 \usepackage{enumerate}
@@ -23,26 +25,12 @@
 \usepackage{rail}
 
 
-  % erlaubt es, Sätze, Definitionen etc. einfach durchzunummerieren.
-%\newtheorem{satz}{Satz}[section] % Nummerierung nach Abschnitten
-%\newtheorem{proposition}[satz]{Proposition}
-%\newtheorem{kor}[satz]{Korollar}
+% RAIL INIT
+\railalias{raildollar}{\$}
+\railterm{raildollar}
 
-% --------------------------------------math
-%\theorembodyfont{\upshape}
-%\newtheorem{beispiel}[satz]{Beispiel}
-%\newtheorem{bemerkung}[satz]{Bemerkung}
-%\newtheorem{definition}[satz]{Definition} %[section]
 
-%\theoremstyle{nonumberplain}
-%\theoremheaderfont{\itshape}
-%\theorembodyfont{\normalfont}
-%\theoremseparator{.}
-%\theoremsymbol{\ensuremath{_\blacksquare}}
-%\newtheorem{beweis}{Beweis}
-%\qedsymbol{\ensuremath{_\blacksquare}}
 
-%------------------------------------------------------
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 
@@ -521,11 +509,13 @@ Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmiers
 		Einrückungen	&	tabs or spaces \\ \hline
 		Anweisungen pro Zeile & eine, ... \\ \hline
 		Bezeichner		&	snake\_case, camelCase, PascalCase \\
-		& kurz, prägnant, aussagekräftig \\ \hline
+		& kurz, prägnant, aussagekräftig \\ 
+		& Deutsch, Englisch, \dots Isländisch \\ \hline
 	\end{tabular}
 \end{center}
 Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie sich um die \textbf{Quelltextformatierung} kümmern. Dies ist gerade bei Projekten mit vielen Entwicklern hilfreich, da so ziemlich effizient für einheitliches Quelltextlayout gesorgt werden kann.
 
+\begin{comment}
 \chapter{Datentypen in C++} \label{real_start}
 
 \section{primitive Datentypen}
@@ -558,15 +548,37 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 		& \texttt{long int} & \texttt{long} & 32 & 32 & 32 & 32 & 64 & 64 & 64 \\ \tabucline{2-}
 		{\tiny C++11} & \texttt{long long int} & \texttt{long long} & 64 & 64 & 64 & 64 & 64 & 64 & 64 \\ \tabucline[1.5pt]{2-}
 		& \texttt{char} && \multicolumn{7}{l|}{$\geq 8$, (meist 8) } \\ \tabucline{2-}
-		& \texttt{wchar\_t} && \multicolumn{7}{l|}{implementierungsabhängig: 16 oder 32) } \\ \tabucline{2-}
+		& \texttt{wchar\_t} && \multicolumn{7}{l|}{implementierungsabhängig: (16 oder 32) } \\ \tabucline{2-}
 		& \texttt{char16\_t} && \multicolumn{7}{l|}{$\geq 16$ } \\ \tabucline{2-}
 		& \texttt{char32\_t} && \multicolumn{7}{l|}{$\geq 32$ } \\ \tabucline[1.5pt]{2-}
-		& \texttt{float} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
-		& \texttt{double} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
-		& \texttt{long double} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline[1.5pt]{2-}
-		& \texttt{bool} && \multicolumn{7}{l|}{implementierungsabhängig} \\ \tabucline{2-}		
+		& \texttt{float} && \multicolumn{7}{l|}{implementierungsabhängig: $\geq 4Byte$} \\ \tabucline{2-}		
+		& \texttt{double} && \multicolumn{7}{l|}{implementierungsabhängig: $\geq 8Byte$} \\ \tabucline{2-}		
+		& \texttt{long double} && \multicolumn{7}{l|}{implementierungsabhängig: $\geq 10Byte$, teils $16Byte$} \\ \tabucline[1.5pt]{2-}
+		& \texttt{bool} && \multicolumn{7}{l|}{implementierungsabhängig: $\geq 1Byte$} \\ \tabucline{2-}		
 				
 	\end{tabu}
+\end{center}
+
+Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Für \textbf{Windows 64} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
+
+\begin{itemize}
+	\item \texttt{sizeof(short) \quad <= \quad sizeof(int) \quad <= \quad sizeof(long) \quad <= \quad sizeof(long long)}
+	\item \texttt{sizeof(float) \quad <= \quad sizeof(double) \quad <= \quad sizeof(long double)}
+\end{itemize}
+
+Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, können Sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und vieles mehr) zur Verfügung stellt:
+
+\begin{center}
+\begin{tabular}{|c||cc|}
+	\hline
+	\textbf{Breite} & \textbf{signed} & \textbf{unsigned} \\ \hline
+	8 bit & \texttt{int8\_t} & \texttt{uint8\_t} \\
+	16 bit & \texttt{int16\_t} & \texttt{uint16\_t} \\
+	32 bit & \texttt{int32\_t} & \texttt{uint32\_t} \\
+	64 bit & \texttt{int64\_t} & \texttt{uint64\_t} \\
+	\hline
+	
+\end{tabular}
 \end{center}
 
 \subsubsection{signed and unsigned}
@@ -579,7 +591,7 @@ Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integr
 \end{tabular}
 \end{center}
  
-Eine Ausnahme bilden die char Typen: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist.
+Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist.
 
 \subsubsection{Wertebereiche}
 
@@ -590,72 +602,136 @@ Eine Ausnahme bilden die char Typen: Hier ist es implementierungsabhängig, ob b
 	\texttt{signed} Integer der Breite n bit & $-2^{n-1}, \dots , -1,0,1, \dots ,2^{n-1}-1$ \\ 
 	\texttt{unsigned} Integer der Breite n bit & $0,1, \dots ,2^{n}-1$ \\\hline
 	\texttt{bool} & true (1), false (0) \\ \hline
-	\texttt{float} &\\%######
-	\texttt{double} &\\
-	\texttt{long double} & \\ \hline
+	\texttt{float} & \#\\%######
+	\texttt{double} &\#\\
+	\texttt{long double} & \#\\ \hline
 	
 \end{tabular}
 \end{center}
-
-Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Wenn die exakte Breite (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, sollten sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und vieles mehr) zur Verfügung stellt.
-
-
 \subsubsection{Literale}
+
+\begin{center}
+%\begin{framed}
+%\fbox{
+\begin{mdframed}[rightmargin=70pt, leftmargin=70pt]
+
 \begin{rail}
-%\railalias{dollar}{\$}
-%\railterm{dollar}
-	LiteralIntegerHex : (|'-') ('0x'|'[dollar]') ('0,1,...,9,A,B,C,D,E,F' +  );
-	LiteralIntegerDec : (|'-') ('0'| '1,2,...,9' (() + '0,1,...,9'));
-	LiteralIntegerOct : (|'-') '0' ('0,1,...,7' +  );
-	LiteralIntegerBin : (|'-') '0b' ('0,1' +  );
+	LiteralIntHex : (|'-') ('0x'|raildollar) ('0,1,...,9,A,B,C,D,E,F' +  );
+	LiteralIntDec : (|'-') ('0'| '1,2,...,9' (() + '0,1,...,9'));
+	LiteralIntOct : (|'-') '0' ('0,1,...,7' +  );
+	LiteralIntBin : (|'-') '0b' ('0,1' +  );
+	LiteralInt    : LiteralIntHex|LiteralIntDec|LiteralIntOct|LiteralIntBin;
 	%make a real $ sign #######
 \end{rail}
+\end{mdframed}
+%\end{framed}	
+\end{center}
+
+Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für \textbf{Literale vom Typ} \texttt{int}. Benutzen Sie Literale anderer Typen wie beispielsweise \texttt{unsigned int} oder \texttt{signed long int}, so müssen sie entsprechende \textbf{Suffixe} wie in folgender Tabelle verwenden. Groß- und Kleinschreibung der Suffixe sind gleichbedeutend. Statt U, UL, ULL, L, LL dürfen auch u, ul, ull, l, ll verwendet werden.
+
+\begin{center}
+\begin{tabular}{|c|ccc|}
+	\hline
+	& 					\texttt{int} &		\texttt{long} &		\texttt{long long} \\ \hline
+	\textbf{signed} &	&					L &					LL \\
+	\textbf{unsigned}&	U &					UL &				ULL \\ \hline
+\end{tabular}
+\end{center}
 
 
 
+\subsubsection{Identifier}
+%### how to ceter a rail diagram ????
+\begin{multicols}{2}
+\begin{rail}
+	NoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
+	IdentSign : NoDigit | ('0,1,...9');
+	Identifier : NoDigit (() + IdentSign);
+\end{rail}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+	\hline
+	\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
+	\texttt{\_9zig} & \texttt{9zig} \\
+	\texttt{\_\_34} & \texttt{1234\_} \\
+	\texttt{gruen} & \texttt{grün} \\
+	\texttt{LaTeX} & \texttt{pro\%zent} \\
+	\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
+	\hline
+\end{tabular}
+\end{center}
+\end{multicols}
+
+\section{Einige Operatoren}
+\section{Casts}
+\section{Zusammengesetzte Datentypen}
+\subsection{Arrays}
+\subsection{Records und Klassen}
+\subsection{Containerklassen}
+\section{Klassen}
+\subsection{Konstruktoren}
+\subsection{Vererbung}
+\subsection{Polymorphie}
+
+\chapter{Strukturierte Programmierung}
+\section{Kontrollstrukturen}
+\section{Funktionen}
+\section{Operatoren}
+\section{Modularisierung}
+
+\chapter{Zusätzliche Features}
+\section{Templates}
+\section{Exceptions}
+\section{Multithreading}
+
+\end{comment}
+
+
+%***********************************************************some stuff from some time ago****************************************************
 \begin{comment}
-	\begin{table}
-		\centering
-		\footnotesize
-		\caption{Kathodenfallableiter}
-		\label{tab:kathoden}
-		\begin{tabular}{@{}nd{1.1}*{3}{d{1.2}}d{1.1}d{3.2}@{}}
-			\toprule
-			\multicolumn{1}{@{}N}{Typenbezeichnung} &
-			\multicolumn{5}{N}{Spannungsschutz für Netze} &
-			\multicolumn{1}{N@{}}{Preis} \\
-			&
-			\multicolumn{5}{N}{Leiterspannung an der Einbaustelle} \\
-			\cmidrule(lr){2-6}
-			&
-			\multicolumn{2}{V{6.5em}}{Nicht geerdeter Sternpunkt} &
-			\multicolumn{2}{V{6.5em}}{Starr geerdeter Sternpunkt} &
-			\multicolumn{1}{V{4em}}{Nenn"-spannung} \\
-			\cmidrule(lr){2-3}\cmidrule(lr){4-5}
-			&
-			\multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
-			\multicolumn{1}{V{4.5em}}{Zulässiger Bereich} &
-			\multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
-			\multicolumn{1}{V{4.5em}}{Zulässiger Bereich} \\
-			&
-			\multicolumn{1}{N}{\unit{kV}} &
-			\multicolumn{1}{N}{\unit{kV}} &
-			\multicolumn{1}{N}{\unit{kV}} &
-			\multicolumn{1}{N}{\unit{kV}} &
-			\multicolumn{1}{N}{\unit{kV}} &
-			\multicolumn{1}{N}{DM} \\
-			\cmidrule(r){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}%
-			\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(l){7-7}
-			H 484--1   & 1   & 1.15 & 1.25 & 1.45 & 1   & 220.$---$ \\
-			H 484--1,5 & 1.5 & 1.8  & 1.9  & 2.2  & 1.5 & 233.$---$ \\
-			H 484--2   & 2   & 2.3  & 2.5  & 2.9  & 2   & 252.$---$ \\
-			H 484--2,5 & 3   & 2.9  & 3.1  & 3.6  & 2.5 & 261.$---$ \\
-			H 484--3   & 3.5 & 3.5  & 3.8  & 4.3  & 3   & 264.$---$ \\
-			\bottomrule
-		\end{tabular}
-	\end{table}
+\begin{table}
+\centering
+\footnotesize
+\caption{Kathodenfallableiter}
+\label{tab:kathoden}
+\begin{tabular}{@{}nd{1.1}*{3}{d{1.2}}d{1.1}d{3.2}@{}}
+\toprule
+\multicolumn{1}{@{}N}{Typenbezeichnung} &
+\multicolumn{5}{N}{Spannungsschutz für Netze} &
+\multicolumn{1}{N@{}}{Preis} \\
+&
+\multicolumn{5}{N}{Leiterspannung an der Einbaustelle} \\
+\cmidrule(lr){2-6}
+&
+\multicolumn{2}{V{6.5em}}{Nicht geerdeter Sternpunkt} &
+\multicolumn{2}{V{6.5em}}{Starr geerdeter Sternpunkt} &
+\multicolumn{1}{V{4em}}{Nenn"-spannung} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+&
+\multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
+\multicolumn{1}{V{4.5em}}{Zulässiger Bereich} &
+\multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
+\multicolumn{1}{V{4.5em}}{Zulässiger Bereich} \\
+&
+\multicolumn{1}{N}{\unit{kV}} &
+\multicolumn{1}{N}{\unit{kV}} &
+\multicolumn{1}{N}{\unit{kV}} &
+\multicolumn{1}{N}{\unit{kV}} &
+\multicolumn{1}{N}{\unit{kV}} &
+\multicolumn{1}{N}{DM} \\
+\cmidrule(r){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}%
+\cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(l){7-7}
+H 484--1   & 1   & 1.15 & 1.25 & 1.45 & 1   & 220.$---$ \\
+H 484--1,5 & 1.5 & 1.8  & 1.9  & 2.2  & 1.5 & 233.$---$ \\
+H 484--2   & 2   & 2.3  & 2.5  & 2.9  & 2   & 252.$---$ \\
+H 484--2,5 & 3   & 2.9  & 3.1  & 3.6  & 2.5 & 261.$---$ \\
+H 484--3   & 3.5 & 3.5  & 3.8  & 4.3  & 3   & 264.$---$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-	
+
 \tikzset{
 nonterminal/.style={
 % The shape:
@@ -750,31 +826,8 @@ every path/.style=fuzzy]
 
 \end{Syntaxdiagramm}
 
-	
+
 \end{comment}
 
-
-
-\section{Einige Operatoren}
-\section{Casts}
-\section{Zusammengesetzte Datentypen}
-\subsection{Arrays}
-\subsection{Records und Klassen}
-\subsection{Containerklassen}
-\section{Klassen}
-\subsection{Konstruktoren}
-\subsection{Vererbung}
-\subsection{Polymorphie}
-
-\chapter{Strukturierte Programmierung}
-\section{Kontrollstrukturen}
-\section{Funktionen}
-\section{Operatoren}
-\section{Modularisierung}
-
-\chapter{Zusätzliche Features}
-\section{Templates}
-\section{Exceptions}
-\section{Multithreading}
 
 \end{document}
