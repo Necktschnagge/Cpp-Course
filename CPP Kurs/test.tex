@@ -532,7 +532,7 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 	\textbf{Kategorie} & \textbf{Typen} & \textbf{Werte}\\ \hline 
 	integrale Typen & \texttt{short int, int, long int, long long int} & Ganzzahlen \\ 
 	integrale char Typen & \texttt{char, wchar\_t, char16\_t, char32\_t} & Zeichen (enstpricht Ganzzahlen) \\
-	floating point Typen & \texttt{float, double, long double} & Gleitkommazahlen \\
+	floating point Typen & \texttt{float, double, long double} & Gleit- bzw. Fließkommazahlen \\
 	boolsche Typen & \texttt{bool} & Wahrheitswerte \\ \hline
 \end{tabular}
 \end{center}
@@ -568,7 +568,8 @@ Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemte
 	\item \texttt{sizeof(float) \quad <= \quad sizeof(double) \quad <= \quad sizeof(long double)}
 \end{itemize}
 
-Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, können Sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und vieles mehr) zur Verfügung stellt:
+\begin{multicols}{2}
+Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, können Sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und einiges mehr) zur Verfügung stellt:
 
 \begin{center}
 \begin{tabular}{|c||cc|}
@@ -582,6 +583,7 @@ Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerläs
 	
 \end{tabular}
 \end{center}
+\end{multicols}
 
 \subsubsection{signed and unsigned}
 Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integrale Typen von Bedeutung. Integrale Typen sind standardmäßig \textbf{signed} und können daher sowohl \textbf{negative als auch positive Werte} annehmen. In diesem Fall erfolgt die Codierung mit dem 2er-Komplement. Man darf das Schlüsselwort \texttt{signed} auch explizit davorschreiben. Setzt man andererseits \textbf{unsigned} vor einen integralen Typ, so kann dieser nur \textbf{nichtnegative Werte} speichern, beziehungsweise seine Werte werden als solche interpretiert.
@@ -610,12 +612,49 @@ Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhän
 	
 \end{tabular}
 \end{center}
-\subsubsection{Literale}
+
+\subsection{Identifier}
+
+%### how to ceter a rail diagram ????
+\begin{multicols}{2}
+	\begin{rail}
+		Digit : ('0,1,...9');
+		IdentSignNoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
+		IdentSign : IdentSignNoDigit | Digit;
+		Identifier : IdentSignNoDigit (() + IdentSign);
+	\end{rail}
+	\vspace{5ex}
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
+			\texttt{\_9zig} & \texttt{9zig} \\
+			\texttt{\_\_34} & \texttt{1234\_} \\
+			\texttt{gruen} & \texttt{grün} \\
+			\texttt{LaTeX} & \texttt{pro\%zent} \\
+			\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
+			\hline
+		\end{tabular}
+	\end{center}
+%	\textit{\large Anmerkungen:}\\
+\subsubsection{Anmerkungen}
+	Beachten Sie dass für die \textbf{interne Implementierung} von C++ Bezeichner verwendet werden die mit zwei Unterstrichen (\texttt{\_\_}) oder einem Unterstrich gefolgt von einem Großbuchstaben (z.B. \texttt{\_A}) beginnen. Es wird daher ausdrücklich empfohlen, auf solche Identifier zu verzichten.
+	
+	Laut Standard ist auch das \textbf{\$-Zeichen} in Bezeichnern erlaubt. Auch hier wird ein Verzicht auf dieselben empfohlen, da es Compiler gab und vielleicht noch gibt, die dies nicht unterstützen.
+	
+	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash} uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash} UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} genutzt werden.
+	
+\end{multicols}
+
+
+\subsection{Literale}
+
+\subsubsection{Integrale Typen}
 
 \begin{center}
 %\begin{framed}
 %\fbox{
-\begin{mdframed}[rightmargin=70pt, leftmargin=70pt]
+\begin{mdframed}[rightmargin=70pt, leftmargin=70pt, linewidth= 0pt]
 
 \begin{rail}
 	LiteralIntHex : (|'-') ('0x'|raildollar) ('0,1,...,9,A,B,C,D,E,F' +  );
@@ -640,30 +679,31 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 \end{tabular}
 \end{center}
 
+\subsubsection{Fließkommatypen}
 
-
-\subsubsection{Identifier}
-%### how to ceter a rail diagram ????
-\begin{multicols}{2}
 \begin{rail}
-	NoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
-	IdentSign : NoDigit | ('0,1,...9');
-	Identifier : NoDigit (() + IdentSign);
+	FloatingPoint : (
+						('.' 
+							(Digit + ())
+						) |
+						(
+							(Digit + ())
+							'.' (() + Digit)
+						) |
+						(
+							'0x'
+							(HexDigit + ())
+							'.'
+							(() + HexDigit)
+						)
+					) \\
+					( | 
+						('e' | 'E') 
+						(| '+' | '-') 
+						LiteralIntDec
+					);
 \end{rail}
-
-\begin{center}
-\begin{tabular}{|c|c|}
-	\hline
-	\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
-	\texttt{\_9zig} & \texttt{9zig} \\
-	\texttt{\_\_34} & \texttt{1234\_} \\
-	\texttt{gruen} & \texttt{grün} \\
-	\texttt{LaTeX} & \texttt{pro\%zent} \\
-	\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
-	\hline
-\end{tabular}
-\end{center}
-\end{multicols}
+Für Gleitkommazahlliterale benutzt C++ die \textbf{US-Schreibweise mit Dezimalpunkt}.  
 
 \section{Einige Operatoren}
 \section{Casts}
