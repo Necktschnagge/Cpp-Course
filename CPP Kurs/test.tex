@@ -23,10 +23,12 @@
 \input{syntax.tex}
 \usepackage{tikz}
 \usepackage{rail}
-
+\usepackage{struktex}
 % RAIL INIT
 \railalias{raildollar}{\$}
-\railterm{raildollar}
+\railalias{raillbrace}{\{}
+\railalias{railrbrace}{\}}
+\railterm{raildollar, raillbrace, railrbrace}
 
 
 
@@ -851,6 +853,73 @@ Narrowing und Promotion
 
 \chapter{Strukturierte Programmierung}
 \section{Kontrollstrukturen}
+
+\begin{rail}
+	Statement : Assignment |
+				LabeledStatement |
+				GotoStatement |
+				CompoundStatement |
+				IfStatement;
+				
+\end{rail}
+
+\subsection{Sequenzen}
+Grundlegend arbeitet der Prozessor Maschinencode Anweisung für Anweisung ab und auf diese Weise zuzüglich der darauf basierenden Konstrollstrukturen programmieren Sie auch in C++. Mehrere aufeinanderfolgende Anweisungen nennt man \textbf{Sequenz} (\textit{StatementSequence}). Meist treten solche Sequenzen als \textbf{Block} innerhalb von geschweiften Klammern auf (\textit{CompoundStatement}). Die Anweisungen einer Sequenz werden genau einmal in ihrer Reihenfolge ausgeführt.
+\begin{rail}
+	CompoundStatement: raillbrace StatementSequence railrbrace;
+	StatementSequence:	() + Statement;	
+\end{rail}
+\subsection{Sprünge}
+Sprünge gehören eigentlich nicht in die strukturierte, sondern in die \textit{unstrukturierte Programmierung}. Dennoch soll hier auf sie eingegangen werden, da sie in gewisser Weise eine Grundlage für höhere Strukturen (wie zum Beispiel \textbf{switch} (Abschnitt \ref{switch})) sind und sich manchmal als ganz nützlich erweisen, obgleich man sie dezent nur einsetzen sollte. 
+
+\subsubsection{Sprungmarke}
+Um Sprünge zu realisieren werden an den einzelnen \textbf{Zielpositionen} Sprungmarken benötigt. Diese müssen zuvor in keiner Weise deklariert werden, sondern können einfach an Ort und Stelle gesetzt werden.
+\begin{rail}
+	LabeledStatement: Identifier ':' Statement;
+\end{rail}
+Mittel angegebener Syntax legen Sie eine Sprungmarke vor eine Anweisung. Springen Sie später zu dieser Sprungmarke, so springen Sie \textbf{vor die nächste Anweisung}, ab welcher nach dem Sprung der sequenzielle Programmablauf fortgesetzt wird.
+\subsubsection{Sprunganweisung}
+Nachdem Sie eine Sprungmarke gesetzt haben, können Sie mit der folgenden Syntax an beliebiger Codeposition einen Sprung dorthin vollziehen:
+\begin{rail}
+	GotoStatement: 'goto' Identifier ';';
+\end{rail}
+
+\subsection{if - Verzweigung}
+\subsubsection{Erläuterung}
+Die Verzweigung mit \texttt{if} realisiert die bedingte Ausführung von Programmcode. \texttt{Expression} muss einen nach \texttt{bool} konvertierbaren Typ aufweisen.
+\subsubsection{Syntaxdiagramm}
+\begin{rail}
+	IfStatement : 'if' '(' Expression ')'
+							Statement
+							(| 'else' Statement)
+\end{rail}
+%\begin{struktogramm}(8cm,8cm)
+%	\assign{Statement}
+%\end{struktogramm}
+\subsubsection{Verhalten}
+Wenn Sie \textbf{if} schachteln, dann wird der optionale \texttt{else}-Zweig immer an die innerste Verzweigung assoziiert.
+\subsection{switch - Mehrfachverzweigung}\label{switch}
+Mit der \texttt{switch}-Anweisung lässt sich eine Fallunterscheidung, auch genannt Mehrfachverzweigung implementieren. Die \texttt{switch}-Syntax ist dabei nur \textbf{syntactic sugar} (syntaktischer Zucker) für die Verwendung von Goto und Sprungmarken. Dabei ist der Ausdruck, nach welchem verzweigt wird, jedoch auf integrale Typen beschränkt.
+\subsubsection{Synatxdiagramm}
+\begin{rail}
+	SwitchStatement: 'switch' '(' Expression ')'
+						raillbrace \\
+							('case' Expression ':' StatementSequence  + () ) \\
+							(| 'default' ':' StatementSequence)				
+						railrbrace;
+\end{rail}
+
+break anweisung
+vergleich elif \#%####
+\subsection{while}
+
+\subsection{do while}
+
+\subsection{for (klassisch)}
+
+\subsection{for (foreach)}
+
+
 \section{Funktionen}
 \section{Operatoren}
 \section{Modularisierung}
