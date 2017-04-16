@@ -24,7 +24,6 @@
 \usepackage{tikz}
 \usepackage{rail}
 
-
 % RAIL INIT
 \railalias{raildollar}{\$}
 \railterm{raildollar}
@@ -54,7 +53,9 @@
 \usepackage{listings}
 \usepackage{tcolorbox}
 \tcbuselibrary{listings}
-
+%\usepackage{minted}
+%\tcbuselibrary{minted}
+% maybe install minted some day and make syntax highlighting###
 
 \begin{document}
 
@@ -328,7 +329,7 @@ PS A:\example>
 	Qt SDK & WIN, Linux, Mac & bringt umfangreiches Qt-Framework mit für GUIs u.v.m. \\
 	Code::Blocks & WIN, Linux, Mac & \\
 	\hline
-	Visual Studio & Windows & kostenfreie BVersion für den Hausgebrauch: VS Community 2017, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
+	Visual Studio & Windows & kostenfreie Version für den Hausgebrauch: VS Community 2017, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
 	Orwell DEV-C++ & Windows &\\
 	\hline
 	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Buttons für Compilerausführung, Logausgabe\\
@@ -520,6 +521,8 @@ Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie 
 \end{comment}
 \chapter{Datentypen in C++} \label{real_start}
 
+Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es während der Laufzeit im Arbeitsspeicher (RAM) oder darüber hinaus in Dateien, die Sie in Dateisystemen auf zum Beispiel Festplatten aufbewahren können. Dabei steht in der Regel als erstes die \textbf{Wahl des Datentypes} im Vordergrund, denn die Wahl des Datentyps bestimmt maßgeblich die \textbf{Möglichkeiten der Verwendung der Daten}. So gibt Ihnen der Datentyp grundsätzlich vor welche Funktionen und insbesondere Operatoren Sie darauf anwenden können.
+
 \section{primitive Datentypen}
 Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
 
@@ -612,39 +615,41 @@ Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhän
 	
 \end{tabular}
 \end{center}
-
 \subsection{Identifier}
+%\begin{comment}%debug
 
-%### how to ceter a rail diagram ????
+
 \begin{multicols}{2}
 	\begin{rail}
-		Digit : ('0,1,...9');
+		Digit : ('0,1,...,9');
 		IdentSignNoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
 		IdentSign : IdentSignNoDigit | Digit;
 		Identifier : IdentSignNoDigit (() + IdentSign);
 	\end{rail}
-	\vspace{5ex}
+	\vspace{1ex}
 	\begin{center}
 		\begin{tabular}{|c|c|}
 			\hline
 			\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
 			\texttt{\_9zig} & \texttt{9zig} \\
-			\texttt{\_\_34} & \texttt{1234\_} \\
+		%	\texttt{\_\_34} & \texttt{1234\_} \\ weglassen sonst bad boxes
 			\texttt{gruen} & \texttt{grün} \\
 			\texttt{LaTeX} & \texttt{pro\%zent} \\
 			\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
 			\hline
 		\end{tabular}
 	\end{center}
-%	\textit{\large Anmerkungen:}\\
+
 \subsubsection{Anmerkungen}
 	Beachten Sie dass für die \textbf{interne Implementierung} von C++ Bezeichner verwendet werden die mit zwei Unterstrichen (\texttt{\_\_}) oder einem Unterstrich gefolgt von einem Großbuchstaben (z.B. \texttt{\_A}) beginnen. Es wird daher ausdrücklich empfohlen, auf solche Identifier zu verzichten.
 	
 	Laut Standard ist auch das \textbf{\$-Zeichen} in Bezeichnern erlaubt. Auch hier wird ein Verzicht auf dieselben empfohlen, da es Compiler gab und vielleicht noch gibt, die dies nicht unterstützen.
 	
-	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash} uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash} UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} genutzt werden.
-	
+	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash}uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash}UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} genutzt werden.
+	% identifier aus dem kapitel schmeißen und eine ebene höher oder sogar zwei.
 \end{multicols}
+%\end{comment}
+%debug
 
 
 \subsection{Literale}
@@ -662,7 +667,6 @@ Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhän
 	LiteralIntOct : (|'-') '0' ('0,1,...,7' +  );
 	LiteralIntBin : (|'-') '0b' ('0,1' +  );
 	LiteralInt    : LiteralIntHex|LiteralIntDec|LiteralIntOct|LiteralIntBin;
-	%make a real $ sign #######
 \end{rail}
 \end{mdframed}
 %\end{framed}	
@@ -679,10 +683,18 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 \end{tabular}
 \end{center}
 
+\subsubsection{Typ bool}
+% anmerkung auto conversion für bool.
+\begin{rail}
+	LiteralBool : '0' | '1' | 'true' | 'false';
+\end{rail}
+
 \subsubsection{Fließkommatypen}
 
+%###specify hex digit!!!
+% write a test program for this stuff
 \begin{rail}
-	FloatingPoint : (
+	LiteralDouble : (
 						('.' 
 							(Digit + ())
 						) |
@@ -703,12 +715,133 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 						LiteralIntDec
 					);
 \end{rail}
-Für Gleitkommazahlliterale benutzt C++ die \textbf{US-Schreibweise mit Dezimalpunkt}.  
 
-\section{Einige Operatoren}
+Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise mit Dezimalpunkt}. Wie das Synatxdiagramm schon angibt, sind Fließkommazahlliterale standardmäßig vom Typ \texttt{double}. Um Literale der Typen \texttt{float} oder \texttt{long double} zu erhalten, sind wieder entsprechende Suffixe anzuhängen:
+\begin{center}
+\begin{tabular}{|l|c|c|c|} \hline
+	\textbf{Typ} & \texttt{float} & \texttt{double} & \texttt{long double} \\ \hline
+	\textbf{Suffix} & f oder F & & l oder L \\ \hline
+\end{tabular}
+\end{center}
+
+ohne punkt auto conversion
+
+\subsubsection{Character-Typen}
+
+\begin{rail}
+	LiteralChar : "'" TheSign "'";
+\end{rail}
+
+\begin{tabular}{c}
+	\textbf{Beispiele für char-Literale}
+	%#####
+\end{tabular}
+
+Ausgabe von float siehe seite 61
+
+\subsection{Initialisierung}
+Mit C++-11 wurde eine neue vereinheitlichte Initialisierung eingeführt. Die neue Initialisierungssyntax \textbf{verbietet auto conversion}, weshalb sie zu bevorzugen ist, um die Fehlererkennung zur Compilezeit zu verbessern. Außerdem existierten vorher (und immer jetzt immer noch) viele verschiedene Initialisierungen für Container, Arrays, ... . Viele Programmierer empfehlen, neu definierte Variablen immer \textbf{sofort} zu \textbf{initialisieren}. Andernfalls enthält die neu angelegte Variable einen undefinierten Pseudozufallswert, der noch im Speicher enthalten war.
+%###elementinitialisierer für Klassen
+\begin{center}
+\begin{tabular}{|l|l|}
+	\hline
+	\texttt{Typ Bezeichner1 = 0;} & mit Zuweisungsoperator (schon vor C++-11) \\
+	\texttt{Typ Bezeichner2 \textrm{\{}0\textrm{\}};} & neue vereinheitlichte Initialisierung \\
+	\texttt{Typ Bezeichner3 = \textrm{\{}0\textrm{\}};} & vereinheitlichte Initialisierung mit optionalem '=' \\
+	\texttt{Typ Bezeichner4 \textrm{\{}Bezeichner1\textrm{\}};} & Der zuzuweisende Ausdruck muss kein Literal sein. \\
+	\hline
+\end{tabular}
+\end{center}
+
+\subsection{Deklaration und Definition (vereinfacht)}
+
+Wenn Sie sich die exakten Definitionen von "`Definition"' und "`Deklaration"' im C++ Standard anschauen, werden Sie möglicherweise etwas verwirrt sein oder zumindest vor lauter Ausnahmen den "`Wald vor Bäumen nicht sehen"'. Wir betrachten deshalb hier eine zugegebenermaßen nicht ganz exakte, dafür aber \textbf{vereinfachte und intuitivere Darstellung} des Sachverhalts:
+
+\begin{center}
+\begin{tabular}{|p{3cm}|p{12cm}|}
+	\hline
+	\textbf{Begriff} & \textbf{Beschreibung} \\ \hline
+	\texttt{Deklaration} & Eine Deklaration (declaration) führt einen Namen ein oder deklariert einen Namen neu (redeclaration) und macht diesen so im betreffenden scope (Sichtbarkeitsbereich) [dem Compiler] bekannt, sodass er dann benutzt werden darf. \\ \hline
+	\texttt{Definition} & Eine Definition ist ein Spezialfall der Deklaration. Intuitiv ausgedrückt ist von einer Definition immer genau dann die Rede, wenn der Compiler explizit angewiesen wird, Speicherplatz für die hinter dem Namen liegende Entität zu reservieren oder der Name "`initialisiert"', oder so gesagt \textit{in gewissem Sinne vollständig} spezifiziert wurde. \\ \hline %% das mal noch bearbeiten
+\end{tabular}
+\end{center}
+% funktionen automatisch extern #????
+
+%\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+%		title=Beispiele für Definitionen und Nur-Deklarationen, fonttitle=\bfseries}
+%	int x;	// Definition
+%	extern double y; // Nur-Deklaration
+%	struct A; // Nur-Deklaration
+%	class B; // Nur-Deklaration
+%	
+%\end{tcblisting}%#####
+
+
+
+\subsection{Einige Operatoren auf primitiven Datentypen}
+Die Operatoren von C++ werden in einem \textbf{gesonderten Kapitel} noch ausführlich behandelt. Hier finden Sie einen kurzen Überblick über \textbf{relevante arithmetische Operatoren} und einige Anmerkungen dazu.
+\subsubsection{binäre arithmentische Operatoren}
+\begin{center}
+\begin{tabular}{|c|c|p{8cm}|} \hline
+	\textbf{binärer Operator} & \textbf{Bedeutung} & \textbf{Beispiel} \\ \hline
+	+ & Addition & \texttt{int x = 3 + 7; // 10} \\
+	&& \texttt{long double xx = 23.4L + 43.7L; // 67.1} \\ \hline
+	- & Subtraktion & \texttt{short s = 20 - 21; // -1}\\
+	&& \texttt{float f = 74.2F - 123.9F; // 49.7} \\ \hline
+	* & Multiplikation & \texttt{long l = 24 * 36; // 864}\\
+	&& \texttt{double prod = 1.2 * 2.4; // 2.88} \\ \hline
+	/ & Division & \texttt{int div = 21 / 6; // 3}\\ 
+	&& \texttt{double conv = 21 / 6; // 3} \\
+	&& \texttt{double double\_div = 21. / 6; // 3.5} \\ \hline 
+	\% & Modulo & \texttt{int rest = 20 / 6; // 2}\\ 
+	&& \textbf{nur auf Ganzzahltypen definiert (!)} \\ \hline
+\end{tabular}
+\end{center}
+Zu beachten ist insbesondere das Verhalten des \texttt{/}-Operators (Divisionsoperator): Wird dieser Operator auf zwei Werten von integralem Typ aufgerufen, so führt dieser eine \textbf{Ganzzahldivision} durch. Ist einer der Operanden von einem floating point - Typ, dann führt dieser Operator eine Division mit Nachkommateil durch. Das zweite Beispiel in der Tabelle zur Divisionsoperation zeigt eine Ganzzahldivision und eine anschließende \textbf{automatische Konvertierung} von \texttt{int} zu \texttt{double}.
+
+Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermöglicht unter anderem Punkt- vor Strichrechnung. Wollen Sie dagegen eine andere Reihenfolge erzwingen, besteht die Möglichkeit der Klammerung.
+\begin{center}
+	\begin{tabular}{|l|l|} \hline
+		\textbf{Punkt vor Strich:} & \texttt{int x = 5 + 3 * 7; // 26} \\
+		\quad implizite Klammerung: & \texttt{int x = 5 + (3 * 7); // 26} \\ \hline
+		\textbf{mit expliziter Klammerung:} & \texttt{int x = (5 + 3) * 7; // 56} \\ \hline
+	\end{tabular}
+\end{center}
+
+\subsubsection{Zuweisungsoperator und erweiterer arithmetischer Zuweisungsoperator}
+\begin{center}
+	\begin{tabular}{|c|c|c|} \hline
+		\textbf{Operator} &	\textbf{Beispiel} & \textbf{Bedeutung} \\ \hline
+		\texttt{=} & \texttt{x = 3} & Zuweisungsoperator \\ \hline
+		\texttt{+=} & \texttt{x += 3} & \texttt{x = x + 3} \\ \hline
+		\texttt{-=} & \texttt{x -= 3} & \texttt{x = x - 3} \\ \hline
+		\texttt{*=} & \texttt{x *= 3} & \texttt{x = x * 3} \\ \hline
+		\texttt{/=} & \texttt{x /= 3} & \texttt{x = x / 3} \\ \hline
+		\texttt{\%=} & \texttt{x \%= 3} & \texttt{x = x \% 3} \\ \hline	
+
+	\end{tabular}
+\end{center}
+%In älteren Quellcodes 
+%#####bool++, ++bool deprecated, bool-- nicht erlaubt.
+%floats: zuweisung von int literal. wie ist das mit {}
+% auf seite 81 - 82, .. ist noch was zu bereichsüberschreitung, lkann vielleicht noch irhgendwo hin.
+
+% Rundungsfehler bei Gleitkomma. Buch seite 85
+% seite 87 mathe bibkliothek und complex ZAHLEN
+
+% Thema Zufdallszahlen in C++11
+
+
+\section{Konvertierungen von Typen}
+% buch seite 92
+Narrowing und Promotion
+
 \section{Casts}
+	Die müssen hier aus diesem Kapitel weg!!!
 \section{Zusammengesetzte Datentypen}
 \subsection{Arrays}
+\subsection{Strings}
+
 \subsection{Records und Klassen}
 \subsection{Containerklassen}
 \section{Klassen}
