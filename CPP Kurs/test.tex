@@ -26,8 +26,8 @@
 \usepackage{struktex}
 % RAIL INIT
 \railalias{raildollar}{\$}
-\railalias{raillbrace}{\{}
-\railalias{railrbrace}{\}}
+\railalias{raillbrace}{\textrm{\{}}
+\railalias{railrbrace}{\textrm{\}}}
 \railterm{raildollar, raillbrace, railrbrace}
 
 
@@ -83,7 +83,7 @@ Das Skript dient vordergründig als Nachschlagewerk für den C++ Kurs und besteh
 \item effizient und schnell - Schnelligkeit eines der wichtigsten Designprinzipien von C++
 \item hohes Abstraktionsniveau u.a. durch Unterstützung von OOP
 \item ISO Standard beschreibt auch eine Standardbibliothek
-\item C++ ist \textbf{kein} echtes Superset von C (siehe stackoverflow.com, \dots)
+\item C++ ist \textbf{kein} echtes \textit{(und auch kein unechtes)} Superset von C (siehe stackoverflow.com, \dots)
 \item C++ ist (wie C) \textbf{case sensitive}
 \vspace{2ex}
 
@@ -222,7 +222,7 @@ int main(){
 	return 0;
 }
 
-PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -std=c++11
+PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -Wextra -std=c++14
 PS A:\example> ls
 
 
@@ -239,14 +239,15 @@ PS A:\example> .\programm.exe
 Hello World
 PS A:\example>
 \end{tcblisting}
+%% anmerkung zu Wextra##
 
-Eine kleine Anmerkung zu Bezeichnungen, die mit Compilern zu tun haben, möchte ich an dieser Stelle noch loswerden, da hier immer eine kleine Verwechslungsgefahr besteht. Die \textbf{GCC} \textit{(GNU Compiler Collection)} ist eine Compilersammlung mit Compilern zu C, C++ und einigen weiteren. Dagegen ist der \textbf{gcc} (klein geschrieben) der C-Compiler der Sammlung und \textbf{g++} der C++-Compiler.
+Eine kleine Anmerkung zu Bezeichnungen, die mit Compilern zu tun haben, möchte ich an dieser Stelle noch loswerden, da hier immer eine kleine Verwechslungsgefahr besteht. Die \textbf{GCC} \textit{(GNU Compiler Collection)} ist eine Compilersammlung mit Compilern zu C, C++ und einigen weiteren. Dagegen ist der \textbf{gcc} (klein geschrieben) der C-Compiler der Sammlung und \textbf{g++} der C++ Compiler.
 
 Um auf Ihrem Betriebssystem einen C++ Compiler zum Laufen zu bringen, haben Sie meist verschiedenste Möglichkeiten.
 
 Um unter \textbf{Linux} GCC zu nutzen, müssen lediglich die entsprechenden Pakete installiert werden, meist ist die GCC sogar schon vorinstalliert.
 
-Unter \textbf{Windows} kann man den von Microsoft bereitgestellten Visual C++ Compiler verwenden, i.d.R. in Verbindung mit einer Installation von Visual Studio (eine IDE für u.a. C++). Die zu installierenden Komponenten bei Visual Studio kann man selbst beim Installationsprozess auswählen, i.A. ist der Speicherverbrauch jedoch relativ groß. Wer auf eine speicherschonende Variante zurückgreifen will oder muss, dem empfehle ich MinGW - eine Portierung der GCC aus dem Hause Linux für Windows. Planen Sie früher oder später Qt-Creator als eine C++-IDE zu installieren, dann können Sie sich einen extra Installation von MinGW im Vorhinein sparen, da QT-Creator MinGW bereits mitinstalliert. Sofern mit der Kommandozeile direkt auf g++ zugegriffen werden soll, ist es unter Windows i.d.R. erforderlich den Pfad der MinGW-Binarys der Systemvariablen \texttt{PATH} hinzuzufügen.
+Unter \textbf{Windows} kann man den von Microsoft bereitgestellten Visual C++ Compiler verwenden, i.d.R. in Verbindung mit einer Installation von Visual Studio (eine IDE für u.a. C++). Die zu installierenden Komponenten bei Visual Studio kann man selbst beim Installationsprozess auswählen, i.A. ist der Speicherverbrauch jedoch relativ groß. Wer auf eine speicherschonende Variante zurückgreifen will oder muss, dem empfehle ich MinGW - eine Portierung der GCC aus dem Hause Linux für Windows. Planen Sie früher oder später Qt-Creator als eine C++ IDE zu installieren, dann können Sie sich einen extra Installation von MinGW im Vorhinein sparen, da QT-Creator MinGW bereits mitinstalliert. Sofern mit der Kommandozeile direkt auf g++ zugegriffen werden soll, ist es unter Windows i.d.R. erforderlich den Pfad der MinGW-Binarys der Systemvariablen \texttt{PATH} hinzuzufügen.
 
 \begin{comment}
 \lstdefinestyle{framed}
@@ -505,7 +506,7 @@ int main(int argc, char* argv[]){
 \end{center}
 
 \subsection{Programmierstil}
-Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmierstil loswerden. Im Grunde genommen dürfen Sie Ihren C++-Code schreiben, wie sie wollen, solange Sie die Spezifikationen von c++ einhalten. Es gibt auch nicht \textit{den einen} Programmierstil, der sich durchgesetzt hat. Sie schreiben aber einen viel leserlicheren, einfacher wartbaren und für das Auge schöneren Code, wenn Sie beim programmieren \textbf{konsistent bleiben}, was einige Aspekte betrifft:
+Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmierstil loswerden. Im Grunde genommen dürfen Sie Ihren C++ Code schreiben, wie sie wollen, solange Sie die Spezifikationen von c++ einhalten. Es gibt auch nicht \textit{den einen} Programmierstil, der sich durchgesetzt hat. Sie schreiben aber einen viel leserlicheren, einfacher wartbaren und für das Auge schöneren Code, wenn Sie beim programmieren \textbf{konsistent bleiben}, was einige Aspekte betrifft:
 \begin{center}
 	\begin{tabular}{|c||c|}
 		\hline
@@ -523,7 +524,43 @@ Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie 
 \end{comment}
 \chapter{Datentypen in C++} \label{real_start}
 
-Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es während der Laufzeit im Arbeitsspeicher (RAM) oder darüber hinaus in Dateien, die Sie in Dateisystemen auf zum Beispiel Festplatten aufbewahren können. Dabei steht in der Regel als erstes die \textbf{Wahl des Datentypes} im Vordergrund, denn die Wahl des Datentyps bestimmt maßgeblich die \textbf{Möglichkeiten der Verwendung der Daten}. So gibt Ihnen der Datentyp grundsätzlich vor welche Funktionen und insbesondere Operatoren Sie darauf anwenden können.
+Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es während der Laufzeit im Arbeitsspeicher (RAM) oder darüber hinaus persistent in Dateien, die Sie in Dateisystemen auf zum Beispiel Festplatten aufbewahren können. Dabei steht in der Regel als erstes die \textbf{Wahl des Datentypes} im Vordergrund, denn die Wahl des Datentyps bestimmt maßgeblich die \textbf{Möglichkeiten der Verwendung der Daten}. So gibt Ihnen der Datentyp grundsätzlich vor welche Funktionen und insbesondere Operatoren Sie darauf anwenden können, beziehungsweise \textit{was} diese bewirken.
+
+\section{Identifier}
+%\begin{comment}%debug
+
+
+\begin{multicols}{2}
+	\begin{rail}
+		Digit : ('0,1,...,9');
+		IdentSignNoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
+		IdentSign : IdentSignNoDigit | Digit;
+		Identifier : IdentSignNoDigit (() + IdentSign);
+	\end{rail}
+	\vspace{1ex}
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
+			\texttt{\_9zig} & \texttt{9zig} \\
+			%	\texttt{\_\_34} & \texttt{1234\_} \\ weglassen sonst bad boxes
+			\texttt{gruen} & \texttt{grün} \\
+			\texttt{LaTeX} & \texttt{pro\%zent} \\
+			\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	\subsubsection{Anmerkungen}
+	Beachten Sie dass für die \textbf{interne Implementierung} von C++ Bezeichner verwendet werden die mit zwei Unterstrichen (\texttt{\_\_}) oder einem Unterstrich gefolgt von einem Großbuchstaben (z.B. \texttt{\_A}) beginnen. Es wird daher ausdrücklich empfohlen, auf solche Identifier zu verzichten.
+	
+	Laut Standard ist auch das \textbf{\$-Zeichen} in Bezeichnern erlaubt. Auch hier wird ein Verzicht auf dieselben empfohlen, da es Compiler gab und vielleicht noch gibt, die dies nicht unterstützen.
+	
+	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash}uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash}UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} als Identifier genutzt werden.
+	% identifier aus dem kapitel schmeißen und eine ebene höher oder sogar zwei.
+\end{multicols}
+%\end{comment}
+%debug
 
 \section{primitive Datentypen}
 Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
@@ -566,7 +603,8 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 	\end{tabu}
 \end{center}
 
-Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Für \textbf{Windows 64} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
+Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Es gibt verschiedene Datenmodelle für die Breite integraler Typen, wobei \textbf{I} für \texttt{Integer}, \textbf{L} für \texttt{long} und \textbf{P} für \texttt{Pointer} steht. Für \textbf{Windows 64} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
+% make refercens to the chapters with these operators
 
 \begin{itemize}
 	\item \texttt{sizeof(short) \quad <= \quad sizeof(int) \quad <= \quad sizeof(long) \quad <= \quad sizeof(long long)}
@@ -591,7 +629,7 @@ Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerläs
 \end{multicols}
 
 \subsubsection{signed and unsigned}
-Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integrale Typen von Bedeutung. Integrale Typen sind standardmäßig \textbf{signed} und können daher sowohl \textbf{negative als auch positive Werte} annehmen. In diesem Fall erfolgt die Codierung mit dem 2er-Komplement. Man darf das Schlüsselwort \texttt{signed} auch explizit davorschreiben. Setzt man andererseits \textbf{unsigned} vor einen integralen Typ, so kann dieser nur \textbf{nichtnegative Werte} speichern, beziehungsweise seine Werte werden als solche interpretiert.
+Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integrale Typen von Bedeutung. Integrale Typen (ausgenommen \texttt{char}-Typen) sind standardmäßig \textbf{signed} und können daher sowohl \textbf{negative als auch positive Werte} annehmen. In diesem Fall erfolgt die Codierung mit dem 2er-Komplement. Man darf das Schlüsselwort \texttt{signed} optional auch explizit davorschreiben. Setzt man andererseits \textbf{unsigned} vor einen integralen Typ, so kann eine Variable dieses Typs nur \textbf{nichtnegative Werte} speichern, beziehungsweise ihre Werte (Bitmuster) werden als solche interpretiert.
 
 \begin{center}
 \begin{tabular}{c|c}
@@ -600,7 +638,7 @@ Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integr
 \end{tabular}
 \end{center}
  
-Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist.
+Eine Ausnahme bilden die \textbf{char-Typen}: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist. Deswegen muss (\textit{sollte}) in jedem Fall \texttt{signed} bzw. \texttt{unsigned} vor einen solchen Typ gesetzt werden, sofern ein solcher verglangt wird. Auch wird deswegen empfohlen, die \texttt{char}-Typen nicht für Zahlenarithmetik sondern nur für die Darstellung von Zeichen zu nutzen.
 
 \subsubsection{Wertebereiche}
 
@@ -611,47 +649,12 @@ Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhän
 	\texttt{signed} Integer der Breite n bit & $-2^{n-1}, \dots , -1,0,1, \dots ,2^{n-1}-1$ \\ 
 	\texttt{unsigned} Integer der Breite n bit & $0,1, \dots ,2^{n}-1$ \\\hline
 	\texttt{bool} & true (1), false (0) \\ \hline
-	\texttt{float} & \#\\%######
-	\texttt{double} &\#\\
-	\texttt{long double} & \#\\ \hline
+	\texttt{float} & \\
+	\texttt{double} & man benutze \texttt{<cfloat>}\\%###ref setzen
+	\texttt{long double} & siehe spätere Kapitel\\ \hline
 	
 \end{tabular}
 \end{center}
-\subsection{Identifier}
-%\begin{comment}%debug
-
-
-\begin{multicols}{2}
-	\begin{rail}
-		Digit : ('0,1,...,9');
-		IdentSignNoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
-		IdentSign : IdentSignNoDigit | Digit;
-		Identifier : IdentSignNoDigit (() + IdentSign);
-	\end{rail}
-	\vspace{1ex}
-	\begin{center}
-		\begin{tabular}{|c|c|}
-			\hline
-			\textbf{gültige Identifier} & \textbf{ungültige Identifier} \\ \hline
-			\texttt{\_9zig} & \texttt{9zig} \\
-		%	\texttt{\_\_34} & \texttt{1234\_} \\ weglassen sonst bad boxes
-			\texttt{gruen} & \texttt{grün} \\
-			\texttt{LaTeX} & \texttt{pro\%zent} \\
-			\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
-			\hline
-		\end{tabular}
-	\end{center}
-
-\subsubsection{Anmerkungen}
-	Beachten Sie dass für die \textbf{interne Implementierung} von C++ Bezeichner verwendet werden die mit zwei Unterstrichen (\texttt{\_\_}) oder einem Unterstrich gefolgt von einem Großbuchstaben (z.B. \texttt{\_A}) beginnen. Es wird daher ausdrücklich empfohlen, auf solche Identifier zu verzichten.
-	
-	Laut Standard ist auch das \textbf{\$-Zeichen} in Bezeichnern erlaubt. Auch hier wird ein Verzicht auf dieselben empfohlen, da es Compiler gab und vielleicht noch gibt, die dies nicht unterstützen.
-	
-	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash}uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash}UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} genutzt werden.
-	% identifier aus dem kapitel schmeißen und eine ebene höher oder sogar zwei.
-\end{multicols}
-%\end{comment}
-%debug
 
 
 \subsection{Literale}
@@ -664,7 +667,7 @@ Eine Ausnahme bilden die \textbf{char Typen}: Hier ist es implementierungsabhän
 \begin{mdframed}[rightmargin=70pt, leftmargin=70pt, linewidth= 0pt]
 
 \begin{rail}
-	LiteralIntHex : (|'-') ('0x'|raildollar) ('0,1,...,9,A,B,C,D,E,F' +  );
+	LiteralIntHex : (|'-') ('0x') ('0,1,...,9,A,B,C,D,E,F' +  );
 	LiteralIntDec : (|'-') ('0'| '1,2,...,9' (() + '0,1,...,9'));
 	LiteralIntOct : (|'-') '0' ('0,1,...,7' +  );
 	LiteralIntBin : (|'-') '0b' ('0,1' +  );
@@ -684,17 +687,22 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 	\textbf{unsigned}&	U &					UL &				ULL \\ \hline
 \end{tabular}
 \end{center}
-
+\pagebreak %##
 \subsubsection{Typ bool}
-% anmerkung auto conversion für bool.
-\begin{rail}
-	LiteralBool : '0' | '1' | 'true' | 'false';
-\end{rail}
+
+\begin{multicols}{2}
+	\begin{rail}
+		LiteralBool : '0' | '1' | 'true' | 'false';
+	\end{rail}
+
+Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeutend mit \texttt{false}) oder 1 (gleichbedeutend mit \texttt{true}). Wenn Sie einer solchen Variable eine andere integrale Zahl zuweisen, so wird eine \textbf{automatische Konvertierung} nach \texttt{bool} durchgeführt. Dabei wird 0 als \texttt{false} und jede Zahl ungleich 0 als \texttt{true} interpretiert. Für eigene Klassen können Sie selbst eine implizite Konvertierung nach \texttt{bool} implementieren.
+\end{multicols}
 
 \subsubsection{Fließkommatypen}
 
 %###specify hex digit!!!
 % write a test program for this stuff
+
 \begin{rail}
 	LiteralDouble : (
 						('.' 
@@ -703,13 +711,14 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 						(
 							(Digit + ())
 							'.' (() + Digit)
-						) |
-						(
-							'0x'
-							(HexDigit + ())
-							'.'
-							(() + HexDigit)
 						)
+%						|
+%						(
+%							'0x'
+%							(HexDigit + ())
+%							'.'
+%							(() + HexDigit)
+%						)
 					) \\
 					( | 
 						('e' | 'E') 
@@ -718,7 +727,9 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 					);
 \end{rail}
 
-Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise mit Dezimalpunkt}. Wie das Synatxdiagramm schon angibt, sind Fließkommazahlliterale standardmäßig vom Typ \texttt{double}. Um Literale der Typen \texttt{float} oder \texttt{long double} zu erhalten, sind wieder entsprechende Suffixe anzuhängen:
+\# hex floating point
+
+Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise mit Dezimalpunkt}. Wie das Synatxdiagramm schon annehmen lässt, sind Fließkommazahlliterale standardmäßig vom Typ \texttt{double}. Um Literale der Typen \texttt{float} oder \texttt{long double} zu erhalten, sind wieder entsprechende Suffixe anzuhängen:
 \begin{center}
 \begin{tabular}{|l|c|c|c|} \hline
 	\textbf{Typ} & \texttt{float} & \texttt{double} & \texttt{long double} \\ \hline
@@ -726,28 +737,104 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 \end{tabular}
 \end{center}
 
-ohne punkt auto conversion
+%##auto conversion
 
 \subsubsection{Character-Typen}
+\begin{itemize}
+	\item Zeichen dargestellt als Bitfolge (fester oder variabler Länge)
+	\item Character-Typen sind integrale Typen.
+	\item Zeichensatz / character set / Codetabellen für Zuordnung
+	\item Überladung der Operatoren für die Nutzung als Zeichen
+	\bigskip
+	\item ASCII Code
+	\begin{itemize}
+		\item American Standard Code for Information Interchange
+		\item 7 Bit Code
+		\item Nutzung von \texttt{char} als Datentyp
+		\item Stanardlateinalphabet, Zahlen, \dots
+		\item nicht befriedigend, keine landestypischen Zeichen
+		\bigskip
+	\end{itemize}
+	\item ASCII Erweiterungen auf 8 BIT
+	\begin{itemize}
+			\item umgangssprachlich auch ANSI Code genannt
+			\item verschiedene ergänzende Codetabellen
+			\item ISO 8859-1, ISO 8859-2, \dots
+			\item auch genannt ISO-Latin-1, ISO-Latin-2, \dots
+			\item ISO-Latin-1 für westeuropäische Zeichen
+			\item keine Abdeckung fernöstlicher Sprachen
+			\item Beispiel CMD von Windows: alter IBM-PC-Zeichensatz (Codepage 850) (Kompatibilitätsgründe)		
+	\end{itemize}
+	\bigskip
+	\item \textbf{Fazit: Moderne Systeme verwenden standardmäßig UTF (Unicode Transformation Format)}
+	\bigskip
+	\item Unicode
+	\begin{itemize}
+		\item verschiedene Codierungsverfahren und verschiedene Datentypen
+		\item \texttt{wchar\_t} (wide char) schon vor C++11 mit unterschiedlichen Breiten
+		\item  Ein- und Ausgabe von \texttt{wchar\_t} mit \texttt{std::wcin}, \texttt{std::wcout}
+		\item nicht empfohlen bei Anspruch auf Portabilität zwischen Compilern oder Betriebssystemen
+		\bigskip
+		\item Encodings (Codierungen) für Unicode:
+		\begin{itemize}
+			\item UTF-8
+			\item UTF-16
+			\item UTF-32
+		\end{itemize}
+		\item neue Typen \texttt{char16\_t}, \texttt{char32\_t} empfohlen
+	\end{itemize}
+		
+\end{itemize}
+\begin{center}
+\begin{tabular}{|p{4cm}|c|c|c|c|} \hline
+	\textbf{Datentyp} & \texttt{char} & \texttt{wchar\_t} & \texttt{char16\_t} & \texttt{char32\_t} \\ \hline
+	\textbf{Verwendung}  & ASCII/ANSI, UTF-8 & ((UTF-16)) & UTF-16 & UTF-32 \\ \hline
+\end{tabular}
+\end{center}
 
 \begin{rail}
 	LiteralChar : "'" TheSign "'";
+	LiteralWideChar: "L'" TheSign "'";
+	LiteralChar16: "u'" TheSign "'";
+	LiteralChar32: "U'" TheSign "'";
 \end{rail}
 
-\begin{tabular}{c}
-	\textbf{Beispiele für char-Literale}
+%\begin{tabular}{c}
+%	\textbf{Beispiele für char-Literale}
 	%#####
-\end{tabular}
+%\end{tabular}
 
-Ausgabe von float siehe seite 61
+\begin{center}
+\begin{tabular}{|ccc|} \hline
+	\textbf{Zahlwert} & \textbf{Steuerzeichen} & \textbf{Bedeutung} \\ \hline
+	0 & \textbackslash 0 & Nullzeichen: Markierung vom Ende eines Strings \\
+	7 & \textbackslash a & Tonsignal \\ \hline
+	8 & \textbackslash b & backspace \\
+	9 & \textbackslash t & horizontaler Tabulator \\ \hline
+	10 & \textbackslash n & Zeilenvorschub (neue Zeile) \\
+	11 & \textbackslash v & vertikaler Tabulator \\ \hline
+	12 & \textbackslash f & Seitenvorschub \\
+	13 & \textbackslash f & Wagenrücklauf \\ \hline
+	& \textbackslash \textbackslash & Backslash \\
+	& \textbackslash \" & doppelte Anführungszeichen \\ \hline
+	& \textbackslash ' & einfache Anführungszeichen \\
+	& \textbackslash ooo & oktaler Code (ASCII) \\ \hline
+	& \textbackslash xhh & hexadezimaler Code (ASCII) \\ \hline
+\end{tabular}
+	\end{center}
+
+%%%### w_hcar_t hängt voneingestellter locale ab =????
+%%'''Ausgabe von float siehe seite 61
 
 \subsection{Initialisierung}
-Mit C++-11 wurde eine neue vereinheitlichte Initialisierung eingeführt. Die neue Initialisierungssyntax \textbf{verbietet auto conversion}, weshalb sie zu bevorzugen ist, um die Fehlererkennung zur Compilezeit zu verbessern. Außerdem existierten vorher (und immer jetzt immer noch) viele verschiedene Initialisierungen für Container, Arrays, ... . Viele Programmierer empfehlen, neu definierte Variablen immer \textbf{sofort} zu \textbf{initialisieren}. Andernfalls enthält die neu angelegte Variable einen undefinierten Pseudozufallswert, der noch im Speicher enthalten war.
+Mit C++11 wurde eine neue vereinheitlichte Initialisierung eingeführt. Die neue Initialisierungssyntax \textbf{verbietet} manche \textbf{auto conversion}, inbesondere \textit{Narrowing}, weshalb sie zu bevorzugen ist, um die Fehlererkennung zur Compilezeit zu verbessern. Außerdem existierten vorher (und immer noch) viele verschiedene Initialisierungen für Container, Arrays, ... .
+
+Es wird von vielfach empfohlen, neu definierte Variablen immer \textbf{sofort} zu \textbf{initialisieren}. Andernfalls enthält die neu angelegte Variable einen undefinierten Pseudozufallswert, nämlich den Inhalt des entsprechenden Speicherbereichs seit dem letzten Schreibvorhgang, der dort stattfand.
 %###elementinitialisierer für Klassen
 \begin{center}
 \begin{tabular}{|l|l|}
 	\hline
-	\texttt{Typ Bezeichner1 = 0;} & mit Zuweisungsoperator (schon vor C++-11) \\
+	\texttt{Typ Bezeichner1 = 0;} & mit Zuweisungsoperator (schon vor C++11) \\
 	\texttt{Typ Bezeichner2 \textrm{\{}0\textrm{\}};} & neue vereinheitlichte Initialisierung \\
 	\texttt{Typ Bezeichner3 = \textrm{\{}0\textrm{\}};} & vereinheitlichte Initialisierung mit optionalem '=' \\
 	\texttt{Typ Bezeichner4 \textrm{\{}Bezeichner1\textrm{\}};} & Der zuzuweisende Ausdruck muss kein Literal sein. \\
@@ -767,6 +854,7 @@ Wenn Sie sich die exakten Definitionen von "`Definition"' und "`Deklaration"' im
 	\texttt{Definition} & Eine Definition ist ein Spezialfall der Deklaration. Intuitiv ausgedrückt ist von einer Definition immer genau dann die Rede, wenn der Compiler explizit angewiesen wird, Speicherplatz für die hinter dem Namen liegende Entität zu reservieren oder der Name "`initialisiert"', oder so gesagt \textit{in gewissem Sinne vollständig} spezifiziert wurde. \\ \hline %% das mal noch bearbeiten
 \end{tabular}
 \end{center}
+%% beispiele ergänzen ######!!!!!!
 % funktionen automatisch extern #????
 
 %\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
@@ -799,7 +887,7 @@ Die Operatoren von C++ werden in einem \textbf{gesonderten Kapitel} noch ausfüh
 	&& \textbf{nur auf Ganzzahltypen definiert (!)} \\ \hline
 \end{tabular}
 \end{center}
-Zu beachten ist insbesondere das Verhalten des \texttt{/}-Operators (Divisionsoperator): Wird dieser Operator auf zwei Werten von integralem Typ aufgerufen, so führt dieser eine \textbf{Ganzzahldivision} durch. Ist einer der Operanden von einem floating point - Typ, dann führt dieser Operator eine Division mit Nachkommateil durch. Das zweite Beispiel in der Tabelle zur Divisionsoperation zeigt eine Ganzzahldivision und eine anschließende \textbf{automatische Konvertierung} von \texttt{int} zu \texttt{double}.
+Zu beachten ist insbesondere das Verhalten des \texttt{/} -Operators (Divisionsoperator): Wird dieser Operator auf zwei Werten von integralem Typ aufgerufen, so führt dieser eine \textbf{Ganzzahldivision} durch. Ist einer der Operanden von einem floating point - Typ, dann führt dieser Operator eine Division mit Nachkommateil durch (floating point Division). Das zweite Beispiel in der Tabelle zur Divisionsoperation zeigt eine Ganzzahldivision und eine anschließende \textbf{automatische Konvertierung} von \texttt{int} zu \texttt{double}.
 
 Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermöglicht unter anderem Punkt- vor Strichrechnung. Wollen Sie dagegen eine andere Reihenfolge erzwingen, besteht die Möglichkeit der Klammerung.
 \begin{center}
@@ -833,7 +921,7 @@ Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermö
 
 % Thema Zufdallszahlen in C++11
 
-
+\begin{comment}
 \section{Konvertierungen von Typen}
 % buch seite 92
 Narrowing und Promotion
@@ -851,29 +939,52 @@ Narrowing und Promotion
 \subsection{Vererbung}
 \subsection{Polymorphie}
 
+\section{auto}
+Ein weiteres, sehr nützliches Schlüsselwort, dass Sie spätestens beim Hantieren mit Iteratoren, Template- und Containerklassen nicht mehr vermissen wollen, ist das Schlüsselwort \texttt{auto}. Die Bedeutung von \texttt{auto} hat sich mit dem Standard C++11 geändert
+
+\begin{center}
+	\begin{tabular}{|c|p{12cm}|}
+		\hline
+		\textbf{bis C++03} & Angabe einer Speicherklasse \newline Variablen innerhalb von Funktionen automatisch auto, außerhalb nicht erlaubt. \\ \hline
+		\textbf{seit C++11} & Neudefinition des Schlüsselwortes. \newline Ausdruck einer statischen Typinferenz. \newline automatische Bestimmung des Typs zur Compilezeit. \newline
+		"`kleinster Typ"' aus der Initialisierung autonatisch vom Compiler bestimmt\newline (keine dynamische Typisierung)\\ \hline
+	\end{tabular}
+\end{center}
+% siehe seite 69 oben.
+% http://en.cppreference.com/w/cpp/language/storage_duration
+	
+\end{comment}
+
 \chapter{Strukturierte Programmierung}
 \section{Kontrollstrukturen}
 
+In der imperativen Programmierung dreht sich alles mehr oder weniger um \textit{- wie der Name schon sagt -} \textbf{imperata}, oder für diejenigen unter Ihnen, die des Latein nicht mächtig sind, \textit{Anweisungen}, auch genannt \textbf{Statement}\textit{s}.
+
 \begin{rail}
-	Statement : Assignment |
+	Statement : Declaration |% expression .. ?
+				Assignment |
 				LabeledStatement |
 				GotoStatement |
 				CompoundStatement |
-				IfStatement;
+				IfStatement |
+				SwitchStatement |
+				WhileStatement |
+				DoWhileStatement
+				;
 				
 \end{rail}
 
 \subsection{Sequenzen}
-Grundlegend arbeitet der Prozessor Maschinencode Anweisung für Anweisung ab und auf diese Weise zuzüglich der darauf basierenden Konstrollstrukturen programmieren Sie auch in C++. Mehrere aufeinanderfolgende Anweisungen nennt man \textbf{Sequenz} (\textit{StatementSequence}). Meist treten solche Sequenzen als \textbf{Block} innerhalb von geschweiften Klammern auf (\textit{CompoundStatement}). Die Anweisungen einer Sequenz werden genau einmal in ihrer Reihenfolge ausgeführt.
+Grundlegend arbeitet der Prozessor den Maschinencode Anweisung für Anweisung ab und auf diese Weise zuzüglich der darauf basierenden Konstrollstrukturen programmieren Sie auch in C++. Mehrere aufeinanderfolgende Anweisungen nennt man \textbf{Sequenz} (\textit{StatementSequence}). Meist treten solche Sequenzen als \textbf{Block} innerhalb von geschweiften Klammern auf (\textit{CompoundStatement}). Die Anweisungen einer Sequenz werden genau einmal in ihrer Reihenfolge ausgeführt, wenn die Sequenz einmal ausgeführt wird.
 \begin{rail}
 	CompoundStatement: raillbrace StatementSequence railrbrace;
 	StatementSequence:	() + Statement;	
 \end{rail}
 \subsection{Sprünge}
-Sprünge gehören eigentlich nicht in die strukturierte, sondern in die \textit{unstrukturierte Programmierung}. Dennoch soll hier auf sie eingegangen werden, da sie in gewisser Weise eine Grundlage für höhere Strukturen (wie zum Beispiel \textbf{switch} (Abschnitt \ref{switch})) sind und sich manchmal als ganz nützlich erweisen, obgleich man sie dezent nur einsetzen sollte. 
+Sprünge gehören eigentlich nicht in die strukturierte, sondern eher in die \textit{unstrukturierte Programmierung}. Dennoch soll hier auf sie eingegangen werden, da sie in gewisser Weise eine Grundlage für höhere Strukturen (wie zum Beispiel \textbf{switch} (Abschnitt \ref{switch})) sind und sich manchmal als ganz nützlich erweisen, obgleich man sie gerade wegen des Gegensatzes zu strukturierter Programmierung nur dezent einsetzen sollte. 
 
 \subsubsection{Sprungmarke}
-Um Sprünge zu realisieren werden an den einzelnen \textbf{Zielpositionen} Sprungmarken benötigt. Diese müssen zuvor in keiner Weise deklariert werden, sondern können einfach an Ort und Stelle gesetzt werden.
+Um Sprünge zu realisieren werden an den einzelnen \textbf{Zielpositionen} Sprungmarken benötigt. Diese (\textit{also die genutzten Identifier}) müssen zuvor in keiner Weise deklariert werden, sondern können einfach an Ort und Stelle gesetzt werden.
 \begin{rail}
 	LabeledStatement: Identifier ':' Statement;
 \end{rail}
@@ -884,9 +995,38 @@ Nachdem Sie eine Sprungmarke gesetzt haben, können Sie mit der folgenden Syntax
 	GotoStatement: 'goto' Identifier ';';
 \end{rail}
 
+\subsubsection{Regeln beim Umgang mit goto}
+Hier seien einige Bedingungen zusammengefasst, die \textbf{hinreichend} sind, um keine Fehler im späteren Programmablauf zu riskieren.
+\begin{itemize}
+	\item nicht in andere CompoundStatements hineinspringen
+	\begin{itemize}
+		\item  Insbesondere sollte man nie in einen Schleifenrumpf hineinspringen, nur hinaus.
+		\item  Auch Sprünge in then- bzw. else-Klauseln sollten nicht vollzogen werden. (\textit{Das verzeiht einem der Compiler allerdings noch eher als ein Sprung in eine Schleife})
+		\item  Man sollte insbesondere nicht zwischen then- und else-Zweig eines IfStatement hin- oder herspringen.
+		\item  Man sollte erst recht nicht in andere Funktionen springen.
+	\end{itemize}
+	\item Wenn Rümpfe von (if, while, ... )-Konstrukten nicht direkt ein CompoundStatement darstellen, sollte man auch dann nicht dort hineinspringen.
+	\item Man sollte keine Deklarationen / Initialisierungen überspringen
+	\begin{itemize}
+		\item Nichtbefolgen könnte gerade bei der Initialisierung eines Objektes fatal sein, welches dynamisch Speicher allokiert.
+	\end{itemize}
+\end{itemize}
+
+\url{http://www2.informatik.uni-halle.de/lehre/c/c35.html}
+\begin{center}
+\begin{tabular}{|c|p{10cm}|} \hline
+	\multicolumn{2}{|c|}{\textbf{Sprünge im weitergefassten Sinne}} \\ \hline
+	\texttt{break;} & Sprung aus (nur) innerster Schleife hinaus \\
+	\texttt{continue;} & Sprung zum nächsten Iterationsschritt der Schleife (Sprung an das Ende des Schleifenrumpfes) \\
+	\texttt{return \textit{[{\small optional:} Expression]};} & Beendigung der aktuellen Funktion [mit Rückgabewert] \\
+	\texttt{exit (\textit{int Expression})} & Beenden des Programms mit angegebenem exit-code. \\
+	\texttt{abort;} & abnormale Beendigung des Programms. \\ \hline
+\end{tabular}
+\end{center}
 \subsection{if - Verzweigung}
 \subsubsection{Erläuterung}
 Die Verzweigung mit \texttt{if} realisiert die bedingte Ausführung von Programmcode. \texttt{Expression} muss einen nach \texttt{bool} konvertierbaren Typ aufweisen.
+% es darf auch ne variable da drin definiert werden
 \subsubsection{Syntaxdiagramm}
 \begin{rail}
 	IfStatement : 'if' '(' Expression ')'
@@ -898,8 +1038,10 @@ Die Verzweigung mit \texttt{if} realisiert die bedingte Ausführung von Programm
 %\end{struktogramm}
 \subsubsection{Verhalten}
 Wenn Sie \textbf{if} schachteln, dann wird der optionale \texttt{else}-Zweig immer an die innerste Verzweigung assoziiert.
+
+Wenn \textit{Expression} zu \texttt{true} auswertet, wird das \textit{Statement} direkt hinter der Bedingung ausgeführt. Andernfalls wird das \textit{Statement} hinter \texttt{else} ausgeführt, sofern vorhanden.
 \subsection{switch - Mehrfachverzweigung}\label{switch}
-Mit der \texttt{switch}-Anweisung lässt sich eine Fallunterscheidung, auch genannt Mehrfachverzweigung implementieren. Die \texttt{switch}-Syntax ist dabei nur \textbf{syntactic sugar} (syntaktischer Zucker) für die Verwendung von Goto und Sprungmarken. Dabei ist der Ausdruck, nach welchem verzweigt wird, jedoch auf integrale Typen beschränkt.
+Mit der \texttt{switch}-Anweisung lässt sich eine Fallunterscheidung, auch genannt Mehrfachverzweigung implementieren. Die \texttt{switch}-Syntax ist dabei nur \textbf{syntactic sugar} (syntaktischer Zucker) für die Verwendung von einem geschachtelten \texttt{if} in Kombination mit \texttt{goto} und Sprungmarken. Dabei ist der Ausdruck, nach welchem verzweigt wird, jedoch auf integrale Typen (einschließlich \texttt{bool} und enum-Typen) beschränkt.
 \subsubsection{Synatxdiagramm}
 \begin{rail}
 	SwitchStatement: 'switch' '(' Expression ')'
@@ -909,11 +1051,24 @@ Mit der \texttt{switch}-Anweisung lässt sich eine Fallunterscheidung, auch gena
 						railrbrace;
 \end{rail}
 
-break anweisung
+break anweisung,
 vergleich elif \#%####
-\subsection{while}
 
+\url{http://en.cppreference.com/w/cpp/language/switch}
+
+\subsection{while}
+break, continue \# %###
+\begin{rail}
+	WhileStatement: 'while' '(' Expression ')' Statement;
+\end{rail}
+
+\url{http://en.cppreference.com/w/cpp/language/while}
 \subsection{do while}
+
+\begin{rail}
+	DoWhileStatement: 'do' Statement 'while' '(' Expression ')' ';';
+\end{rail}
+\url{http://en.cppreference.com/w/cpp/language/do}
 
 \subsection{for (klassisch)}
 
@@ -922,6 +1077,15 @@ vergleich elif \#%####
 
 \section{Funktionen}
 \section{Operatoren}
+% sizeof(), static_assert()
+% seite 102 Vergleichsoperatoren.
+%Yoda Conditions (4 == a)
+
+%?: Operator seite 110
+% 116 ++, #-- operator, bemerkenswerter seiteneffekt seite 117
+
+
+
 \section{Modularisierung}
 
 \chapter{Zusätzliche Features}
@@ -929,6 +1093,12 @@ vergleich elif \#%####
 \section{Exceptions}
 \section{Multithreading}
 
+\chapter{Ein Blick in Bibliotheken}
+
+\section{Wertebereiche mit <limit>}
+%<limit>
+% std::numeric_limits
+% S 73++
 
 %***********************************************************some stuff from some time ago****************************************************
 \begin{comment}
