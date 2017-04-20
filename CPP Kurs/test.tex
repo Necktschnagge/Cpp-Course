@@ -1051,7 +1051,9 @@ Mit der \texttt{switch}-Anweisung lässt sich eine Fallunterscheidung, auch gena
 						railrbrace;
 \end{rail}
 
-break anweisung,
+\subsubsection{Verhalten}
+\textit{Expression} wird ausgewertet und anschließend wird hinter das \texttt{case} mit dem entsprechenden Wert gesprungen. Ist der Wert von \textit{Expression} nicht als \texttt{case} enthalten, so wird sofern vorhanden zu \texttt{default} gesprungen. \texttt{Achtung!} Es wird zur entsprechenden Sprungmarke gesprungen und es werden von da an alle Anweisungen des Blockes (CompoundStatement) sequenziell abgearbeitet. Insbesondere heißt dies, dass im allgemeinen Fall auch alle Anweisungen des nächsten Sprunglabels abgearbeitet werden. Wollen Sie dies unterbinden, so können Sie mit \texttt{break} aus dem \texttt{switch}-Block hinausspringen.
+
 vergleich elif \#%####
 
 \url{http://en.cppreference.com/w/cpp/language/switch}
@@ -1071,6 +1073,9 @@ break, continue \# %###
 \url{http://en.cppreference.com/w/cpp/language/do}
 
 \subsection{for (klassisch)}
+\# wird ergänzt
+
+\begin{comment}
 
 \subsection{for (foreach)}
 
@@ -1099,6 +1104,10 @@ break, continue \# %###
 %<limit>
 % std::numeric_limits
 % S 73++
+
+	
+\end{comment}
+
 
 %***********************************************************some stuff from some time ago****************************************************
 \begin{comment}
