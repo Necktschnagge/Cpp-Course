@@ -30,6 +30,9 @@
 \railalias{railrbrace}{\textrm{\}}}
 \railterm{raildollar, raillbrace, railrbrace}
 
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 
 
 \usepackage{tikz}
@@ -921,23 +924,231 @@ Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermö
 
 % Thema Zufdallszahlen in C++11
 
-\begin{comment}
 \section{Konvertierungen von Typen}
 % buch seite 92
 Narrowing und Promotion
 
 \section{Casts}
 	Die müssen hier aus diesem Kapitel weg!!!
-\section{Zusammengesetzte Datentypen}
-\subsection{Arrays}
+\section{Zusammengesetzte und konstruierte Datentypen}
+
+\begin{center}
+	\begin{tabular}{|l|l|l|l|} \hline
+		\textbf{konstruierter Typ} & \textbf{Typ-Syntax} & \multicolumn{2}{c|}{\textbf{Deklaration eines Bezeichners}}\\ 
+		&& Deklaration (allg.) & Initialisierung (Bsp.) \\ \hline
+		[identischer Typ] & \texttt{T} & \texttt{T t;} & \texttt{int x \{3\};} \\ \hline
+		Pointer auf \texttt{T} & \texttt{T*} & \texttt{T* tptr;} & \texttt{int* xptr \{\&x\};} \\ \hline
+		Referenz auf \texttt{T} & \texttt{T\&} & \texttt{T\& tref;} & \texttt{int\& xref \{x\};} \\ \hline
+		\texttt{N}-Array von \texttt{T}, (\texttt{N}=0,1,..)& \texttt{T [N]} (\textit{nur bei \textbf{using}}) & \texttt{T tarray[N];} & \texttt{int a [2] \{4, xref\};} \\ \hline
+	\end{tabular}
+\end{center}
+
+\subsection{Pointer}
+Ein Pointer auf ein Datum (Objekt), auch genannt Zeiger auf das Datum bezeichnet die \textbf{Speicheradresse} des Datums. In diesem Sinne "`zeigt"' ein Pointer mit seinem Wert, der Speicheradresse, genauer gesagt \textit{der Anfangsspeicheradresse} auf das Objekt.
+
+Pointer haben unabhängig des Typs des Objektes, auf welches sie zeigen, immer dieselbe Größe, welche sich nach der Adressbreite auf Ihrem System richtet.
+
+So gilt zum Beispiel \texttt{sizeof(int*) == sizeof(std::vector<double>*)}
+
+Pointer sollten stets entweder mit einer gültigen Adresse auf ein Objekt verweisen oder den \textbf{Nullzeiger} enthalten, in C++ \texttt{nullptr}. Damit wird markiert, dass der Zeiger momentan auf kein Objekt zeigt.
+\subsubsection{Pointertyp}
+Sei \texttt{T} ein Typ. Dann ist auch \texttt{T*} ein Typ, nämlich der Typ "`Pointer auf ein Objekt vom Typ \texttt{T}"'.
+
+\subsubsection{Adressoperator und Dereferenzierungsoperator (Indirektionsoperator)}
+Um den Pointer auf ein Objekt \texttt{t} vom Typ \texttt{T} zu bestimmen, nutzt man den unären Adressoperator (\texttt{\&}). Dabei bezeichnet \texttt{\&t} den Pointer auf \texttt{t}.
+
+Um mit gegeben Pointer \texttt{tp} vom Typ \texttt{T*} auf das dahinterliegende Objekt zuzugreifen, gibt es den (unären) Dereferenzierungsoperator (\texttt{*}). Der Ausdruck \texttt{*tp} ist dann wieder vom Typ \texttt{T} und bezeichnet das Objekt (ist eine Referenz auf das Objekt), auf welches mit \texttt{tp} gezeigt wird.
+
+\subsubsection{Zeigerarithmentik}
+Pointer sind in C++ streng typisiert, damit es ermöglicht wird, die Operatoren speziell für diese Typen zu überladen.
+\begin{center}
+	\begin{tabular}{|c|c|p{10cm}|} \hline
+		\textbf{Operator} & \textbf{Bezeichnung} & \textbf{Verwendung} \\ \hline
+		\texttt{++, --} & Inkrement, Dekrement & Speicheradresse wird um die Größe des zugrundeliegenden Typs vergrößert bzw. verkleinert. \\ \hline
+		\texttt{+, -} & Addition (Subtraktion) & Es ist möglich, Zahlen zu Pointern hinzuzuaddieren. Dabei wird der Zeiger (die Speicheradresse) nicht um die angegebene Zahl vergrößert, sondern um die Größe des Typs multipliziert mit der Ganzzahl. \newline
+		\texttt{ptr + 2} bezeichnet beispielweise das vom Pointer aus gesehen übernächste Objekt im Speicher, sofern Objekte vom selben Typ lückenlos hintereinander im Speicher abgelegt sind.\\ \hline
+		\texttt{\&} & Adressoperator & Referenz auf das Objekt (Identifier) $\mapsto$ Adresse des Objektes \\ \hline
+		\texttt{*} & Indirektionsoperator & Pointer auf das Objekt $\mapsto$ Referenz auf das Objekt \\ \hline
+	\end{tabular}
+\end{center}
+% subtraktion zweier Zeiger
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Beispiel zu Pointern, fonttitle=\bfseries}
+#include <iostream>
+
+int main(){
+	using namespace std;
+	using Pdouble = double*;
+	
+	int a = 4;
+	int b = a++; // a==5, b==4
+	double d {4.7};
+	
+	int* pa {&a};
+	int* pb {&b};
+	
+	if (pa == pb) cout << "Das kann nicht sein.";
+	if (*pa == *pb) cout << "Das sollte auch falsch sein.";
+	*pa = *pb; // a==b==4
+	if (*pa == *pb) cout << "Das ist jetzt richtig so.\n";
+	pa = pb; // a zeigt jetzt auf b
+	*pa = 10;
+	cout << a << " " << b << endl; // 4 10
+	
+	Pdouble pd = &d;
+	pd = &a; // Compiler Error
+	pd = reinterpret_cast<double*>(&a);
+}
+\end{tcblisting}
+
+\subsection{Referenzen}
+
+Eine Referenz auf ein Datum (Objekt) bezeichnet ein Objekt selbst. So gesagt legen Sie mit einer Referenz einen zusätzlichen Identifier für ein bereits existierendes Objekt an.
+
+Referenzen sind nichts weiter als syntaktischer Zucker für die Verwendung von Pointern. Sie können einem die Arbeit wesentlich erleichtern, da sie einem die ständige Verwendung der Operatoren \texttt{\&} und \texttt{*} ersparen.
+
+Referenzen können nur einmal (mit einer bereits vorhandenen Referenz) initialisiert werden. Hinterher kann das Objekt, auf welches die Referenz \textit{implizit} zeigt, nicht mehr "`ausgetauscht"' werden. D.h. Sie können zwar das Objekt hinter der Referenz ändern, die Referenz aber bleibt eine Referenz auf ebendieses spezielle Objekt und kann nicht zu einer Referenz auf ein anderes Objekt an einer anderen Speicherstelle geändert werden.
+
+
+%Pointer haben unabhängig des Typs des Objektes, auf welches sie zeigen, immer dieselbe Größe, welche sich nach der Adressbreite auf Ihrem System richtet.
+
+\subsubsection{Referenztyp}
+Sei \texttt{T} ein Typ. Dann ist auch \texttt{T\&} ein Typ, nämlich der Typ "`Referenz auf ein Objekt vom Typ \texttt{T}"'.
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Beispiel zu Referenzen, fonttitle=\bfseries}
+	#include <iostream>
+	
+	void add_23(int& x){
+		x = x + 23;
+	}
+	
+	int main(){
+		using namespace std;
+		
+		int a = 4; // Ein neues Objekt vom Typ int auf dem Stack angelegt, mit 4 initialisiert und eine Referenz "a" auf das Objekt wird im scope der main-Funktion angelegt.
+		int& b = a // Eine Referenz b wird angelegt. a und b zeigen implizit auf dasselbe Objekt.
+		int c = 5;
+		
+		b = 12; // a==b==12
+		add_23(c); // c==28
+		
+		cout << a << endl << b << endl << c << endl; 
+	}
+\end{tcblisting}
+
+
+\subsection{Arrays (C-like)}
+Unter Arrays (Feldern) versteht man die Zusammenfassung von mehreren Objekten (üblicherweise) gleichen Typs. Um in C++ Arrays zu nutzen, gibt es mehrere Möglichkeiten. Zum einen gibt es die \textbf{rohen Arrays}, auch \textit{C-like Arrays} genannt, zum anderen mehrere Containerklassen, insbesondere die Templateklassen \textbf{std::vector} und \textbf{std::array}.
+
+\begin{itemize}
+	\item \textbf{Gründe \textit{für} rohe Arrays}
+	\begin{itemize}
+		\item interne Implementierung
+		\item Gründe der Performance (\textit{naja ...})
+			\begin{itemize}
+				\item mitgebrachte Unsicherheiten $\geq$ bessere Performance
+				\item C++ von Haus aus schnell. Optimierung nur an kritischen Codestellen sinnvoll
+			\end{itemize}
+	\end{itemize}
+	\item \textbf{Gründe für \textit{Containerklassen} (gegen rohe Arrays)}
+	\begin{itemize}
+		\item viele nützliche Features:
+		\item dynamische Erweiterung (std::vector, nicht std::array)
+		\item Schutz vor Überläufen (out of range)
+		\item oft leichter zu handhaben 
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Array Deklaration}
+
+\begin{rail}
+	ArrayDeclaration : Type Identifier '[' LiteralInt ']' ';'
+\end{rail}
+Mittels \textit{ArrayDeclaration} legen Sie ein Array mit \texttt{LiteralInt} vielen Objekten des zugrundeliegenden Typs an. Statt einem \textit{LiteralInt} darf auch ein konkretes \textit{const int} oder eine \textit{constexpr} eingesetzt werden. Entscheidend ist, dass die Größe des Arrays zur Compilezeit bestimmt werden kann.
+
+\textit{Erklärung bzw. Ursache:} \quad Typen in C++ haben immer eine feste Größe. Typen dynamischer Größe gibt es nicht, jedoch können Typen (\textit{structs, etc \dots}) Zeiger enthalten und sich "`im Hintergrund"' dynamisch Speicher allokieren.
+
+\subsubsection{Deklaration und Initialisierung am Beispiel}
+\begin{center}
+	\begin{tabular}{|M{3.5cm}|l|M{8cm}|} \hline
+		\textbf{Nur-Deklaration} & \texttt{extern int x[5];} & hier wird noch kein Speicherplatz reserviert, keine Definition \\ \hline
+		\textbf{\centering Definition ohne \newline Initialisierung} & \texttt{int x[5];} & undefinierte Werte im Speicher \\ \hline
+		\begin{tabular}{c}
+			\textbf{leere} \\
+			\textbf{vereinheitlichte} \\
+			 \textbf{Initialisierung}
+		\end{tabular} & \texttt{int x[5]\{\}} & alle Einträge mit 0 befüllt \\ \hline
+		\textbf{vereinheitlichte Initialisierung (unvollständig)} & \texttt{int x[5]\{1,2,3\};} & restliche Einträge mit 0 befüllt. \{1,2,3,0,0\} \\ \hline
+		\textbf{vereinheitlichte Initialisierung} & \texttt{int x[5] \{1,2,3,4,5\}; } & Elementinitialisierer für alle Einträge \\ \hline
+		\textbf{ohne Größe} & \texttt{int x[] \{1,2,3,4\}}; & implizit \texttt{int x[4] \{1,2,3,4\};} \\ \hline
+		
+	\end{tabular}
+\end{center}
+
+\subsubsection{Indizierungsoperator bzw. Indexoperator}
+
+Der Zugriff auf die Elemente erfolgt mit dem Indexoperator \texttt{[]} (eckige Klammern). Wurde mit \texttt{Typ array[N];} ein Array angelegt, so lässt sich auf diese \texttt{N} Elemente mit \texttt{array[0], ... , array[N-1]} zugreifen.
+
+\subsubsection{Typdefinition}
+\begin{center}
+\begin{tabular}{|c|c|} \hline
+	\textbf{mit typedef} & \textbf{mit using {\small (\textit{seit C++11})}} \\ \hline
+	\texttt{typedef int INT\_5[5];} & \texttt{using INT\_5 = int[5];} \\ \hline
+\end{tabular}
+\end{center}
+
+Es wird empfohlen für Typdefinitionen fürderhin die Variante mit \texttt{using} zuu nutzen, da diese den auch Templates gerecht wird. 
+
+\subsubsection{implizite Konvertierung}
+
+Arraytypen können implizit zu Zeigern auf den dahinterliegenden Typ konvertiert werden. Sie erhalten dann einen Zeiger auf das "`nullte Element"' des Arrays.
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Beispiel zu Arrays, fonttitle=\bfseries}
+	#include <iostream>
+	
+	void increment(int* ptr_to_first_element, int count){
+		
+	}
+	
+	int main(){
+		using namespace std;
+		
+		int a = 4; // Ein neues Objekt vom Typ int auf dem Stack angelegt, mit 4 initialisiert und eine Referenz "a" auf das Objekt wird im scope der main-Funktion angelegt.
+		int& b = a // Eine Referenz b wird angelegt. a und b zeigen implizit auf dasselbe Objekt.
+		int c = 5;
+		
+		b = 12; // a==b==12
+		add_23(c); // c==28
+		
+		for und range for mit auto&
+		
+		cout << a << endl << b << endl << c << endl; 
+	}
+\end{tcblisting}
+
 \subsection{Strings}
 
-\subsection{Records und Klassen}
+\subsection{Records}
+Unter Records versteht man die Zusammenfassung von mehreren Objekten nicht notwendigerweise verschiedenen Typs. Aus C kennt man das Schlüsselwort \texttt{\textbf{struct}} zum Definieren solcher Typen.
+
+In C++ gibt es zwei Schlüsselwörter zur Definition von Records / Klassen, nämlich \texttt{struct} und \texttt{class}.
+
+
+
+
 \subsection{Containerklassen}
 \section{Klassen}
 \subsection{Konstruktoren}
 \subsection{Vererbung}
 \subsection{Polymorphie}
+
+\section{typedef und using}
+
+\section{const und constexpr}
+Mit \texttt{const} 
 
 \section{auto}
 Ein weiteres, sehr nützliches Schlüsselwort, dass Sie spätestens beim Hantieren mit Iteratoren, Template- und Containerklassen nicht mehr vermissen wollen, ist das Schlüsselwort \texttt{auto}. Die Bedeutung von \texttt{auto} hat sich mit dem Standard C++11 geändert
@@ -952,8 +1163,6 @@ Ein weiteres, sehr nützliches Schlüsselwort, dass Sie spätestens beim Hantier
 \end{center}
 % siehe seite 69 oben.
 % http://en.cppreference.com/w/cpp/language/storage_duration
-	
-\end{comment}
 
 \chapter{Strukturierte Programmierung}
 \section{Kontrollstrukturen}
@@ -1075,8 +1284,6 @@ break, continue \# %###
 \subsection{for (klassisch)}
 \# wird ergänzt
 
-\begin{comment}
-
 \subsection{for (foreach)}
 
 
@@ -1106,8 +1313,6 @@ break, continue \# %###
 % S 73++
 
 	
-\end{comment}
-
 
 %***********************************************************some stuff from some time ago****************************************************
 \begin{comment}
