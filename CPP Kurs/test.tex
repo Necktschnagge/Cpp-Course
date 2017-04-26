@@ -38,6 +38,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
 
+
 \usetikzlibrary{%
 	arrows,%
 	shapes.misc,% wg. rounded rectangle
@@ -54,6 +55,7 @@
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
 
+\lstset{language=C++}
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{tcolorbox}
@@ -1099,7 +1101,7 @@ Der Zugriff auf die Elemente erfolgt mit dem Indexoperator \texttt{[]} (eckige K
 \end{tabular}
 \end{center}
 
-Es wird empfohlen für Typdefinitionen fürderhin die Variante mit \texttt{using} zuu nutzen, da diese den auch Templates gerecht wird. 
+Es wird empfohlen für Typdefinitionen fürderhin die Variante mit \texttt{using} zu nutzen, da diese den auch Templates gerecht wird. 
 
 \subsubsection{implizite Konvertierung}
 
@@ -1131,18 +1133,117 @@ Arraytypen können implizit zu Zeigern auf den dahinterliegenden Typ konvertiert
 
 \subsection{Strings}
 
+\subsubsection{Was sind Strings?}
+\begin{itemize}
+	\item Zeichenketten
+	\item Arrays von Zeichen
+	\item Typen
+	\begin{itemize}
+		\item C-Style-Strings (rohe char Arrays)
+		\item C++ Klassen wie \texttt{std::string}
+	\end{itemize}
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{|M{3cm}|M{6cm}|M{6cm}|} \hline
+		&\textbf{C-Style-Strings} & \textbf{std::string} \\ \hline
+		\textbf{Header} & \texttt{<cstring>} \textit{optional, für Funktionen auf C-Strings} & \texttt{<string>} \\ \hline
+		\textbf{nützliche Funktionen} & wenige, arbeiten auf rohen Arrays & reichlich, siehe \\ \hline
+		\textbf{Länge} & statisch (feste Länge) & dynamisch (variable Länge)\\ \hline
+		\textbf{Referenz} & & \url{http://www.cplusplus.com/reference/string/string/?kw=string} \\ \hline
+	\end{tabular}
+\end{center}
+
+\subsubsection{Codierung}
+C-like Strings sind Arrays über dem Typ \texttt{char} und werden auch als solche angelegt. Um das Ende eines Strings zu markieren wird \texttt{'\textbackslash 0'} verwendet.
+
+\subsubsection{Literale}
+
+\begin{rail}
+	AsciiStringLiteral : '"' (() + Zeichen) '"';
+\end{rail}
+Für UTF-kodierte Strings benötigen Sie entsprechende Präfixe. Mit \texttt{u8"..."} stellen Sie einen UTF-8 String, mit \texttt{u"..."} bzw. \texttt{U"..."} einen UTF-16 bzw. UTF-32 kodierten String dar. C-Style Stringliterale sind immer vom Typ \texttt{const char*} bzw. \texttt{const char16\_t*} usw. analog.
+
 \subsection{Records}
 Unter Records versteht man die Zusammenfassung von mehreren Objekten nicht notwendigerweise verschiedenen Typs. Aus C kennt man das Schlüsselwort \texttt{\textbf{struct}} zum Definieren solcher Typen.
 
-In C++ gibt es zwei Schlüsselwörter zur Definition von Records / Klassen, nämlich \texttt{struct} und \texttt{class}.
+In C++ gibt es zwei Schlüsselwörter zur Definition von Records / Klassen, nämlich \texttt{struct} und \texttt{class}. Der einzige Unterschied zwischen beiden ist, dass die Sichtbarkeit bei \texttt{struct} standardmäßig \texttt{public} ist, bei \texttt{class} hingegen \texttt{private}.
+
+\subsubsection{Deklaration und Definition}
+
+\begin{lstlisting}
+01	struct A; // Nur-Deklaration
+02	struct B { 
+03	   int x;
+04	   double z {2.3};
+05	}; // Definition
+\end{lstlisting}
+
+Von einer (Nur-)Deklaration eines \texttt{struct}s spricht man in Zeile 1. Hier wird dem Compiler nur der Name des neuen Record-Typs A bekannt gemacht.
+In Zeile 2 beginnt eine Definition eines \texttt{struct}s: Hier wird der Typ genau spezifiziert.
+Seit C++11 ist es außerdem erlaubt, wie in Zeile 04 Standardwerte für Elemente von \texttt{struct} oder \texttt{class} festzulegen.
+Beachten Sie, dass Sie Objekte (Variablen) von einem Record - Typ erst dann anlegen können, wenn 
 
 
+%Typdefinitionen sollten nicht in deklarationen von variablen oder Funktionen auftauchen sondern extra.
+%\begin{comment}
+%\begin{center}
+%	\begin{tabular}{cc}
+%		\textbf{struct} & \textbf{class}
+%	\end{tabular}
+%\end{center}
+%\end{comment}
+
+\subsubsection{Elementinitialisierer}
+
+Records, welche nur öffentliche Elemente enthalten, dürfen mit dem Elementinitialisierer initialisiert werden, ähnlich zu Arrays. (Die genauen Bedingungen im einzelnen finden Sie unter dem angegebenen Link.)
+
+\url{http://en.cppreference.com/w/cpp/language/aggregate_initialization}
+
+Beispiel: \quad \texttt{B b \{ 4,10.3 \};}
+
+\subsubsection{Punktoperator bzw Zugriffsoperator}
+
+Um auf die Elemente eines Records zugreifen zu können, nutzt man den Punktoperator.
+
+\begin{rail}
+	Syntax:
+	ObjektIdentifier '.' MemberIdentifier;
+\end{rail}
+
+\begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
+		title=Beispiel zu Structs, fonttitle=\bfseries}
+	#include <iostream>
+	
+	struct A;
+	using PA = A*;
+	
+	struct A {
+		int x;
+		int y;
+		bool enable;
+	};
+	
+	int main(){
+	
+	A a = { 2,-2,true };
+	PA pa = &a;
+	std::cout << a.x << std::endl;
+	pa->enable = false;
+	std::cout << pa->y;
+	
+	}
+\end{tcblisting}
 
 
-\subsection{Containerklassen}
+%\subsection{Containerklassen}
+
 \section{Klassen}
+
 \subsection{Konstruktoren}
+
 \subsection{Vererbung}
+
 \subsection{Polymorphie}
 
 \section{typedef und using}
