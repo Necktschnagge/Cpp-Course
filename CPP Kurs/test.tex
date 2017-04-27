@@ -925,13 +925,16 @@ Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermö
 % seite 87 mathe bibkliothek und complex ZAHLEN
 
 % Thema Zufdallszahlen in C++11
-
+\begin{comment}
 \section{Konvertierungen von Typen}
 % buch seite 92
 Narrowing und Promotion
 
 \section{Casts}
 	Die müssen hier aus diesem Kapitel weg!!!
+	
+\end{comment}
+
 \section{Zusammengesetzte und konstruierte Datentypen}
 
 \begin{center}
@@ -1112,22 +1115,15 @@ Arraytypen können implizit zu Zeigern auf den dahinterliegenden Typ konvertiert
 	#include <iostream>
 	
 	void increment(int* ptr_to_first_element, int count){
-		
+		for (int i = 0; i< count; ++i){
+			*(ptr_to_first_element+i) += 1;
+		}	
 	}
 	
 	int main(){
-		using namespace std;
-		
-		int a = 4; // Ein neues Objekt vom Typ int auf dem Stack angelegt, mit 4 initialisiert und eine Referenz "a" auf das Objekt wird im scope der main-Funktion angelegt.
-		int& b = a // Eine Referenz b wird angelegt. a und b zeigen implizit auf dasselbe Objekt.
-		int c = 5;
-		
-		b = 12; // a==b==12
-		add_23(c); // c==28
-		
-		for und range for mit auto&
-		
-		cout << a << endl << b << endl << c << endl; 
+		int a[5] { 2,3 };
+		increment(a,5);
+		std::cout << a[0];
 	}
 \end{tcblisting}
 
@@ -1237,7 +1233,7 @@ Um auf die Elemente eines Records zugreifen zu können, nutzt man den Punktopera
 
 
 %\subsection{Containerklassen}
-
+\begin{comment}
 \section{Klassen}
 
 \subsection{Konstruktoren}
@@ -1247,9 +1243,27 @@ Um auf die Elemente eines Records zugreifen zu können, nutzt man den Punktopera
 \subsection{Polymorphie}
 
 \section{typedef und using}
+	
+\end{comment}
 
 \section{const und constexpr}
-Mit \texttt{const} 
+Mit \texttt{const} wird eine Variable als konstant markiert. Sie darf zur Laufzeit genau einmal initialisiert werden und dann nicht mehr verändert werden. \texttt{constexpr} ist eine Art "`stärkeres const"':
+
+\begin{itemize}
+	\item \textbf{const}
+	\begin{itemize}
+		\item für konstante Daten
+		\item zur Laufzeit initialisiert
+		\item keine Änderung zur Laufzeit nach Initialisierung.
+	\end{itemize}
+	\item \textbf{constexpr}
+	\begin{itemize}
+		\item für konstante Daten
+		\item zur Compilezeit berechnet und initialisiert
+		\item keine Änderung zur Laufzeit.
+		\item wird durch den Compiler manchmal nicht im Speicher angelegt, sondern wie ein Makro an allen Stellen, wo es benutzt wird eingesetzt.
+	\end{itemize}
+\end{itemize}
 
 \section{auto}
 Ein weiteres, sehr nützliches Schlüsselwort, dass Sie spätestens beim Hantieren mit Iteratoren, Template- und Containerklassen nicht mehr vermissen wollen, ist das Schlüsselwort \texttt{auto}. Die Bedeutung von \texttt{auto} hat sich mit dem Standard C++11 geändert
@@ -1259,7 +1273,7 @@ Ein weiteres, sehr nützliches Schlüsselwort, dass Sie spätestens beim Hantier
 		\hline
 		\textbf{bis C++03} & Angabe einer Speicherklasse \newline Variablen innerhalb von Funktionen automatisch auto, außerhalb nicht erlaubt. \\ \hline
 		\textbf{seit C++11} & Neudefinition des Schlüsselwortes. \newline Ausdruck einer statischen Typinferenz. \newline automatische Bestimmung des Typs zur Compilezeit. \newline
-		"`kleinster Typ"' aus der Initialisierung autonatisch vom Compiler bestimmt\newline (keine dynamische Typisierung)\\ \hline
+		"`kleinster konretester Typ"' aus der Initialisierung autonatisch vom Compiler bestimmt\newline (keine dynamische Typisierung)\\ \hline
 	\end{tabular}
 \end{center}
 % siehe seite 69 oben.
@@ -1382,13 +1396,40 @@ break, continue \# %###
 \end{rail}
 \url{http://en.cppreference.com/w/cpp/language/do}
 
+\begin{comment}
 \subsection{for (klassisch)}
 \# wird ergänzt
 
 \subsection{for (foreach)}
+	
+\end{comment}
 
 
 \section{Funktionen}
+
+\subsection{Vorausdeklaration}
+
+Um einen Funktion dem Compiler bekannt zu machen, ohne sie zu definieren, gibt es die Vorausdeklaration:
+
+\texttt{Rückgabetyp \textbf{Funktionsname}(\textit{[optionale Parameter]} );}
+
+Ein Beispiel:
+
+\texttt{int \textbf{maximum}(int a, int b);}
+
+Um eine Funktion ohne Rückgabewert zu deklarieren, nutzt man als Rückgabetyp \texttt{void}.
+
+Beispiel: \texttt{void set\_to\_zero(int\& x);}
+ 
+\subsection{Funktionsdefinition}
+
+Von einer Funktionsdefinition spricht man, wenn Sie den Quellcode der Funktion angeben. Syntax: \\
+\texttt{Rückgabetyp \textbf{name}(\textit{[optionale Parameter]})\{ \\
+\qquad return Rückgabewert; \\
+\}}
+
+
+\begin{comment}
 \section{Operatoren}
 % sizeof(), static_assert()
 % seite 102 Vergleichsoperatoren.
@@ -1413,6 +1454,8 @@ break, continue \# %###
 % std::numeric_limits
 % S 73++
 
+	
+\end{comment}
 	
 
 %***********************************************************some stuff from some time ago****************************************************
