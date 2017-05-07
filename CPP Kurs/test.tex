@@ -28,11 +28,15 @@
 \railalias{raildollar}{\$}
 \railalias{raillbrace}{\textrm{\{}}
 \railalias{railrbrace}{\textrm{\}}}
-\railterm{raildollar, raillbrace, railrbrace}
+\railalias{railunderline}{\_}
+\railterm{raildollar, raillbrace, railrbrace, railunderline}
 
 \usepackage{array}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\flushleft\arraybackslash}m{#1}}
+
+\usepackage[T1]{fontenc} % using \textquotedbl
 
 
 \usepackage{tikz}
@@ -50,13 +54,11 @@
 	decorations.pathmorphing,% /pgf/decoration/random steps | erste Graphik
 	shadows%
 }
-
+\usepackage{xcolor}
 
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
 
-\lstset{language=C++}
-\usepackage{xcolor}
 \usepackage{listings}
 \usepackage{tcolorbox}
 \tcbuselibrary{listings}
@@ -74,6 +76,11 @@ Das Skript wird parallel zum Kurs erstellt und erweitert. Es besteht daher momen
 
 Das Skript dient vordergründig als Nachschlagewerk für den C++ Kurs und besteht im Wesentlichen aus vier Kapiteln zu Einrichtung, Datentypen, strukturierter Programmierung und Randfeatures. Dabei wurde in erster Linie eine Einteilung nach logischen Zusammenhängen der Sprache C++ angestrebt, zweitrangig nach pädagogisch sinnvoller Reihenfolge. Das stellt mehr oder weniger eine hinreichende und zugleich notwendige Bedingung für die parallele Abarbeitung von Kapitel 2 und 3 dar, da Kenntnisse über Datentypen und Mechanismen strukturierter Programmierung an vielen Stellen wieder eine Einheit bilden und ineinander greifen.
 
+
+\section*{Lizenz}
+Dieses Werk steht unter der Lizenz Creative Commons CC BY-NC-SA 4.0. Sie dürfen das Material beliebig verteilen und bearbeiten, solange eine Namensnennung \textcopyright \vspace{0.3ex} Maximilian Starke erfolgt, das Material nicht für kommerzielle Zwecke genutzt wird und Sie darauf aufbauende Beiträge unter derselben Lizenz veröffentlichen [...]. Details können Sie im Internet unter \url{https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de} nachlesen.
+
+Sofern Sie Rechte darüber hinaus möchten, kontaktieren Sie den Autor, Maximilian Starke.
 \tableofcontents
 
 \chapter{Einrichtung}
@@ -86,24 +93,25 @@ Das Skript dient vordergründig als Nachschlagewerk für den C++ Kurs und besteh
 \item später von ISO genormt
 \vspace{2ex}
 \item effizient und schnell - Schnelligkeit eines der wichtigsten Designprinzipien von C++
-\item hohes Abstraktionsniveau u.a. durch Unterstützung von OOP
+\item hohes Abstraktionsniveau u.a. durch Unterstützung von OOP und Templates
 \item ISO Standard beschreibt auch eine Standardbibliothek
 \item C++ ist \textbf{kein} echtes \textit{(und auch kein unechtes)} Superset von C (siehe stackoverflow.com, \dots)
+% ref auf funktionen im vergleich zu C, schlüsselwörter als identifier
 \item C++ ist (wie C) \textbf{case sensitive}
 \vspace{2ex}
 
 \item Paradigmen:
 	\begin{itemize}
 		\item \textbf{generisch} (durch Benutzung von Templates, automatische Erstellung multipler Funktionen für verschiedene Datentypen)
-		\item \textbf{imperativ} (Programm als Folge von Anweisungen, Gegenteil von deklarativ siehe Haskell und Logikprogrammierung)
-		\item \textbf{objektorientiert} (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an Realität)
-		\item \textbf{prozedural} (Begriff mit verschiedenen Bedeutungsauffassungen, Unterteilung des Programms in logische Teilstücke (Prozeduren), die bestimmte Aufgaben / Funktionen übernehmen)
-		\item \textbf{strukturiert} (prozedural und Teilung in Sequenz, Verzweigung, Wiederholung, \dots )
-		\item \textbf{funktional} (ab C++11, Definitionskleinkram, siehe Wikipedia, Programm als verschachtelter [...] Funktionsaufruf 	organisierbar, eher typisch für Haskell o.ä.)
+		\item \textbf{imperativ} (Programm als Folge von Anweisungen, "`Gegenstück"' zu deklarativer Programmierung, siehe Haskell und Logikprogrammierung)
+		\item \textbf{objektorientiert} (Klassen, Objekte, Vererbung, Polymorphie, Idee: Anlehnung an reale Objekte)
+		\item \textbf{prozedural} (Begriff mit verschiedenen Bedeutungsauffassungen, Unterteilung des Programms in logische Teilstücke (Prozeduren, Funktionen), die bestimmte Aufgaben übernehmen)
+		\item \textbf{strukturiert} (prozedural und Codeorganisation mittels Sequenz, Verzweigung, Schleifen, \dots )
+		\item \textbf{funktional} (ab C++11, "`Definitionskleinkram"', siehe Wikipedia, Programm als verschachtelter [...] Funktionsaufruf organisierbar, eher typisch für Haskell o.ä.)
 	\end{itemize}
 \end{itemize}
 
-\subsection{Versionen}
+\subsection{Versionen (only draft)}
 \begin{itemize}
 	\item C++98
 	\item C++03
@@ -112,7 +120,7 @@ Das Skript dient vordergründig als Nachschlagewerk für den C++ Kurs und besteh
 	\item C++14
 	\subitem aufweichung der constexpr Bedingungen.
 	\item C++17
-	\subitem soll 2017 vollendet werden.
+	\subitem \# neues if constexpr, Plattformunabhängiger Umgang mit Dateien, ...
 \end{itemize}
 
 \section{Dateien in einem C++ Projekt}
@@ -128,7 +136,7 @@ Das Skript dient vordergründig als Nachschlagewerk für den C++ Kurs und besteh
 	\hline
 	(*.exe) (*.out) & ausführbare Datei & fertiges Programm \\
 	\hline \hline
-	(*.sln) (*.pro) (*.vcxproj) & "Projektdatei" & IDE Einstellungen (oder ähnliches) \newline IDE-spezifische Namen und Verwendung\\
+	(*.sln) (*.pro) (*.vcxproj) & "`Projektdatei"' & IDE Einstellungen (oder ähnliches) \newline IDE-spezifische Namen und Verwendung\\
 	\hline \hline
 	(*.res) & Ressourcendatei & multimediale Inhalte\\
 	\hline
@@ -203,8 +211,8 @@ minimum height=3em]
 	VC++ & Windows \\ \hline
 \end{tabular}
 \end{center}
-Das nun folgende Listing zeigt, wie ein C++ Quellcode, der als Datei vorliegt, "`per Hand"' mit Kommandozeile unter Nutzung des Compilers (hier g++) übersetzt werden kann. Beim Aufruf des Compilers wurden hier noch einige Flags gesetzt, nämlich \texttt{-Wall}, um \textbf{sinnvolle Warnungen} ausgeben zu lassen, und \texttt{-pedantic}, um \textbf{vom C++ Standard geforderte Warnungen} erscheinen zu lassen. Außerdem wurde der C++ Standard (Version) gesetzt.
-
+Das nun folgende Listing zeigt, wie ein C++ Quellcode, der als Datei im Dateisystem vorliegt, "`per Hand"' mit Kommandozeile unter Nutzung des Compilers (hier g++) übersetzt werden kann. Beim Aufruf des Compilers wurden hier noch einige Flags gesetzt, nämlich \texttt{-Wall}, um \textbf{sinnvolle Warnungen} ausgeben zu lassen, und \texttt{-pedantic}, um \textbf{vom C++ Standard geforderte Warnungen} erscheinen zu lassen. Das zusätzliche \texttt{-Wextra} ermöglicht ein Maximum an Warnungen. Außerdem wurde der C++ Standard (Version) gesetzt.
+\begin{center}
 \begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
 		title=Nutzung von g++ mittels Powershell, fonttitle=\bfseries}
 PS A:\> cd .\example\
@@ -244,70 +252,22 @@ PS A:\example> .\programm.exe
 Hello World
 PS A:\example>
 \end{tcblisting}
+\end{center}
+
 %% anmerkung zu Wextra##
 
-Eine kleine Anmerkung zu Bezeichnungen, die mit Compilern zu tun haben, möchte ich an dieser Stelle noch loswerden, da hier immer eine kleine Verwechslungsgefahr besteht. Die \textbf{GCC} \textit{(GNU Compiler Collection)} ist eine Compilersammlung mit Compilern zu C, C++ und einigen weiteren. Dagegen ist der \textbf{gcc} (klein geschrieben) der C-Compiler der Sammlung und \textbf{g++} der C++ Compiler.
+Eine kleine Anmerkung zu Bezeichnungen, die mit Compilern zu tun haben, möchte ich an dieser Stelle noch loswerden, da hier immer eine kleine Verwechslungsgefahr besteht. Die \textbf{GCC} \textit{(GNU Compiler Collection)} ist eine Compilersammlung mit Compilern zu C, C++ und einigen weiteren Sprachen. Dagegen ist der \textbf{gcc} (klein geschrieben) der C-Compiler und \textbf{g++} der C++ Compiler der Sammlung.
+\medskip
 
-Um auf Ihrem Betriebssystem einen C++ Compiler zum Laufen zu bringen, haben Sie meist verschiedenste Möglichkeiten.
+Um auf Ihrem Betriebssystem einen C++ Compiler zum Laufen zu bringen, haben Sie meist verschiedenste Möglichkeiten, da viele verschiedene Frameworks und Implementationen existieren.
+\medskip
 
-Um unter \textbf{Linux} GCC zu nutzen, müssen lediglich die entsprechenden Pakete installiert werden, meist ist die GCC sogar schon vorinstalliert.
+Um unter \textbf{Linux} GCC zu nutzen, müssen die entsprechenden Pakete installiert werden, meist ist die GCC sogar schon vorinstalliert.
+\medskip
 
-Unter \textbf{Windows} kann man den von Microsoft bereitgestellten Visual C++ Compiler verwenden, i.d.R. in Verbindung mit einer Installation von Visual Studio (eine IDE für u.a. C++). Die zu installierenden Komponenten bei Visual Studio kann man selbst beim Installationsprozess auswählen, i.A. ist der Speicherverbrauch jedoch relativ groß. Wer auf eine speicherschonende Variante zurückgreifen will oder muss, dem empfehle ich MinGW - eine Portierung der GCC aus dem Hause Linux für Windows. Planen Sie früher oder später Qt-Creator als eine C++ IDE zu installieren, dann können Sie sich einen extra Installation von MinGW im Vorhinein sparen, da QT-Creator MinGW bereits mitinstalliert. Sofern mit der Kommandozeile direkt auf g++ zugegriffen werden soll, ist es unter Windows i.d.R. erforderlich den Pfad der MinGW-Binarys der Systemvariablen \texttt{PATH} hinzuzufügen.
+Unter \textbf{Windows} kann man den von Microsoft bereitgestellten Visual C++ Compiler verwenden, i.d.R. in Verbindung mit einer Installation von Visual Studio (eine IDE für u.a. C++). Die zu installierenden Komponenten bei Visual Studio kann man selbst beim Installationsprozess auswählen, i.A. ist der Speicherverbrauch jedoch relativ groß. Wer auf eine speicherschonende Variante zurückgreifen will oder muss, dem empfehle ich MinGW - eine Portierung der GCC aus dem Hause Linux für Windows. Planen Sie früher oder später Qt-Creator als C++ IDE zu installieren, dann können Sie sich einen extra Installation von MinGW im Vorhinein sparen, da QT-Creator MinGW bereits mitinstalliert. Sofern mit der Kommandozeile direkt auf g++ zugegriffen werden soll, ist es unter Windows i.d.R. erforderlich den Pfad der MinGW-Binarys der Systemvariablen \texttt{PATH} hinzuzufügen.
 
-\begin{comment}
-\lstdefinestyle{framed}
-{
-frame=lrb,        
-belowcaptionskip=-1pt,
-xleftmargin=8pt,
-framexleftmargin=7pt,
-framexrightmargin=6pt,
-framextopmargin=5pt,
-framexbottommargin=5pt,
-framesep=0pt,
-rulesep=0pt,
-}
-
-\begin{lstlisting}[style = framed, caption = Nutzung von g++ mittels Powershell]
-PS A:\> cd .\example\
-PS A:\example> ls
-
-
-Verzeichnis: A:\example
-
-
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
--a----       02.04.2017     08:38             87 hello_world.cpp
-
-
-PS A:\example> type .\hello_world.cpp
-#include <iostream>
-
-int main(){
-	std::cout << "Hello World";
-	return 0;
-}
-	
-PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -std=c++11
-PS A:\example> ls
-
-
-Verzeichnis: A:\example
-
-
-Mode                LastWriteTime         Length Name
-----                -------------         ------ ----
--a----       02.04.2017     08:38             87 hello_world.cpp
--a----       02.04.2017     09:12          48650 programm.exe
-
-
-PS A:\example> .\programm.exe
-Hello World
-PS A:\example>
-\end{lstlisting}
-\end{comment}
-
+% section{Betriebssystem} dist von empfehlung. 
 
 \section{IDEs}
 \subsection{JA oder NEIN}
@@ -316,10 +276,10 @@ PS A:\example>
 	\hline
 	\textbf{ohne IDE} & \textbf{mit IDE} \\
 	\hline \hline
-	Compiler, Linker über Shell bedienen	&	Projekteinstellungen \& Buttons \\
-	Texteditor				&		in IDE integriert\\
+	Compiler, Linker über Shell bedienen	&	Projekteinstellungen, Compilieren per Button \\
+	extra Texteditor				&		in IDE integriert\\
 	evtl. make + makefile	&	automatisch generiertes makefile \\
-	Dokumentationen & geordneter Menübaum \\
+	Dokumentationen lesen & geordneten Menübaum durchforsten\\
 	\hline \hline
 	Einarbeitungszeit (??) & Einarbeitungszeit (??) \\
 	für kleine und mittelgroße Projekte & kleine, mittlere und große Projekte \\
@@ -337,7 +297,7 @@ PS A:\example>
 	Qt SDK & WIN, Linux, Mac & bringt umfangreiches Qt-Framework mit für GUIs u.v.m. \\
 	Code::Blocks & WIN, Linux, Mac & \\
 	\hline
-	Visual Studio & Windows & kostenfreie Version für den Hausgebrauch: VS Community 2017, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigenen MS VC++ Compiler\\
+	Visual Studio & Windows & kostenfreie Version für den Hausgebrauch: VS Community 2017, sehr umfangreich (Refactoring Tools, Debugger, Laufzeitanalyse, Frameworks wie MFC, ATL, WTL) und damit auch speicherintensiv, zu installierende Features wählbar, benutzt eigens mitgebrachtten MS VC++ Compiler\\
 	Orwell DEV-C++ & Windows &\\
 	\hline
 	Geany & Linux, WIN & schlichter Texteditor mit Syntaxhighlighting und diversen Buttons für Compilerausführung, Logausgabe\\
@@ -348,10 +308,15 @@ PS A:\example>
 	\hline
 	
 \end{tabular}
-
+% CLion und Unterteilung in kostenfreie und kostenpflichtig ???
+% embarcadero ...
+% kurze Zusammenfassung der Features der einzelnen IDEs Möglich
 \vspace{4ex}
 
 Auf den Seiten \pageref{begin:ide:picts} bis \pageref{end:ide:picts} finden sich Screenshots einiger IDEs.
+
+\subsubsection{GNU-make unter Windows}
+Mit einer vorhandenen MinGW - Installation und wenigen Handgriffen, ist es auch möglich makefiles unter Windows zu nutzen. \url{http://stackoverflow.com/questions/12881854/how-to-use-gnu-make-on-windows}
 
 \begin{figure}
 	\label{begin:ide:picts}
@@ -405,7 +370,7 @@ Auf den Seiten \pageref{begin:ide:picts} bis \pageref{end:ide:picts} finden sich
 \section{Referenzen}
 
 \begin{itemize}
-	\item Buch:
+	\item Bücher:
 	\begin{itemize}
 		\item Wolf, Jürgen: C++ - Das umfassende Handbuch. Rheinwerk Computing
 	\end{itemize}
@@ -417,6 +382,10 @@ Auf den Seiten \pageref{begin:ide:picts} bis \pageref{end:ide:picts} finden sich
 \end{itemize}
 %\###### Anmerkung ergänzen (Buch)
 \# Es gibt auch offline Versionen der Referenzen.
+% ###vielleicht mal diese screenshots noch austauschen irgendwann
+
+
+
 \section{The Hello World}
 
 \subsection{Das erste kleine Programm}
@@ -442,7 +411,7 @@ int main(int argc, char* argv[])
 	* ((std::cout) << "Hello World") << (std::endl);
 	* std              ... ein Namensraum
 	* ::               ... scope-Operator (Bereichsoperator)
-	* cout:            ... gepufferter Standardausgabestream
+	* cout            ... gepufferter Standardausgabestream
 	* <<               ... Ausgabeoperator (auch bitshift-Operator)
 	* "Hello World"    ... C-Style-String Literal
 	* endl             ... Objekt aus dem std Namensraum, das einen Zeilenumbruch ('\n') erzeugt.
@@ -457,7 +426,7 @@ int main(int argc, char* argv[])
 	return 0; // Rueckgabewert 0 "erfolgreich (ohne Fehler) beendet"
 }
 \end{tcblisting}
-Im Falle der \texttt{main-}Funktion ist es auch möglich das \textbf{return statement} (\texttt{return 0;}) wegzulassen. Dann wird implizit 0 als Funktionswert zurückgegeben. Die Funktionssignatur der \texttt{main-}Funktion darf auch in \texttt{int main(int argc, char** argv)} geändert werden. Der erste Arrayeintrag von \texttt{argv} enthält übrigens immer einen Zeiger auf den Namen (ohne Dateiendung), unter dem das Programm abgespeichert wurde. Damit ist \texttt{argc} stets mindestens 1. 
+Im Falle der \texttt{main-}Funktion ist es auch möglich das \textbf{return statement} (\texttt{return 0;}) wegzulassen. Dann wird implizit 0 als Funktionswert zurückgegeben. Die Funktionssignatur der \texttt{main-}Funktion darf auch in \texttt{int main(int argc, char** argv)} geändert werden. Der erste (oder besser gesagt \textit{nullte}) Arrayeintrag von \texttt{argv} enthält übrigens immer einen Zeiger auf den Namen (ohne Dateiendung), unter dem das Programm abgespeichert wurde. Damit ist \texttt{argc} stets mindestens 1. 
 \subsection{Ein paar Werkzeuge}
 Bevor wir in Kapitel \ref{real_start} einsteigen und das gesamte (naja \textit{fast}) C++ von Grund auf kennenlernen wollen, sollten Sie noch einige nützliche Werkzeuge kennen, damit Sie neu gelernte Dinge auch ohne große Probleme ausprobieren können.
 \begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
@@ -511,7 +480,7 @@ int main(int argc, char* argv[]){
 \end{center}
 
 \subsection{Programmierstil}
-Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmierstil loswerden. Im Grunde genommen dürfen Sie Ihren C++ Code schreiben, wie sie wollen, solange Sie die Spezifikationen von c++ einhalten. Es gibt auch nicht \textit{den einen} Programmierstil, der sich durchgesetzt hat. Sie schreiben aber einen viel leserlicheren, einfacher wartbaren und für das Auge schöneren Code, wenn Sie beim programmieren \textbf{konsistent bleiben}, was einige Aspekte betrifft:
+Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmierstil loswerden. Im Grunde genommen dürfen Sie Ihren C++ Code schreiben, wie sie wollen, solange Sie die Spezifikationen von C++, oder genau genommen die Ihres Compilers einhalten. Es gibt auch nicht \textit{den einen} Programmierstil, der sich durchgesetzt hat. Sie schreiben aber einen viel leserlicheren, einfacher wartbaren und für das Auge schöneren Code, wenn Sie beim programmieren \textbf{konsistent bleiben}, was einige Aspekte betrifft:
 \begin{center}
 	\begin{tabular}{|c||c|}
 		\hline
@@ -524,12 +493,10 @@ Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmiers
 \end{center}
 Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie sich um die \textbf{Quelltextformatierung} kümmern. Dies ist gerade bei Projekten mit vielen Entwicklern hilfreich, da so ziemlich effizient für einheitliches Quelltextlayout gesorgt werden kann.
 
-\begin{comment}
-	Inhalt...
-\end{comment}
+
 \chapter{Datentypen in C++} \label{real_start}
 
-Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es während der Laufzeit im Arbeitsspeicher (RAM) oder darüber hinaus persistent in Dateien, die Sie in Dateisystemen auf zum Beispiel Festplatten aufbewahren können. Dabei steht in der Regel als erstes die \textbf{Wahl des Datentypes} im Vordergrund, denn die Wahl des Datentyps bestimmt maßgeblich die \textbf{Möglichkeiten der Verwendung der Daten}. So gibt Ihnen der Datentyp grundsätzlich vor welche Funktionen und insbesondere Operatoren Sie darauf anwenden können, beziehungsweise \textit{was} diese bewirken.
+Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es während der Laufzeit im Arbeitsspeicher (RAM) oder darüber hinaus persistent in Dateien, die Sie in Dateisystemen auf zum Beispiel Festplatten aufbewahren können. Dabei steht in der Regel als erstes die \textbf{Wahl des Datentypes} im Vordergrund, denn die Wahl des Datentyps bestimmt maßgeblich die \textbf{Möglichkeiten der Verwendung der Daten}. So gibt Ihnen der Datentyp grundsätzlich vor welche Funktionen und insbesondere \textbf{Operatoren} Sie darauf anwenden können, beziehungsweise \textit{was} diese bewirken.
 
 \section{Identifier}
 %\begin{comment}%debug
@@ -538,7 +505,7 @@ Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es währ
 \begin{multicols}{2}
 	\begin{rail}
 		Digit : ('0,1,...,9');
-		IdentSignNoDigit : '\_' | 'a,b,...,z' | 'A,B,...,Z';
+		IdentSignNoDigit : railunderline | 'a,b,...,z' | 'A,B,...,Z';
 		IdentSign : IdentSignNoDigit | Digit;
 		Identifier : IdentSignNoDigit (() + IdentSign);
 	\end{rail}
@@ -551,7 +518,7 @@ Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es währ
 			%	\texttt{\_\_34} & \texttt{1234\_} \\ weglassen sonst bad boxes
 			\texttt{gruen} & \texttt{grün} \\
 			\texttt{LaTeX} & \texttt{pro\%zent} \\
-			\texttt{dein\_alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
+			\texttt{alter\_in\_sekunden} & \texttt{Ge\textrm{§}etzbuch} \\
 			\hline
 		\end{tabular}
 	\end{center}
@@ -568,7 +535,7 @@ Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es währ
 %debug
 
 \section{primitive Datentypen}
-Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie zunehmend immer häufiger nutzen werden, bauen im Grunde auf nichts anderem auf.
+Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, auch genannt \textbf{primitive Datentypen} vertraut sind. Aus diesen setzen sich dann alle höheren Datentypen wie zum Beispiel Klassen zusammen. Auch sämtliche (oftmals relativ komplexe) Klassen aus der C++ Standardbibliothek, welche Sie noch zu schätzen lernen werden, bauen im Grunde auf nichts anderem auf.
 
 \subsection{Die Datentypen}
 
@@ -609,12 +576,20 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 \end{center}
 
 Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Es gibt verschiedene Datenmodelle für die Breite integraler Typen, wobei \textbf{I} für \texttt{Integer}, \textbf{L} für \texttt{long} und \textbf{P} für \texttt{Pointer} steht. Für \textbf{Windows 64} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
-% make refercens to the chapters with these operators
+
+% make refercens to the chapters with these operators static_assert und sizeof
 
 \begin{itemize}
 	\item \texttt{sizeof(short) \quad <= \quad sizeof(int) \quad <= \quad sizeof(long) \quad <= \quad sizeof(long long)}
 	\item \texttt{sizeof(float) \quad <= \quad sizeof(double) \quad <= \quad sizeof(long double)}
 \end{itemize}
+
+\begin{center}
+\begin{tabular}{l}
+	\url{https://de.wikipedia.org/wiki/64-Bit-Architektur#Programmiermodell} \\ \\
+	\url{https://de.wikipedia.org/wiki/Datentypen_in_C#Datenmodell}
+\end{tabular}
+\end{center}
 
 \begin{multicols}{2}
 Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerlässlich sind, können Sie mit \texttt{\#include <cstdint>} eine Bibliothek importieren, die Typen fester Breite (und einiges mehr) zur Verfügung stellt:
@@ -637,9 +612,9 @@ Wenn exakte Breiten (oder eine Mindestbreite) bestimmter Typen für Sie unerläs
 Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integrale Typen von Bedeutung. Integrale Typen (ausgenommen \texttt{char}-Typen) sind standardmäßig \textbf{signed} und können daher sowohl \textbf{negative als auch positive Werte} annehmen. In diesem Fall erfolgt die Codierung mit dem 2er-Komplement. Man darf das Schlüsselwort \texttt{signed} optional auch explizit davorschreiben. Setzt man andererseits \textbf{unsigned} vor einen integralen Typ, so kann eine Variable dieses Typs nur \textbf{nichtnegative Werte} speichern, beziehungsweise ihre Werte (Bitmuster) werden als solche interpretiert.
 
 \begin{center}
-\begin{tabular}{c|c}
+\begin{tabular}{|c|c|} \hline
 	\textbf{signed} & \textbf{unsigned} \\ \hline
-	vorzeichenbehaftete Ganzzahlen & vorzeichenlose Ganzzahlen
+	vorzeichenbehaftete Ganzzahlen & vorzeichenlose Ganzzahlen \\ \hline
 \end{tabular}
 \end{center}
  
@@ -692,7 +667,7 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 	\textbf{unsigned}&	U &					UL &				ULL \\ \hline
 \end{tabular}
 \end{center}
-\pagebreak %##
+%\pagebreak %##
 \subsubsection{Typ bool}
 
 \begin{multicols}{2}
@@ -700,7 +675,7 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 		LiteralBool : '0' | '1' | 'true' | 'false';
 	\end{rail}
 
-Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeutend mit \texttt{false}) oder 1 (gleichbedeutend mit \texttt{true}). Wenn Sie einer solchen Variable eine andere integrale Zahl zuweisen, so wird eine \textbf{automatische Konvertierung} nach \texttt{bool} durchgeführt. Dabei wird 0 als \texttt{false} und jede Zahl ungleich 0 als \texttt{true} interpretiert. Für eigene Klassen können Sie selbst eine implizite Konvertierung nach \texttt{bool} implementieren.
+Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeutend mit \texttt{false}) oder 1 (gleichbedeutend mit \texttt{true}). Wenn Sie einer solchen Variable eine andere integrale Zahl zuweisen, so wird eine \textbf{automatische Konvertierung} nach \texttt{bool} durchgeführt. Dabei wird 0 als \texttt{false} und jede Zahl ungleich 0 als \texttt{true} interpretiert. Für eigene Klassen können Sie selbst eine implizite Konvertierung nach \texttt{bool} implementieren. %###ref
 \end{multicols}
 
 \subsubsection{Fließkommatypen}
@@ -738,7 +713,7 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 \begin{center}
 \begin{tabular}{|l|c|c|c|} \hline
 	\textbf{Typ} & \texttt{float} & \texttt{double} & \texttt{long double} \\ \hline
-	\textbf{Suffix} & f oder F & & l oder L \\ \hline
+	\textbf{Suffix} & f oder F & \textit{[ohne Suffix]} & l oder L \\ \hline
 \end{tabular}
 \end{center}
 
@@ -803,11 +778,7 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 	LiteralChar16: "u'" TheSign "'";
 	LiteralChar32: "U'" TheSign "'";
 \end{rail}
-
-%\begin{tabular}{c}
-%	\textbf{Beispiele für char-Literale}
-	%#####
-%\end{tabular}
+%u8 char literal?##
 
 \begin{center}
 \begin{tabular}{|ccc|} \hline
@@ -832,7 +803,9 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 %%'''Ausgabe von float siehe seite 61
 
 \subsection{Initialisierung}
-Mit C++11 wurde eine neue vereinheitlichte Initialisierung eingeführt. Die neue Initialisierungssyntax \textbf{verbietet} manche \textbf{auto conversion}, inbesondere \textit{Narrowing}, weshalb sie zu bevorzugen ist, um die Fehlererkennung zur Compilezeit zu verbessern. Außerdem existierten vorher (und immer noch) viele verschiedene Initialisierungen für Container, Arrays, ... .
+% thema später noch mal aufgreifen
+% außerdem gehört das nicht unbegint in Datentypen (???)####
+Mit \textbf{C++11} wurde eine neue \textbf{vereinheitlichte Initialisierung} eingeführt. Die neue Initialisierungssyntax \textbf{verbietet} manche \textbf{auto conversion}, inbesondere \textit{Narrowing}, weshalb sie zu bevorzugen ist, um die Fehlererkennung zur Compilezeit zu verbessern. Außerdem existierten vorher (und immer noch) viele verschiedene Initialisierungen für Container, Arrays, ... .
 
 Es wird von vielfach empfohlen, neu definierte Variablen immer \textbf{sofort} zu \textbf{initialisieren}. Andernfalls enthält die neu angelegte Variable einen undefinierten Pseudozufallswert, nämlich den Inhalt des entsprechenden Speicherbereichs seit dem letzten Schreibvorhgang, der dort stattfand.
 %###elementinitialisierer für Klassen
@@ -856,7 +829,7 @@ Wenn Sie sich die exakten Definitionen von "`Definition"' und "`Deklaration"' im
 	\hline
 	\textbf{Begriff} & \textbf{Beschreibung} \\ \hline
 	\texttt{Deklaration} & Eine Deklaration (declaration) führt einen Namen ein oder deklariert einen Namen neu (redeclaration) und macht diesen so im betreffenden scope (Sichtbarkeitsbereich) [dem Compiler] bekannt, sodass er dann benutzt werden darf. \\ \hline
-	\texttt{Definition} & Eine Definition ist ein Spezialfall der Deklaration. Intuitiv ausgedrückt ist von einer Definition immer genau dann die Rede, wenn der Compiler explizit angewiesen wird, Speicherplatz für die hinter dem Namen liegende Entität zu reservieren oder der Name "`initialisiert"', oder so gesagt \textit{in gewissem Sinne vollständig} spezifiziert wurde. \\ \hline %% das mal noch bearbeiten
+	\texttt{Definition} & Eine Definition ist ein Spezialfall der Deklaration. Intuitiv ausgedrückt ist von einer Definition immer genau dann die Rede, wenn der Compiler explizit angewiesen wird, Speicherplatz für die hinter dem Namen liegende Entität zu reservieren oder der Name "`initialisiert"', oder so gesagt \textit{in gewissem Sinne} vollständig spezifiziert wurde. \\ \hline %% das mal noch bearbeiten
 \end{tabular}
 \end{center}
 %% beispiele ergänzen ######!!!!!!
@@ -892,9 +865,9 @@ Die Operatoren von C++ werden in einem \textbf{gesonderten Kapitel} noch ausfüh
 	&& \textbf{nur auf Ganzzahltypen definiert (!)} \\ \hline
 \end{tabular}
 \end{center}
-Zu beachten ist insbesondere das Verhalten des \texttt{/} -Operators (Divisionsoperator): Wird dieser Operator auf zwei Werten von integralem Typ aufgerufen, so führt dieser eine \textbf{Ganzzahldivision} durch. Ist einer der Operanden von einem floating point - Typ, dann führt dieser Operator eine Division mit Nachkommateil durch (floating point Division). Das zweite Beispiel in der Tabelle zur Divisionsoperation zeigt eine Ganzzahldivision und eine anschließende \textbf{automatische Konvertierung} von \texttt{int} zu \texttt{double}.
+Zu beachten ist insbesondere das Verhalten des \texttt{/} -Operators (Divisionsoperator): Wird dieser Operator auf zwei Werten von integralem Typ aufgerufen, so führt dieser eine \textbf{Ganzzahldivision} durch. Ist einer der Operanden von einem floating point - Typ, dann führt dieser Operator eine \textbf{Gleitkommadivision} durch (floating point Division). Das zweite Beispiel in der Tabelle zur Divisionsoperation zeigt eine Ganzzahldivision und eine anschließende \textbf{automatische Konvertierung} von \texttt{int} zu \texttt{double}.
 
-Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermöglicht unter anderem Punkt- vor Strichrechnung. Wollen Sie dagegen eine andere Reihenfolge erzwingen, besteht die Möglichkeit der Klammerung.
+Alle Operatoren von C++ sind in einer Prioritätsreihenfolge geordnet. Das ermöglicht unter anderem Punkt- vor Strichrechnung. Wollen Sie dagegen eine andere Reihenfolge erzwingen, besteht die Möglichkeit der Klammerung. % ref zum operatoren kapitel '####
 \begin{center}
 	\begin{tabular}{|l|l|} \hline
 		\textbf{Punkt vor Strich:} & \texttt{int x = 5 + 3 * 7; // 26} \\
@@ -950,12 +923,13 @@ Narrowing und Promotion
 
 \subsection{Pointer}
 Ein Pointer auf ein Datum (Objekt), auch genannt Zeiger auf das Datum bezeichnet die \textbf{Speicheradresse} des Datums. In diesem Sinne "`zeigt"' ein Pointer mit seinem Wert, der Speicheradresse, genauer gesagt \textit{der Anfangsspeicheradresse} auf das Objekt.
+\medskip
 
-Pointer haben unabhängig des Typs des Objektes, auf welches sie zeigen, immer dieselbe Größe, welche sich nach der Adressbreite auf Ihrem System richtet.
+Pointer haben unabhängig des Typs des Objektes, auf welches sie zeigen, immer dieselbe \textbf{Größe}, welche sich nach der \textbf{Adressbreite} auf Ihrem System richtet. So sind Pointer einer 32bit Architektur 4 Bytes groß, Pointer einer 64bit Architektur 8 Bytes. So gilt zum Beispiel \texttt{sizeof(int*) == sizeof(std::vector<double>*)}
+\medskip
 
-So gilt zum Beispiel \texttt{sizeof(int*) == sizeof(std::vector<double>*)}
+Pointer sollten stets entweder mit einer \textbf{gültige}n \textbf{Adresse} auf ein Objekt verweisen oder den \textbf{Nullzeiger} enthalten, in C++ \texttt{nullptr}. Damit wird markiert, dass der Zeiger momentan auf kein Objekt zeigt. Auch ist es möglich, aber in der Praxis eher unüblich, für jeden Pointer ein zusätzliches Datum (vom Typ \texttt{bool}) bereit zu halten, um die Gültigkeit (ja/nein) des Pointers zu speichern.
 
-Pointer sollten stets entweder mit einer gültigen Adresse auf ein Objekt verweisen oder den \textbf{Nullzeiger} enthalten, in C++ \texttt{nullptr}. Damit wird markiert, dass der Zeiger momentan auf kein Objekt zeigt.
 \subsubsection{Pointertyp}
 Sei \texttt{T} ein Typ. Dann ist auch \texttt{T*} ein Typ, nämlich der Typ "`Pointer auf ein Objekt vom Typ \texttt{T}"'.
 
@@ -964,8 +938,59 @@ Um den Pointer auf ein Objekt \texttt{t} vom Typ \texttt{T} zu bestimmen, nutzt 
 
 Um mit gegeben Pointer \texttt{tp} vom Typ \texttt{T*} auf das dahinterliegende Objekt zuzugreifen, gibt es den (unären) Dereferenzierungsoperator (\texttt{*}). Der Ausdruck \texttt{*tp} ist dann wieder vom Typ \texttt{T} und bezeichnet das Objekt (ist eine Referenz auf das Objekt), auf welches mit \texttt{tp} gezeigt wird.
 
+\subsubsection{dynamische Speicherreservierung}
+
+Pointer können als Zugang zu dynamisch allokierten Objekten genutzt werden.
+Mit den Operatoren \textbf{\texttt{new}} und \textbf{\texttt{new[]}} können Sie dynamisch (d.h. zur (Programm-)laufzeit) Speicher reservieren. Dynamisch allkoierter Speicherplatz \textbf{muss "`per Hand"' wieder freigegeben werden}, wenn er nicht mehr gebraucht, verwendet, beziehungsweise der Pointer auf diesen nicht gelöscht wird, damit keine \textbf{Memoryleaks} (Speicherlöcher) entstehen.
+Dazu stehen Ihnen die Operatoren \texttt{\textbf{delete}} und \texttt{\textbf{delete[]}} zu Verfügung.
+\begin{center}
+	\begin{tabular}{|c|c|L{9cm}|} \hline
+		\textbf{Operator} & \textbf{Beispiel} & \multicolumn{1}{c|}{\textbf{Erklärung}} \\ \hline
+		\texttt{new} & \texttt{T* ptr = \textbf{new} T;} &
+		\begin{itemize}
+			\item dynamische Reservierung von Speicherplatz auf dem Heap
+			\item Größe des reservierten Speichers = \texttt{sizeof(T)}
+			\item Anlegen eines Objektes vom Typ T (mit Standardkonstruktor, falls Klassentyp)
+			\item Rückgabe des Zeigers auf das Objekt
+			\item wirft Exception, wenn Allokation fehlschlägt % Referenz setzen.
+			\item genauer \dots 
+		\end{itemize}
+		\url{http://www.cplusplus.com/reference/new/operator%20new/}
+		\\ \hline
+		\texttt{delete} & \begin{tabular}{c}
+			\texttt{delete ptr;} \\ \\
+			\texttt{ptr = nullptr;}
+		\end{tabular} &
+		\begin{itemize}
+			\item Speicherplatz hinter dem Pointer wieder freigegeben
+			\item Zeiger \texttt{ptr} ab dann ungültig
+			\item Zeiger wird als ungültig markiert
+		\end{itemize} \\ \hline
+		\texttt{new[]} &  \begin{tabular}{c}
+			\texttt{T* aptr = new T[5];} \\ \\ \\
+			\texttt{aptr[2]->someMethod();}
+		\end{tabular} &
+		\begin{itemize}
+			\item allokiert und erstellt (Konstruktor) 5 Objekte vom Typ T
+			\item Array von 5 \texttt{T} wurde dynamisch angelegt.
+			\item Zeiger auf erstes Objekt wird zurückgegeben.
+			\item Eine Methode vom dritten Objekt wird aufgerufen.
+		\end{itemize} \\ \hline
+		\texttt{delete[]} &  \begin{tabular}{c}
+			\texttt{delete[] aptr;} \\ \\
+			\texttt{aptr = nullptr;}
+			\end{tabular} &
+		\begin{itemize}
+			\item T[5] - Array wird freigegeben
+			\item Hier darf nicht das einfache \texttt{\textbf{delete}} genutzt werden, da sonst ein Speicherloch entsteht.
+		\end{itemize} \\ \hline
+		
+		
+	\end{tabular}
+\end{center}
+
 \subsubsection{Zeigerarithmentik}
-Pointer sind in C++ streng typisiert, damit es ermöglicht wird, die Operatoren speziell für diese Typen zu überladen.
+Pointer sind in C++ streng typisiert, damit es ermöglicht wird, die \textbf{Operatoren speziell} für diese Typen zu \textbf{überladen}. Obgleich Zeiger also ganze Zahlen (Speicheradressen) sind, wird sich eine Addition beispielsweise anders verhalten als eine Addition zwischen zwei Zahlen vom Typ \texttt{int}.
 \begin{center}
 	\begin{tabular}{|c|c|p{10cm}|} \hline
 		\textbf{Operator} & \textbf{Bezeichnung} & \textbf{Verwendung} \\ \hline
@@ -1009,17 +1034,68 @@ int main(){
 
 \subsection{Referenzen}
 
-Eine Referenz auf ein Datum (Objekt) bezeichnet ein Objekt selbst. So gesagt legen Sie mit einer Referenz einen zusätzlichen Identifier für ein bereits existierendes Objekt an.
+Eine Referenz auf ein Datum (Objekt) bezeichnet ein Objekt selbst. So gesagt legen Sie mit einer Referenz einen \textbf{zusätzlichen Identifier} (identifizierenden, objektgebundenen Namen) für ein bereits existierendes Objekt an.
+\medskip
 
-Referenzen sind nichts weiter als syntaktischer Zucker für die Verwendung von Pointern. Sie können einem die Arbeit wesentlich erleichtern, da sie einem die ständige Verwendung der Operatoren \texttt{\&} und \texttt{*} ersparen.
+Referenzen sind nichts weiter als \textbf{syntaktischer Zucker für} die Verwendung von \textbf{Pointer}n. Sie können einem die Arbeit wesentlich erleichtern, da sie einem die ständige Verwendung der Operatoren \texttt{\&} und \texttt{*} ersparen.
+\medskip
 
-Referenzen können nur einmal (mit einer bereits vorhandenen Referenz) initialisiert werden. Hinterher kann das Objekt, auf welches die Referenz \textit{implizit} zeigt, nicht mehr "`ausgetauscht"' werden. D.h. Sie können zwar das Objekt hinter der Referenz ändern, die Referenz aber bleibt eine Referenz auf ebendieses spezielle Objekt und kann nicht zu einer Referenz auf ein anderes Objekt an einer anderen Speicherstelle geändert werden.
+Referenzen können nur einmal (mit einer bereits vorhandenen Referenz) und \textbf{müssen} sogar bei Deklaration sofort \textbf{initialisiert werden}. Hinterher kann das Objekt, auf welches die Referenz \textit{implizit} zeigt, nicht mehr "`ausgetauscht"' werden. D.h. Sie können zwar das Objekt hinter der Referenz ändern, die Referenz aber bleibt eine Referenz auf ebendieses spezielle Objekt und kann nicht zu einer Referenz auf ein anderes Objekt an einer anderen Speicherstelle geändert werden.
 
 
 %Pointer haben unabhängig des Typs des Objektes, auf welches sie zeigen, immer dieselbe Größe, welche sich nach der Adressbreite auf Ihrem System richtet.
 
 \subsubsection{Referenztyp}
-Sei \texttt{T} ein Typ. Dann ist auch \texttt{T\&} ein Typ, nämlich der Typ "`Referenz auf ein Objekt vom Typ \texttt{T}"'.
+Sei \texttt{T} ein Typ. Dann ist auch \texttt{T\&} ein Typ, nämlich der Typ "`Referenz auf ein Objekt vom Typ \texttt{T}"'. {\tiny Zugegebenermaßen lässt es sich über diese Auffassung streiten, gerade weil Referenzen syntactic sugar sind und der außerdem der Standard den Compilerherstellern die Implementation dieser überlässt.}
+
+\subsubsection{Vergleich zu Java}
+In Java (\textit{und ähnlich in Object Pascal (Delphi)}) gibt es *nur* diese Referenzen, also \textit{impliziten Zeiger}. Ein Objekt in Java legen Sie mit \texttt{new} an und bekommen eine Referenz auf das Objekt zurück, was Sie spätestens daran erkennen, dass sie diesen \textit{impliziten Zeiger} nicht dereferenzieren müssen, sondern lediglich den Zugriffoperator (.) anwenden brauchen. Der \texttt{operator ==} in Java stellt \textsl{(in C++ gedacht)} wiederum einen Wrapper dar, der den Pointer aus der Referenz ermittelt und diesen dann vergleicht. Aufgrund dieser Reservierung, ist es in Java folglich nicht möglich, denn \texttt{operator ==} für benutzerdefinierten Vergleich zweier Objekte zu verwenden, sondern es müssen Methoden dafür implementiert werden, meist genannt \texttt{equals()}.
+
+\subsubsection{Wie groß ist eine Referenz?}
+
+\textit{Motivation:} \quad Ein \texttt{char} ist i.A. 1 Byte groß, ein \texttt{long long int} ist in der Regel 8 Byte groß. In einer 32-bit Architektur beispielsweise ist ein Zeiger auf ein \texttt{char} 4 Byte groß, ein Zeiger auf ein \texttt{long long int} genauso. Aber Wie groß ist eine Referenz auf ein Datum vom Typ \texttt{X}? 
+\medskip
+
+\noindent
+\textit{Die Antwort:} \quad Das ist Compiler-spezifisch und nicht zuletzt situationsabhängig. Wie schon erwähnt, wird die interne Umsetzung von Referenzen dem Compiler überlassen. In vielen Fällen lässt sich aber sagen: "`Hinter dieser Referenz muss ein Zeiger stecken."' Das lässt vermuten das eine Referenz auf ein Objekt T so groß sein muss wie ein Zeiger (Pointer) auf ein T, also so groß wie ein Zeiger im Allgemeinen auf der betreffenden Zielplattform. Die nun folgende Tabelle zeigt einige Beispiele bzw. Randfälle dazu auf.
+%\medskip
+\def\cout{{<}{<}}
+\begin{center}
+	\begin{tabular}{|M{3cm}|L{4.5cm}|M{8cm}|} \hline
+		\textbf{Fall} & \multicolumn{1}{c|}{{\textbf{Beispiel}}} & \textbf{Erläuerungen} \\ \hline
+		Referenz auf eine Variable definiert, die \textbf{im selben Scope} definiert wurde. &
+			\texttt{\{ \textit{// in einer Sequenz} \newline long long x; \newline x = 4; \newline long long\& y \{x\}; \newline y = 0; \newline \}} &
+			\begin{itemize}
+				\item \texttt{y} ist ein zusätzlicher Bezeichner für \texttt{x}.
+				\item \texttt{y} wird wegoptimiert, "`durch \texttt{x} ersetzt"'.
+				\item Auf lokale Variablen auf dem Stack kann ohne Weiteres zugegriffen werden.
+				\item kein zusätzlicher Zeiger notwendig
+			\end{itemize} \\ \hline
+		Referenz \textbf{als Argument an eine Funktion} übergeben &
+			\texttt{void \textbf{foo}(int\& zahl)\{\newline zahl = 2 * zahl - 1;\newline\} \newline \newline \dots \newline // Aufruf: \newline foo(z);} &
+			\begin{itemize}
+				\item foo bekommt (abstrakt gedacht) keinen Integer sondern eine Referenz auf ein \texttt{int}.
+				\item \textbf{ABER:} Faktisch (auf tieferer Ebene gedacht) kann man als Parameter nur Werte an Funktionen übergeben, die nicht wieder verändert zurückgegeben werden können.
+				\item \textbf{FAZIT:} Um \texttt{zahl} ändern zu können, muss ein Zeiger auf \texttt{zahl} übergeben werden.
+				\item  Hinter \texttt{int\&} \textit{muss} ein Pointer auf den Integer verborgen sein.
+			\end{itemize} \\ \hline
+		\textbf{Wie groß} ist eine Referenz - \texttt{\textbf{sizeof}(T\&)}? &
+			\texttt{\{\newline T x; \newline T\& ref \{x\}; \newline std::cout \cout\ sizeof(ref) \cout\ \textquotedbl \vspace{1ex} == \textquotedbl \vspace{1ex} \cout\ sizeof(x); \} \newline \newline // \textit{Das entspricht:} \newline T* ptr \{\&x\}; \newline std::cout \cout\ sizeof(*ptr) \cout\ \textquotedbl \vspace{1ex} == \textquotedbl \vspace{1ex} \cout\ sizeof(x);} &
+			\begin{itemize}
+				\item Für beliebigen Typ \texttt{T} sind beide Ausgaben gleich.
+				\item Mit \texttt{sizeof()} wird nicht die Referenz selbst, sondern das dahinterliegende Objekt angesprochen, da der \textit{implizite} Zeiger (... , den wir vermuten, ...) hinter der Referenz \textit{implizit} dereferenziert wird.
+				\item Sie können so nicht die "`Größe der Referenz"' bestimmen.
+			\end{itemize} \\ \hline
+		Wir tricksen die Referenzsemantik von C++ quasi aus: \newline \textbf{Referenz als Structmember} &
+			\texttt{struct A \{\newline \vspace{3ex} char\& ref;\newline \}; \newline // \textit{irgendo im Quelltext:} \newline std::cout \cout\ sizeof(A); \newline} &
+			\begin{itemize}
+				\item Was hier gesagt wird, ist nicht 100\%ig sicher, da der Standard den Compilern Freiheiten lässt.
+				\item Der Compiler wird hier gezwungen die Referenz als Zeiger aufzulösen (\textit{und nicht wegzuoptimieren}).
+				\item Mit \texttt{\textbf{sizeof(A)}} erhalten Sie die Größe der Referenz selbst im Speicher.
+				\item Die Größe entspricht (\textit{zu erwarten}) der Adressbreite ihrer Systems, bzw. \texttt{sizeof(char*)}.
+			\end{itemize} \\ \hline
+	\end{tabular}
+\end{center}
 
 \begin{tcblisting}{colback=yellow!10,colframe=yellow!40!black,listing only,
 		title=Beispiel zu Referenzen, fonttitle=\bfseries}
@@ -1429,7 +1505,6 @@ Von einer Funktionsdefinition spricht man, wenn Sie den Quellcode der Funktion a
 \}}
 
 
-\begin{comment}
 \section{Operatoren}
 % sizeof(), static_assert()
 % seite 102 Vergleichsoperatoren.
@@ -1438,9 +1513,14 @@ Von einer Funktionsdefinition spricht man, wenn Sie den Quellcode der Funktion a
 %?: Operator seite 110
 % 116 ++, #-- operator, bemerkenswerter seiteneffekt seite 117
 
+\section{Scopes}
+
+\section{Namespaces}
 
 
 \section{Modularisierung}
+
+
 
 \chapter{Zusätzliche Features}
 \section{Templates}
@@ -1455,7 +1535,6 @@ Von einer Funktionsdefinition spricht man, wenn Sie den Quellcode der Funktion a
 % S 73++
 
 	
-\end{comment}
 	
 
 %***********************************************************some stuff from some time ago****************************************************
@@ -1599,5 +1678,58 @@ every path/.style=fuzzy]
 
 \end{comment}
 
+\begin{comment}
+\lstdefinestyle{framed}
+{
+frame=lrb,        
+belowcaptionskip=-1pt,
+xleftmargin=8pt,
+framexleftmargin=7pt,
+framexrightmargin=6pt,
+framextopmargin=5pt,
+framexbottommargin=5pt,
+framesep=0pt,
+rulesep=0pt,
+}
+
+\begin{lstlisting}[style = framed, caption = Nutzung von g++ mittels Powershell]
+PS A:\> cd .\example\
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+
+
+PS A:\example> type .\hello_world.cpp
+#include <iostream>
+
+int main(){
+std::cout << "Hello World";
+return 0;
+}
+
+PS A:\example> g++ -o programm hello_world.cpp -Wall -pedantic -std=c++11
+PS A:\example> ls
+
+
+Verzeichnis: A:\example
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       02.04.2017     08:38             87 hello_world.cpp
+-a----       02.04.2017     09:12          48650 programm.exe
+
+
+PS A:\example> .\programm.exe
+Hello World
+PS A:\example>
+\end{lstlisting}
+\end{comment}
 
 \end{document}
