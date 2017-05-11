@@ -38,10 +38,10 @@ Zusatzwissen:
 
 //Funktion deklarieren:
 // [Spezifizierer] Rückgabetyp Funktionsname(Parameterliste);
-char einZeichen(const char* string, int position); // Nur-Deklaration
+char einZeichen(const char* string, unsigned int position); // Nur-Deklaration
 
 // Funktion definieren
-char einZeichen(const char* string, int position){
+char einZeichen(const char* string, unsigned int position){
 	std::string s {string};
 	if ((position > s.size()) || (position < 1) ){
 		return ' ';
