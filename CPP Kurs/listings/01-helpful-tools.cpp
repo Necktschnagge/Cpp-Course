@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
 	std::cout << << "In 7 Jahren bist du " << 7 + zahl << " Jahre alt." << '\n';
 #endif //debug
 	
-	std::cout << "Tsch" << static_cast<char>(0x81) << "ss\n";
+	std::cout << "Tsch\x81ss\n";
 	//https://de.wikipedia.org/wiki/Codepage_850
 	
 	std::cin.sync();

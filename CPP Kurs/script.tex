@@ -454,12 +454,12 @@ int main(int argc, char* argv[]){
 	std::cout << "Okay!\n\n";
 	
 #ifdef debug 
-	//folgende Zeile enthält einen Syntaxfehler und der Code kann nicht kompiliert werden:
+	//folgende Zeile beinhaltet einen Syntaxfehler und der Code kann nicht kompiliert werden:
 	std::cout << << "In 7 Jahren bist du " << 7 + zahl << " Jahre alt." << '\n';
 	// Durch entfernen der Anweisung #define debug, wird die Zeile nicht mehr mitkompiliert.
 #endif //debug
-	
-	std::cout << "Tsch\h81ss\n";
+
+	std::cout << "Tsch\x81ss\n";
 	//https://de.wikipedia.org/wiki/Codepage_850
 	
 	std::cin.sync();
@@ -502,7 +502,7 @@ Bevor es richtig losgeht, möchte ich noch ein paar Worte über den Programmiers
 		& Deutsch, Englisch, \dots Isländisch \\ \hline
 	\end{tabular}
 \end{center}
-Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem Sie sich um die \textbf{Quelltextformatierung} kümmern. Dies ist gerade bei Projekten mit vielen Entwicklern hilfreich, da so ziemlich effizient für einheitliches Quelltextlayout gesorgt werden kann.
+Einige IDEs können Sie sogar mehr oder weniger dabei unterstützen, in dem sie sich um die \textbf{Quelltextformatierung} kümmern und Ihnen zumindest teilweise die Arbeit abnehmen. Dies ist gerade bei Projekten mit vielen Entwicklern hilfreich, da so ziemlich effizient für einheitliches Quelltextlayout gesorgt werden kann.
 
 
 \chapter{Datentypen in C++} \label{real_start}
@@ -539,7 +539,7 @@ Früher oder später müssen Sie in Ihrem Programm Daten speichern, sei es währ
 	
 	Laut Standard ist auch das \textbf{\$-Zeichen} in Bezeichnern erlaubt. Auch hier wird ein Verzicht auf dieselben empfohlen, da es Compiler gab und vielleicht noch gibt, die dies nicht unterstützen.
 	
-	Dagegen ist es jedoch Möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash}uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash}UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} als Identifier genutzt werden.
+	Es ist möglich Umlaute und viele andere \textbf{UTF-Zeichen} in Bezeichnern zu nutzen. Nicht erlaubt sind Identifier wie \texttt{schön} oder \texttt{größer}. Zeichen dürfen aber UTF-codiert in der Form \texttt{\textrm{\textbackslash}uXXXX} als \textbf{UTF-16}-Zeichen oder in der Form \texttt{\textrm{\textbackslash}UXXXXXXXX} als \textbf{UTF-32}-Zeichen verwendet werden. So darf statt \texttt{schön} beispielsweise \texttt{sch\textrm{\textbackslash}u00f6n} als Identifier genutzt werden.
 	% identifier aus dem kapitel schmeißen und eine ebene höher oder sogar zwei.
 \end{multicols}
 %\end{comment}
@@ -586,8 +586,7 @@ Zu aller erst ist es wichtig, dass Sie mit den \textbf{eingebauten Datentypen}, 
 	\end{tabu}
 \end{center}
 
-Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Es gibt verschiedene Datenmodelle für die Breite integraler Typen, wobei \textbf{I} für \texttt{Integer}, \textbf{L} für \texttt{long} und \textbf{P} für \texttt{Pointer} steht. Für \textbf{Windows 64} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
-
+Leider sind die exakten Größen der Basisdatentypen fast immer \textbf{implemtentierungsabhängig} und nicht zuverlässig voraussagbar. Es gibt verschiedene Datenmodelle für die Breite integraler Typen, wobei \textbf{I} für \texttt{Integer}, \textbf{L} für \texttt{long} und \textbf{P} für \texttt{Pointer} steht. Für \textbf{Windows 64bit} ist \textbf{LLP64} typisch, die meisten \textbf{unixoiden Systeme 64bit} nutzen \textbf{LP64}. Um zur Compilezeit eine Prüfung der Größe eines Datentyps durchzuführen, bieten sich der \texttt{sizeof()}-Operator und \texttt{static\_assert()} an. Sie können sich jedoch allenfalls auf folgende Relationen verlassen:
 % make refercens to the chapters with these operators static_assert und sizeof
 
 \begin{itemize}
@@ -628,8 +627,29 @@ Die Schlüsselworte \texttt{signed} sowie \texttt{unsigned} sind nur für integr
 	vorzeichenbehaftete Ganzzahlen & vorzeichenlose Ganzzahlen \\ \hline
 \end{tabular}
 \end{center}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|} \hline
+		\textbf{Bitmuster (\textit{8 Bit})} & \textbf{Interpretation als \texttt{uint8\_t} (\textit{unsigned})} & \textbf{Interpretation als \texttt{int8\_t} (\textit{signed})} \\ \hline
+		\texttt{0000 0000} \quad 0x00 & 0 & 0 \\
+		\texttt{0000 0001} \quad 0x01 & 1 & 1 \\
+		\texttt{0000 0010} \quad 0x02 & 2 & 2 \\
+		\dots & \dots & \dots \\
+		\texttt{0111 1111} \quad 0x7F & 127 & 127 \\
+		\texttt{1000 0000} \quad 0x80 & 128 & -128 \\
+		\texttt{1000 0001} \quad 0x81 & 129 & -127 \\
+		\dots & \dots & \dots \\
+		\texttt{1111 1110} \quad 0xFE & 254 & -2 \\
+		\texttt{1111 1111} \quad 0xFF & 255 & -1 \\ \hline
+	\end{tabular}
+\end{center}
  
-Eine Ausnahme bilden die \textbf{char-Typen}: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist. Deswegen muss (\textit{sollte}) in jedem Fall \texttt{signed} bzw. \texttt{unsigned} vor einen solchen Typ gesetzt werden, sofern ein solcher verglangt wird. Auch wird deswegen empfohlen, die \texttt{char}-Typen nicht für Zahlenarithmetik sondern nur für die Darstellung von Zeichen zu nutzen.
+Es gilt für eine Ganzzahl der Bitlänge $n$:
+\[
+	\texttt{unsigned Value} \equiv \texttt{signed Value} \pmod{n}
+\]
+ 
+Eine Ausnahme bilden die \textbf{char-Typen}: Hier ist es implementierungsabhängig, ob beispielsweise eine \texttt{char} standardmäßig als \texttt{signed char} oder als \texttt{usigned char} implemetiert ist. Deswegen muss (\textit{sollte}) in jedem Fall \texttt{signed} bzw. \texttt{unsigned} vor einen solchen Typ gesetzt werden, sofern ein solcher verglangt wird. Auch wird deswegen empfohlen, die \texttt{char}-Typen nicht für Zahlenarithmetik sondern nur für die Darstellung von Zeichen zu nutzen, wofür eine Verwendung von \texttt{signed} bzw. \texttt{unsigned} nicht erforderlich und auch nur irreführend ist.
 
 \subsubsection{Wertebereiche}
 
@@ -668,7 +688,7 @@ Eine Ausnahme bilden die \textbf{char-Typen}: Hier ist es implementierungsabhän
 %\end{framed}	
 \end{center}
 
-Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für \textbf{Literale vom Typ} \texttt{int}. Benutzen Sie Literale anderer Typen wie beispielsweise \texttt{unsigned int} oder \texttt{signed long int}, so müssen sie entsprechende \textbf{Suffixe} wie in folgender Tabelle verwenden. Groß- und Kleinschreibung der Suffixe sind gleichbedeutend. Statt U, UL, ULL, L, LL dürfen auch u, ul, ull, l, ll verwendet werden.
+Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für \textbf{Literale vom Typ int}. Benutzen Sie Literale anderer Typen wie beispielsweise \texttt{unsigned int} oder \texttt{signed long int}, so müssen sie entsprechende \textbf{Suffixe} wie in folgender Tabelle angegeben, anhängen. Groß- und Kleinschreibung der Suffixe sind gleichbedeutend. Statt U, UL, ULL, L, LL dürfen auch u, ul, ull, l, ll verwendet werden.
 
 \begin{center}
 \begin{tabular}{|c|ccc|}
@@ -678,6 +698,18 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 	\textbf{unsigned}&	U &					UL &				ULL \\ \hline
 \end{tabular}
 \end{center}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|} \hline
+		\multicolumn{3}{|c|}{Beispiele} \\ \hline
+		\textbf{Literal} & \textbf{Typ} & \textbf{Erläuterung} \\ \hline
+		24 & \texttt{int} & Standard \\
+		32u & \texttt{unsigned int} & explizit unsigned und standardmäßig int-Breite \\
+		3465948UL & \texttt{unsigned long int} & explizit angegeben \\
+		-10000000LL & \texttt{long long int} & standardmäßig signed, explizit long long-Breite \\ \hline
+	\end{tabular}
+\end{center}
+
 %\pagebreak %##
 \subsubsection{Typ bool}
 
@@ -686,14 +718,14 @@ Durch das obenstehende Syntaxdiagrammsystem erhalten Sie die Möglichkeiten für
 		LiteralBool : '0' | '1' | 'true' | 'false';
 	\end{rail}
 
-Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeutend mit \texttt{false}) oder 1 (gleichbedeutend mit \texttt{true}). Wenn Sie einer solchen Variable eine andere integrale Zahl zuweisen, so wird eine \textbf{automatische Konvertierung} nach \texttt{bool} durchgeführt. Dabei wird 0 als \texttt{false} und jede Zahl ungleich 0 als \texttt{true} interpretiert. Für eigene Klassen können Sie selbst eine implizite Konvertierung nach \texttt{bool} implementieren. %###ref
+Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeutend mit \texttt{false}) oder 1 (gleichbedeutend mit \texttt{true}). Wenn Sie einer solchen Variable eine andere integrale Zahl zuweisen, so wird eine \textbf{automatische Konvertierung} nach \texttt{bool} durchgeführt. Dabei wird 0 als \texttt{false} und jede Zahl ungleich 0 als \texttt{true} interpretiert. Für eigene Klassen können Sie selbst eine implizite (oder explizite) Konvertierung nach \texttt{bool} implementieren. %###ref
 \end{multicols}
 
 \subsubsection{Fließkommatypen}
 
 %###specify hex digit!!!
 % write a test program for this stuff
-
+	
 \begin{rail}
 	LiteralDouble : (
 						('.' 
@@ -710,7 +742,7 @@ Eine Variable vom Typ \texttt{bool} enthält immer genau den Wert 0 (gleichbedeu
 %							'.'
 %							(() + HexDigit)
 %						)
-					) \\
+					) %\\
 					( | 
 						('e' | 'E') 
 						(| '+' | '-') 
@@ -735,7 +767,7 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 	\item Zeichen dargestellt als Bitfolge (fester oder variabler Länge)
 	\item Character-Typen sind integrale Typen.
 	\item Zeichensatz / character set / Codetabellen für Zuordnung
-	\item Überladung der Operatoren für die Nutzung als Zeichen
+	\item Überladung der Operatoren von C++ für die Nutzung als Zeichen
 	\bigskip
 	\item ASCII Code
 	\begin{itemize}
@@ -777,9 +809,9 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 		
 \end{itemize}
 \begin{center}
-\begin{tabular}{|p{4cm}|c|c|c|c|} \hline
-	\textbf{Datentyp} & \texttt{char} & \texttt{wchar\_t} & \texttt{char16\_t} & \texttt{char32\_t} \\ \hline
-	\textbf{Verwendung}  & ASCII/ANSI, UTF-8 & ((UTF-16)) & UTF-16 & UTF-32 \\ \hline
+\begin{tabular}{|p{4cm}|c|c|c|} \hline
+	\textbf{Datentyp} & \texttt{char} & \texttt{char16\_t} & \texttt{char32\_t} \\ \hline % \texttt{wchar\_t} & 
+	\textbf{Verwendung}  & ASCII/ANSI, UTF-8 & UTF-16 & UTF-32 \\ \hline % ((UTF-16)) & 
 \end{tabular}
 \end{center}
 
@@ -789,7 +821,7 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 	LiteralChar16: "u'" TheSign "'";
 	LiteralChar32: "U'" TheSign "'";
 \end{rail}
-%u8 char literal?##
+%u8 char literal?## Anmerkung, warum es das nicht gibt""
 
 \begin{center}
 \begin{tabular}{|ccc|} \hline
@@ -801,7 +833,7 @@ Für Gleitkommazahlliterale benutzt C++ (wie auch C) die \textbf{US-Schreibweise
 	10 & \textbackslash n & Zeilenvorschub (neue Zeile) \\
 	11 & \textbackslash v & vertikaler Tabulator \\ \hline
 	12 & \textbackslash f & Seitenvorschub \\
-	13 & \textbackslash f & Wagenrücklauf \\ \hline
+	13 & \textbackslash r & Wagenrücklauf \\ \hline
 	& \textbackslash \textbackslash & Backslash \\
 	& \textbackslash \" & doppelte Anführungszeichen \\ \hline
 	& \textbackslash ' & einfache Anführungszeichen \\
