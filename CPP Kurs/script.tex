@@ -1277,7 +1277,7 @@ C-like Strings sind Arrays über dem Typ \texttt{char} und werden auch als solch
 \begin{rail}
 	AsciiStringLiteral : '"' (() + Zeichen) '"';
 \end{rail}
-Für UTF-kodierte Strings benötigen Sie entsprechende Präfixe. Mit \texttt{u8"..."} stellen Sie einen UTF-8 String, mit \texttt{u"..."} bzw. \texttt{U"..."} einen UTF-16 bzw. UTF-32 kodierten String dar. C-Style Stringliterale sind immer vom Typ \texttt{const char*} bzw. \texttt{const char16\_t*} usw. analog.
+Für UTF-kodierte Strings benötigen Sie entsprechende Präfixe. Mit \texttt{u8"..."} stellen Sie einen UTF-8 String, mit \texttt{u"..."} bzw. \texttt{U"..."} einen UTF-16 bzw. UTF-32 kodierten String dar. C-Style Stringliterale sind immer vom Typ \texttt{const char*} bzw. \texttt{const char16\_t*} usw. analog. % prefix L"nfbdhgfh" für einen wide_char string (Multibyte).
 
 \subsection{Records}
 Unter Records versteht man die Zusammenfassung von mehreren Objekten nicht notwendigerweise verschiedenen Typs. Aus C kennt man das Schlüsselwort \texttt{\textbf{struct}} zum Definieren solcher Typen.

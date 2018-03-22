@@ -1,0 +1,1 @@
+powershell.exe .\psmake.ps1 rail
