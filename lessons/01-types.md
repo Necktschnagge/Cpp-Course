@@ -30,7 +30,7 @@
    
 * static_cast
    * GUT: wird statisch zur Compilezeit aufgelöst
-   * `long x = 30; int y = (int) x;`
+   * `long x = 30; int y = static_cast<int>(x);`
    
 * dynamic_cast
    * AKZEPTABEL: Wenn du diesen Cast brauchst, ist das ein Indiz, dass du diese Notwendigkeit durch ein besseres Klassendesign vermeiden könntest.
