@@ -10,6 +10,7 @@
    * int, long, ...
    * unsigned int,
    * char,
+   * bool,
    * float, double, long double
 * zusammengesetzte Typen:
    * Referenz: Sei `T` ein Typ. Dann heißt der Typ `T&` _Referenz auf ein T_. Eine Referenz ist stets als neuer (zusätzlicher) Identifier auf ein bereits bestehendes Objekt (Speicherbereich) zu verstehen.
@@ -83,7 +84,24 @@ unsigned long& y = const_cast<unsigned long&> x;
 y = 40;
 std::cout << x; // 40 if no error occurs.
 ```
-   
+
+## Wie liest man Typen
+* vom neuen Bezeiner beginnend nach rechts, soweit wie möglich (bis zur Klammer oder zum Zeilenende).
+* nach links soweit wie nötig, 
+
+* `int* x[4];`
+* `void (* x[2])(int, int);`
+* `std::string x[4][2];`
+
+```
+using my_array_type = int[8];
+```
 
 # Aufgaben
 
+1. Schreib eine Funktion, die zwei Zahlen entgegen nimmt und die Summe zurück gibt.
+   a. Übergib die Argumente als Kopie
+   b. .. als Referenz
+   c. .. mittels Pointer
+   d. Was ist die beste Variante
+2. Wieviel Speicher benötigen bestimmte Typen?
