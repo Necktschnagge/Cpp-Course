@@ -86,8 +86,8 @@ std::cout << x; // 40 if no error occurs.
 ```
 
 ## Wie liest man Typen
-* vom neuen Bezeiner beginnend nach rechts, soweit wie möglich (bis zur Klammer oder zum Zeilenende).
-* nach links soweit wie nötig, 
+* vom neuen Bezeichner beginnend nach rechts, soweit wie möglich (bis zur Klammer oder zum Zeilenende).
+* nach links soweit wie nötig,
 
 * `int* x[4];`
 * `void (* x[2])(int, int);`
@@ -97,11 +97,62 @@ std::cout << x; // 40 if no error occurs.
 using my_array_type = int[8];
 ```
 
+## Pointer, new und delete
+
+Man kann zur Laufzeit Speicherplatz für ein neues Objekt anfordern und dieses gleich an der Speicherstelle initialisieren.
+* `int* p_int = new int();`
+* `std::string* p_string = new std::string("Neuer String im Heapspeicher");`
+* `long* p_long_array = new long[10];`
+
+
+Durch new allokierter Speicherplatz muss mit delete wieder freigegeben werden, sonst entstehen memory leaks.
+* `delete p_int;`
+* `delete p_string;`
+* `delete [] p_long_array;`
+
 # Aufgaben
 
 1. Schreib eine Funktion, die zwei Zahlen entgegen nimmt und die Summe zurück gibt.
-   a. Übergib die Argumente als Kopie
-   b. .. als Referenz
-   c. .. mittels Pointer
-   d. Was ist die beste Variante
-2. Wieviel Speicher benötigen bestimmte Typen?
+  1. Übergib die Argumente als Kopie
+  2. .. als Referenz
+  3. .. mittels Pointer
+  4. Was ist die beste Variante? Was sollte man in der Praxis nutzen?
+2. Speicherbedarf von bestimmten Typen
+
+```
+class empty {
+
+};
+
+struct vec2 {
+  int x;
+  int y;
+};
+
+struct intelligent_vec2 {
+  int x;
+  int y;
+  
+  int sum() const {
+   return x + y;
+  }
+};
+```
+  1. Wie viel Speicher benötigt ein `std::string`, `int`, `long double`, `std::string*`, `int*` bzw. `long double*`? Überlege dir erst eine Vermutung und überprüf diese dann.
+  2. Wie viel Speicherbedarf hat je ein Objekt der drei gezeigten Klassen?
+    1. Was schätzt du?
+    2. Ermitte die tatsächliche Größe!
+  3. Bekannt ist folgender Code:
+  ```
+  int main(){
+    std::string s1{ "Hallo" };
+    std::string s2{ "Welt" };
+    // ...
+  }
+  ```  
+    1. Wie groß sind die Objekte `s1` und `s2` im Speicher?
+    2. Wo im Speicher liegt der eigentliche String?
+    3. Wie ermittelt man zur Laufzeit die Länge eines Strings?
+  3. Pointer
+    
+
