@@ -58,9 +58,11 @@
 * static_cast
    * GUT: wird statisch zur Compilezeit aufgelöst
    * `long x = 30; int y = static_cast<int>(x);`
+   * casts zwischen primitiven Typen und Up-cast bei Vererbungen.
    
 * dynamic_cast
    * AKZEPTABEL: Wenn du diesen Cast brauchst, ist das ein Indiz, dass du diese Notwendigkeit durch ein besseres Klassendesign vermeiden könntest.
+   * Down-cast bei Vererbungen
 ```
    man myself;
    person& someone{ myself };
@@ -150,9 +152,9 @@ struct intelligent_vec2 {
     // ...
   }
   ```  
-1. Wie groß sind die Objekte `s1` und `s2` im Speicher?
-2. Wo im Speicher liegt der eigentliche String?
-3. Wie ermittelt man zur Laufzeit die Länge eines Strings?
+4. Wie groß sind die Objekte `s1` und `s2` im Speicher?
+5. Wo im Speicher liegt der eigentliche String?
+6. Wie ermittelt man zur Laufzeit die Länge eines Strings?
 
 ##  3. Pointer
 Bekannt ist folgende unvollständig implementierte Klasse:
@@ -192,9 +194,16 @@ class string_circle_node {
   
 };
 ```
+Objekte dieser Klasse bilden eine ringförmig verkettete Sammlung von Strings.
+
+1. Vervollständige alle Methoden!
+2. Was ist hier am Design schlecht? Was macht die Nutzung dieser Containerklasse "hässlich"?
+
 ## 4. const und cast
 1. Schreib eine Funktion `void increase(T)`, die einen Integer um 1 vergrößert. Was muss T sein? Kandidaten: `int`, `const int`, `int&`, `const int&`
 2. Schreib eine Funktion, welche die Quersumme einer Zahl berechnet. `int cipher_sum(T)`. Was muss T sein? Kandidaten: `int`, `const int`, `int&`, `const int&`
 3. Schreib eine Funktion `long sum(const long& lhs, const long& rhs)`, die eine Summe berechnet, aber außerdem "böse" ist, indem sie den Wert von lhs inkrementiert und den Wert von rhs dekrementiert.
 4. Schreib eine Funktion, die zu einem gegebenen Character den Zahlcode auf std::cout ausgibt. `void ascii_code(char character)`. Welchen cast sollte man dafür nehmen?
+5. Nutze den reinterpret_cast, um dir die Codierung von double anzuschauen. Stell die Bitsequenz anschaulich dar, und sieh dir selbst gewählte double Zahlen an!
 
+## 5. auto und decltype. - Typinferenz oder einfach nur Faulheit
