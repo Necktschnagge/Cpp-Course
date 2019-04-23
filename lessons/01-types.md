@@ -112,13 +112,13 @@ Durch new allokierter Speicherplatz muss mit delete wieder freigegeben werden, s
 
 # Aufgaben
 
-1. Schreib eine Funktion, die zwei Zahlen entgegen nimmt und die Summe zurück gibt.
+## 1. Schreib eine Funktion, die zwei Zahlen entgegen nimmt und die Summe zurück gibt.
   1. Übergib die Argumente als Kopie
   2. .. als Referenz
   3. .. mittels Pointer
   4. Was ist die beste Variante? Was sollte man in der Praxis nutzen?
-2. Speicherbedarf von bestimmten Typen
-
+  
+## 2. Speicherbedarf von bestimmten Typen
 ```
 class empty {
 
@@ -150,9 +150,51 @@ struct intelligent_vec2 {
     // ...
   }
   ```  
-    1. Wie groß sind die Objekte `s1` und `s2` im Speicher?
-    2. Wo im Speicher liegt der eigentliche String?
-    3. Wie ermittelt man zur Laufzeit die Länge eines Strings?
-  3. Pointer
-    
+1. Wie groß sind die Objekte `s1` und `s2` im Speicher?
+2. Wo im Speicher liegt der eigentliche String?
+3. Wie ermittelt man zur Laufzeit die Länge eines Strings?
+
+##  3. Pointer
+Bekannt ist folgende unvollständig implementierte Klasse:
+```
+class string_circle_node {
+  std::string* const my_string;
+  string_circle_node* next;
+  string_circle_node* previous;
+  
+  public:
+  // creates a circle with one node:
+  string_circle_node(const std::string& string){
+   ...
+  }
+  
+  // creates a new node and integrates it into a given circle
+  string_circle_node(const std::string& string, string_circle& predecessor){
+  ...
+  }
+  
+  // returns the reference to the string of this node
+  std::string& operator(){
+  ...
+  }
+  
+  
+  // removes the next node from the circle
+  void remove_successor_node(){
+  ...
+  }
+  
+  
+  // destroys this node and also the whole circle
+  ~string_circle_node(){
+  ...
+  }
+  
+};
+```
+## 4. const und cast
+1. Schreib eine Funktion `void increase(T)`, die einen Integer um 1 vergrößert. Was muss T sein? Kandidaten: `int`, `const int`, `int&`, `const int&`
+2. Schreib eine Funktion, welche die Quersumme einer Zahl berechnet. `int cipher_sum(T)`. Was muss T sein? Kandidaten: `int`, `const int`, `int&`, `const int&`
+3. Schreib eine Funktion `long sum(const long& lhs, const long& rhs)`, die eine Summe berechnet, aber außerdem "böse" ist, indem sie den Wert von lhs inkrementiert und den Wert von rhs dekrementiert.
+4. Schreib eine Funktion, die zu einem gegebenen Character den Zahlcode auf std::cout ausgibt. `void ascii_code(char character)`. Welchen cast sollte man dafür nehmen?
 
