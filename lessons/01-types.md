@@ -206,4 +206,10 @@ Objekte dieser Klasse bilden eine ringförmig verkettete Sammlung von Strings.
 4. Schreib eine Funktion, die zu einem gegebenen Character den Zahlcode auf std::cout ausgibt. `void ascii_code(char character)`. Welchen cast sollte man dafür nehmen?
 5. Nutze den reinterpret_cast, um dir die Codierung von double anzuschauen. Stell die Bitsequenz anschaulich dar, und sieh dir selbst gewählte double Zahlen an!
 
-## 5. auto und decltype. - Typinferenz oder einfach nur Faulheit
+## 5. Namespaces, auto und decltype. - Typinferenz oder einfach nur Faulheit
+1. Beschreibe die klassische Syntax einer Funktionsdefinition in C++!
+2. Schreibe eine Funktion, die zwei Zahlen addiert!
+3. Schreibe eine Funktion, die dasselbe tut, aber nutze die Typbestimmung mit decltype: `auto sum(int x, int y) -> decltype(x + y) { return x + y; }`
+4. In einer Schule gibt es viele Klassen, mit einer jeweils eindeutigen Kennnung, z.B. _5a_, _7c_, _12b_. In jeder Klasse gibt es Schüler, die alle einen Vornamen und einen Nachnamen haben. Definiere eine Variable `pupils` vom Typ `std::map<std::string, std::vector<std::pair<std::string, std::string>>>`, die die Klassennamen auf Listen der Schüler abbilded und jedes Listenelement ein Paar aus Vorname und Nachname darstellt. Fülle die Variable mit Beispieldateien.
+5. Iteriere in einer Schleife durch Abbildung und ordne jeder Klasse die Zahl der Schüler zu, die "Jonas", "Lisa", "Tom", bzw. "Lena" heißen. Nutze dabei `auto`um lange Typangaben einzusparen.
+
