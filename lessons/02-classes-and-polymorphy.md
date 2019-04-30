@@ -17,7 +17,7 @@ private int b;
 private int c;
 
 }
-
+```
 ## Vererbung
 
 `
