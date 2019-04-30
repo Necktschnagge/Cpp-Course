@@ -12,7 +12,7 @@ Funktionen direkt an die Daten binden(Methoden)
 Sichtbarkeiten : public, protected, private
 	neue, komplexere Datentypen erstellen.
 	Kapselung, Vererbung, Polymorphie.
-	abgesicherte Zustände
+	abgesicherte ZustÃ¤nde
 #endif
 
 	// Klassendeklaration := mindestens der Name der Klasse wird bekannt gemacht.
@@ -72,14 +72,14 @@ public:
 };
 
 // Objektattribute und Klassenattribute..
-// Klassenattribute/ -methoden : existieren einmal für die Klasse, sind an keine Instanz gebunden
-// werden mit Schlüsselwort static deklariert.
+// Klassenattribute/ -methoden : existieren einmal fÃ¼r die Klasse, sind an keine Instanz gebunden
+// werden mit SchlÃ¼sselwort static deklariert.
 
 class CountedClass {
 	// Wir wollen eine Klasse zu irgendeinem jetzt noch irrelevanten Zweck schreiben und wollen zu jeder Zeit wissen, wie viele Objekte von unserer Klasse existieren.
 
-	static unsigned int count; // der Zähler, der angibt, wie viele Objekte existieren.
-			// static macht count zu einem Klassenattribut. Es existiert nur einmal für die ganze Klasse und nicht für jedes Objekt einzeln.
+	static unsigned int count; // der ZÃ¤hler, der angibt, wie viele Objekte existieren.
+			// static macht count zu einem Klassenattribut. Es existiert nur einmal fÃ¼r die ganze Klasse und nicht fÃ¼r jedes Objekt einzeln.
 
 	// weitere Attribute nur als Dummy: 
 	const char* x{nullptr};
@@ -91,7 +91,7 @@ public:
 	// Was ist ein Standardkonstruktor?
 	// -> Konstruktor der keine Parameter entgegennimmt.
 
-	// Nutzung der Initialisierungsliste:
+	// Nutzung vom Elementinitialisierer:
 	CountedClass() : x(nullptr), y(100) {
 		++count;
 	}
@@ -113,7 +113,7 @@ public:
 unsigned int CountedClass::count{ 0 };
 
 
-// Jetzt schreiben wir einen Container, der über einen Pointer sich einen String im Hintergrund hält.
+// Jetzt schreiben wir einen Container, der Ã¼ber einen Pointer sich einen String im Hintergrund hÃ¤lt.
 // Dazu implementieren wir die Move-Semantik und Copy-Operationen
 class Container {
 
@@ -121,7 +121,7 @@ class Container {
 
 public:
 
-	std::string& getRef() const { //Getter für eine Referenz (LValue) auf den String im Container.
+	std::string& getRef() const { //Getter fÃ¼r eine Referenz (LValue) auf den String im Container.
 		return *ptr; 
 	}
 
@@ -129,8 +129,8 @@ public:
 		ptr = new std::string(); 
 	}
 
-	// Destruktor. Wird automatisch aufgerufen, wenn das Objekt seinen Gültigkeitsbereich verlässt bzw. sein Speicher freigegeben wird.
-	~Container() { // Vom Heap reservierte Speicherbereiche müssen wieder freigegeben werden, wenn das Objekt zerstört wird (Destructor)
+	// Destruktor. Wird automatisch aufgerufen, wenn das Objekt seinen GÃ¼ltigkeitsbereich verlÃ¤sst bzw. sein Speicher freigegeben wird.
+	~Container() { // Vom Heap reservierte Speicherbereiche mÃ¼ssen wieder freigegeben werden, wenn das Objekt zerstÃ¶rt wird (Destructor)
 		delete ptr;
 	}
 
@@ -139,7 +139,7 @@ public:
 		ptr = new std::string(c.getRef());
 	}
 
-	// Move-Constructor: Wir erstellen ein neues Objekt und reichen sämtliche Pointer weiter.
+	// Move-Constructor: Wir erstellen ein neues Objekt und reichen sÃ¤mtliche Pointer weiter.
 	// alles, was im Hintergrund befindlich ist, wird nicht kopiert,
 	// sondern das neue Objekt bekommt die bereits an einer anderen Stelle reservierten Speicherbereiche zugewiesen.
 	Container(Container&& c) {
@@ -234,9 +234,9 @@ int main()
 	Kopierkonstruktor
 	Zuweisungsoperator
 	Destruktor
-	// Von diesen dreien stellt C++ eine Standardversion zur Verfügung.
+	// Von diesen dreien stellt C++ eine Standardversion zur VerfÃ¼gung.
 
-// oder besser: die großen Fünf:
+// oder besser: die groÃŸen FÃ¼nf:
 	Move-Konstruktor
 	Move-Zuweisungsoperator
 
@@ -247,7 +247,7 @@ int main()
 	
 // Konvertierungskonstruktor und explicit
 	Konstruktoren, die genau einen Parameter entgegen nehmen
-	implizite Konvertierung verhindern mit dem Schlüsselwort explicit
+	implizite Konvertierung verhindern mit dem SchlÃ¼sselwort explicit
 	
 
 
@@ -257,6 +257,6 @@ int main()
 
 // friend Funktionen
 
-// operator Überladung
+// operator Ãœberladung
 
 	*/
