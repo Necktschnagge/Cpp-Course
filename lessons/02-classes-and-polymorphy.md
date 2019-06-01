@@ -61,6 +61,111 @@ int d;
 5. Nutze das Schlüsselwort **virtual**, um das gewünschte Verhalten herzustellen. Wie funktionieren Aufrufe von virtuellen Funktionen in C++ (Polymorphie)? Wie funktioniert im Vergleich dazu Polymorphie in Java?
 6. Erkläre die Schlüsselwörter **override** und **final** und benutze sie in den beiden Klassen, wo es sinnvoll ist! Nenne Vorteile, warum man **override** benutzen sollte!
 
+```
+#include <algorithm>
+#include <iostream>
+
+class subclass;
+class base {
+
+
+protected:
+
+	int a;
+	int b;
+	int c;
+
+	virtual void swap() {
+		std::swap(a, c);
+		std::swap(c, b);
+	}
+
+public:
+
+		base() {
+		a = 1;
+		b = 2;
+		c = 3;
+	}
+
+	int set_a(int a) { const int old_a{ this->a }; this->a = a; return old_a; }
+
+	int get_a() { return a; }
+
+	virtual	int get_sum() const { return a + b + c; }
+
+	friend void externerTauscher(unsigned int, base&);
+};
+
+class subclass : public base {
+
+	int d;
+protected:
+
+	void swap() {
+      // TODO: auskommentierte Varianten testen.
+
+		//entweder so:
+		//base::swap();
+		//std::swap(a, d);
+		
+		// oder so:
+		std::swap(a, d);
+		std::swap(c, d);
+		std::swap(b, c);
+
+		/*
+		// dritte variante:
+		std::swap(d, c);
+		base::swap();
+		*/
+	}
+
+public:
+	subclass() {
+		a = 1;
+		b = 2;
+		c = 3;
+		d = 4;
+	}
+
+	int get_sum() const override {
+		return a + b + c + d;
+	}
+
+};
+
+void externerTauscher(unsigned int i, base& swapper) {
+	for (; i > 0; i--) {
+		swapper.swap();
+	}
+}
+
+
+void externeSumme(base b){
+	std::cout << '\n' << b.get_sum() << '\n';
+}
+
+
+
+int main()
+{
+	base b1;
+	subclass sub1;
+	externerTauscher(2, b1);
+	externerTauscher(2, sub1);
+	externeSumme(sub1);
+
+
+	std::cout << b1.get_a();
+	
+	char a;
+	std::cin >> a;
+
+	return 0;
+}
+```
+
 ## 3. Weitere Sachverhalte an Hand von Beispielen
 
 https://github.com/Necktschnagge/Cpp-Course/blob/master/CPP%20Kurs/listings/06-classes.cpp
