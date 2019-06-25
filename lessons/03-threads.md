@@ -94,8 +94,8 @@ https://stackoverflow.com/questions/39954678/difference-between-execution-polici
 To measure the performance of your code it will be compiled with g++ on Windows and executed afterwards on an Intel processor: https://www.intel.de/content/www/de/de/products/processors/core/i9-processors/i9-9900k.html
 
 Bonus tasks:
-* Also open a file to write the primes into it (of course, not inside the primes function).
-* Write a function `std::chrono::duration duration_of(const std::function<void()>& f);` that calls a function and returns the time interval that executing the function took.
+* Also open a file to write the primes into it (of course, not inside the primes function). Use the "class" `std::ofstream`. http://www.cplusplus.com/reference/fstream/ofstream/
+* Write a function `std::chrono::duration duration_of(const std::function<void()>& f);` that calls a function and returns the time interval that executing the function took. Of course, have a look at what chrono offers you to measure time.
 * Write a checker that opens a file and checks that it contains a valid list of prime numbers as produced by function `primes`.
 
 To determine the winner the same code for time measurement and opening a file will be applied to all the `primes` functions written by students, just to make sure that all variants are measured under equal conditions.
