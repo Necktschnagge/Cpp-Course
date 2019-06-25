@@ -50,14 +50,32 @@ https://en.cppreference.com/w/cpp/memory/weak_ptr
 ## Threads
 https://en.cppreference.com/w/cpp/thread/thread
 
+```
+using namespace std::literals::chrono_literals;
 
+auto michael = std::thread([](){
+  std::cout << "Hello\n";
+  std::this_thread::sleep_for(2s);
+  std::cout << "2s later\n";
+  std::cout << "My name is Michael and now I start walking home.\n"
+  std::this_thread::sleep_for(10s);
+  std::cout << "Oh, I am at the door.\n"
+}); // thread immediately starts running it's code.
 
+std::cout << "Hello\n";
+std::this_thread::sleep_for(1s);
+std::cout << "1s later\n";
+std::this_thread::sleep_for(3s);
+std::cout << "Oh, when will Michael come home? Let's wait for him:\n";
 
+michael.join(); // wait for a thread to finish its execution.
+std::cout << "Hi, Michael!\n";
+// Can Michael answer here?
+```
 
+Use mutexes if two threads want to use objects concurrently. Be aware of race conditions, competition of threads and deadlocks. Find solutions to be deadlock-free.
 
-
-
-
+https://en.cppreference.com/w/cpp/thread/mutex
 
 # Challenge Task
 
@@ -69,10 +87,15 @@ Write a function `void primes(unsigned long long upperbound, std::ostream& os);`
 7
 ```
 to the console.
-Use threads to speed up. To measure the performance of your code it will be compiled with g++ on Windows and executed afterwards on an Intel processor: https://www.intel.de/content/www/de/de/products/processors/core/i9-processors/i9-9900k.html
+
+Use threads to speed up. You may also consider using the algorithm library mentioned earlier on this page and its ExecutionPolicies to achieve parallel computing:
+https://stackoverflow.com/questions/39954678/difference-between-execution-policies-and-when-to-use-them
+
+To measure the performance of your code it will be compiled with g++ on Windows and executed afterwards on an Intel processor: https://www.intel.de/content/www/de/de/products/processors/core/i9-processors/i9-9900k.html
 
 Bonus tasks:
 * Also open a file to write the primes into it (of course, not inside the primes function).
 * Write a function `std::chrono::duration duration_of(const std::function<void()>& f);` that calls a function and returns the time interval that executing the function took.
 * Write a checker that opens a file and checks that it contains a valid list of prime numbers as produced by function `primes`.
 
+To determine the winner the same code for time measurement and opening a file will be applied to all the `primes` functions written by students, just to make sure that all variants are measured under equal conditions.
