@@ -99,3 +99,17 @@ Bonus tasks:
 * Write a checker that opens a file and checks that it contains a valid list of prime numbers as produced by function `primes`.
 
 To determine the winner the same code for time measurement and opening a file will be applied to all the `primes` functions written by students, just to make sure that all variants are measured under equal conditions.
+
+# What are your interests for the last C++ lesson?
+
+Ever heard of 
+* constexpr
+* exceptions and `noexcept`
+* templates
+* perfect forwarding
+* iterators
+* ...
+?
+
+If you have special interests, please let me know. (Use email, report an issue on this github site, ...)
+
