@@ -88,10 +88,12 @@ Write a function `void primes(unsigned long long upperbound, std::ostream& os);`
 ```
 to the console.
 
+Your solution should work at least for `2000 <= upperbound <= 200000 `. But it would be nice if it also works for greater bounds as well as trivial ones.
+
 Use threads to speed up. You may also consider using the algorithm library mentioned earlier on this page and its ExecutionPolicies to achieve parallel computing:
 https://stackoverflow.com/questions/39954678/difference-between-execution-policies-and-when-to-use-them
 
-To measure the performance of your code it will be compiled with g++ on Windows and executed afterwards on an Intel processor: https://www.intel.de/content/www/de/de/products/processors/core/i9-processors/i9-9900k.html
+To measure the performance of your code it will be compiled with g++ on Windows and executed afterwards on an Intel processor: https://www.intel.de/content/www/de/de/products/processors/core/i9-processors/i9-9900k.html There will be 16GB RAM available at least.
 
 Bonus tasks:
 * Also open a file to write the primes into it (of course, not inside the primes function). Use the "class" `std::ofstream`. http://www.cplusplus.com/reference/fstream/ofstream/
