@@ -88,7 +88,7 @@ Write a function `void primes(unsigned long long upperbound, std::ostream& os);`
 ```
 to the console.
 
-Your solution should work at least for `2000 <= upperbound <= 1'000'000'000'000'000'000`. But it would be nice if it also works for greater bounds as well as trivial ones. (The upperbound of upperbound was adjusted since an example solution was written that could do the job except writing output for `200'000'000` in less than 1 second. )
+Your solution should work at least for `2000 <= upperbound <= 1'000'000'000`. But it would be nice if it also works for greater bounds as well as trivial ones. (The upperbound of upperbound was adjusted since an example solution was written that could do the job except writing output for `200'000` in less than 1 second. )
 
 Use threads to speed up. You may also consider using the algorithm library mentioned earlier on this page and its ExecutionPolicies to achieve parallel computing:
 https://stackoverflow.com/questions/39954678/difference-between-execution-policies-and-when-to-use-them
