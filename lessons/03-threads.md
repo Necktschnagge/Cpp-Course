@@ -73,9 +73,11 @@ std::cout << "Hi, Michael!\n";
 // Can Michael answer here?
 ```
 
-Use mutexes if two threads want to use objects concurrently. Be aware of race conditions, competition of threads and deadlocks. Find solutions to be deadlock-free.
+Use mutexes if two threads want to use objects concurrently. Be aware of race conditions, competition of threads and deadlocks. Find solutions to be deadlock-free. To avoid deadlocks, you may also consider using `std::atomic<...>`.
 
 https://en.cppreference.com/w/cpp/thread/mutex
+
+https://en.cppreference.com/w/cpp/atomic/atomic
 
 # Challenge Task
 
